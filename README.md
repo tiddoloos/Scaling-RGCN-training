@@ -1,2 +1,2 @@
-# MscThesisTiddoLoos
+# GNN_thesis_tiddoloos
 GNN
