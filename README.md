@@ -1,2 +1,2 @@
-# GNN_thesis_tiddoloos
-GNN
+# RGCN_thesis_tiddoloos
+RGCN
