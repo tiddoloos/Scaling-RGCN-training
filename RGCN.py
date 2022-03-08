@@ -1,7 +1,7 @@
 import torch
-from torch import nn, sigmoid
-from torch_geometric.nn import RGCNConv
+from torch import nn
 from torch import functional as F
+from torch_geometric.nn import RGCNConv
 
 class RGCN(nn.Module):
     def __init__(self, in_channels, out_channels, dim_output, num_relations):
