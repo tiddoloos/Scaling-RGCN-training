@@ -8,13 +8,6 @@ output_format = '.csv'
 input_names = {'AIFB': 'aifb_stripped'}
 output_names = {'AIFB': 'aifb_attr_sum'}
 
-
-
-input_format = '.nt'
-output_format = '.csv'
-input_names = {'AIFB': 'aifb_stripped'}
-output_names = {'AIFB': 'aifb_attr_sum'}
-
 def make_graph_from_nt(input_data):
     g = Graph()
     data = open(input_data, "rb")
@@ -22,7 +15,7 @@ def make_graph_from_nt(input_data):
     return g
 
 def get_query(type):
-    with open('helpers/SPARQL/attr.yml') as file:
+    with open('helpers/SPARQL/attribute.yml') as file:
         queries = yaml.load(file, Loader=yaml.FullLoader)
         return queries[type]   
 
