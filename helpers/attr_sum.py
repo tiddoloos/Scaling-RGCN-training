@@ -1,5 +1,19 @@
 from rdflib import Graph
+from pandas import DataFrame
+from rdflib.plugins.sparql.processor import SPARQLResult
+import yaml
 
+input_format = '.nt'
+output_format = '.csv'
+input_names = {'AIFB': 'aifb_stripped'}
+output_names = {'AIFB': 'aifb_attr_sum'}
+
+
+
+input_format = '.nt'
+output_format = '.csv'
+input_names = {'AIFB': 'aifb_stripped'}
+output_names = {'AIFB': 'aifb_attr_sum'}
 
 def make_graph_from_nt(input_data):
     g = Graph()
@@ -7,48 +21,29 @@ def make_graph_from_nt(input_data):
     g.parse(data, format="nt")
     return g
 
+def get_query(type):
+    with open('helpers/SPARQL/attr.yml') as file:
+        queries = yaml.load(file, Loader=yaml.FullLoader)
+        return queries[type]   
+
 def make_attr_sum(graph):
     # was there in allessndro's SPARQL paper
     # PREFIX rdf: <http ://www.w3. org/1999/02/22=rdf=syntax=ns#>
     # found PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> in paper pf Campinas
+    query = get_query('summary')
+    sum_graph = graph.query(query)
+    return sum_graph
 
-    attr_query = """
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    CONSTRUCT {
-        ?hs ?p ?ho .
-    }
-    WHERE
-    {
-        {
-            SELECT ?s (SHA1(group_concat(?p; separator = ",")) as ?sID) WHERE {
-                SELECT DISTINCT ?s ?p {
-                    ?s ?p ?_
-                } order by ?p
-            } group by ?s
-        }
-        BIND(URI(CONCAT("http://example.org/", ?sID)) AS ?hs)
-        ?s ?p ?o
-        OPTIONAL { 
-            {
-                SELECT ?o (SHA1(group_concat(?p; separator = ",")) as ?oID) WHERE { 
-                    SELECT DISTINCT ?o ?p {
-                        ?o ?p ?_
-                    } order by ?p
-                } group by ?o
-            }
-            BIND(URI(CONCAT("http://example.org/", ?oID)) AS ?ho2)
-        }
-        BIND(IF(BOUND(?oID), ?ho2, ?o) AS ?ho)
-    }
-    """
-    results = graph.query(attr_query)
-    print(results)
-    # return [str(result[0]) for result in results]
+def sparql_results_to_df(results: SPARQLResult) -> DataFrame:
+    return DataFrame(
+        data=([None if x is None else x.toPython() for x in row] for row in results))
 
-def main_attr_sum(filename):
-    graph = make_graph_from_nt(filename)
-    print(len(graph))
+def main_attr_sum(name):
+    filepath = f'../data/AIFB/{input_names[name]}{input_format}'
+    print(filepath)
+    graph = make_graph_from_nt(filepath)
     sum_graph = make_attr_sum(graph)
+    df = sparql_results_to_df(sum_graph)
+    print(df)
+    df.to_csv(f'../data/AIFB/{output_names[name]}{output_format}')
 
-filename = "../../data/AIFB/raw/aifb_stripped.nt"
-main_attr_sum(filename)
