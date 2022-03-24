@@ -24,8 +24,8 @@ def map_org_labels(dataset_name):
             type_ = str(o).lower()
             node_to_types[s_].append(type_)
             labels.append(type_)
-    
     labels = sorted(list(set(labels)))
+
     # for each nodes_to_types write the types
     for node, type_list in node_to_types.items():
         sorted_type_list = sorted(type_list)
@@ -47,7 +47,7 @@ def create_map_csv(dataset_name, labels):
             df = pd.concat([df, pd.DataFrame.from_records([map])])
     df.set_index('node', inplace = True)
     df.groupby(level=0).sum()
-    df.to_csv(f'../data/{dataset_name}/mappings/{dataset_name}_mapped_org_labels_vector.csv',)
+    df.to_csv(f'../data/{dataset_name}/mappings/{dataset_name}_mapped_org_labels_vector.{output_format}',)
             
 labels = map_org_labels('AIFB')
 create_map_csv('AIFB', labels)
