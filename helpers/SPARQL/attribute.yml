@@ -1,58 +1,91 @@
 summary: '
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    CONSTRUCT {
-        ?hs ?p ?ho .
-    }
-    WHERE
+CONSTRUCT {
+?hs ?p ?ho .
+}
+WHERE 
+{
     {
-        {
-            SELECT ?s (SHA1(group_concat(?p; separator = ",")) as ?sID) WHERE {
-                SELECT DISTINCT ?s ?p {
-                    ?s ?p ?_
+        SELECT ?s (SHA1(group_concat(?p; separator = ",")) as ?sID) WHERE {
+            SELECT DISTINCT ?s ?p {    
+                ?s ?p ?_
+            } order by ?p
+        } group by ?s
+    }
+    BIND(URI(CONCAT("http://example.org/", ?sID)) AS ?hs)
+    ?s ?p ?o
+    OPTIONAL {
+        {   
+            SELECT ?o (SHA1(group_concat(?p; separator = ",")) as ?sID) WHERE {
+                SELECT DISTINCT ?s ?p {    
+                    ?o ?p ?_
                 } order by ?p
-            } group by ?s
+            } group by ?o
         }
-        BIND(URI(CONCAT("http://example.org/", ?sID)) AS ?hs)
-        ?s ?p ?o
-        OPTIONAL {
-            {
-                SELECT ?o (SHA1(group_concat(?p; separator = ",")) as ?oID) WHERE { 
-                    SELECT DISTINCT ?o ?p {
-                        ?o ?p ?_
-                    } order by ?p
-                } group by ?o
-            }
-            BIND(URI(CONCAT("http://example.org/", ?oID)) AS ?ho2)
-        }
-        BIND(IF(BOUND(?oID), ?ho2, ?o) AS ?ho)
-    }'
+        BIND(URI(CONCAT("http://example.org/", ?oID)) AS ?ho2)
+    }
+    
+    BIND(IF(BOUND(?oID), 
+         ?ho2, 
+         IF(?p = rdf:type, 
+             ?o, 
+             "")
+  ) AS ?ho)
+}
+'
+# summary: '
+#     prefix owl: <http://www.w3.org/2002/07/owl#> 
+#     CONSTRUCT {
+#         ?hs ?p ?ho .
+#     }
+#     WHERE
+#     {
+#         {
+#             SELECT ?s (SHA1(group_concat(?p; separator = ",")) as ?sID) WHERE {
+#                 SELECT DISTINCT ?s ?p {
+#                     ?s ?p ?_
+#                 } order by ?p
+#             } group by ?s
+#         }
+#         BIND(URI(CONCAT("http://example.org/", ?sID)) AS ?hs)
+#         ?s ?p ?o
+#         OPTIONAL {
+#             {
+#                 SELECT ?o (SHA1(group_concat(?p; separator = ",")) as ?oID) WHERE { 
+#                     SELECT DISTINCT ?o ?p {
+#                         ?o ?p ?_
+#                     } order by ?p
+#                 } group by ?o
+#             }
+#             BIND(URI(CONCAT("http://example.org/", ?oID)) AS ?ho2)
+#         }
+#         BIND(IF(BOUND(?oID), ?ho2, ?o) AS ?ho)
+#     }'
 
 mapping: '
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    CONSTRUCT {
-        ?hs <http://issummaryof> ?s .
-        ?h0 <http://issummaryof> ?o .
-    }
-    WHERE
+CONSTRUCT {
+    ?hs <http://issummaryof> ?s .
+    ?h0 <http://issummaryof> ?o .
+}
+WHERE
+{
     {
+        SELECT ?s (SHA1(group_concat(?p; separator = ",")) as ?sID) WHERE {
+            SELECT DISTINCT ?s ?p {
+                ?s ?p ?_
+            } order by ?p
+        } group by ?s
+    }
+    BIND(URI(CONCAT("http://example.org/", ?sID)) AS ?hs) 
+    ?s ?p ?o
+    OPTIONAL {
         {
-            SELECT ?s (SHA1(group_concat(?p; separator = ",")) as ?sID) WHERE {
-                SELECT DISTINCT ?s ?p {
-                    ?s ?p ?_
+            SELECT ?o (SHA1(group_concat(?p; separator = ",")) as ?oID) WHERE {
+                SELECT DISTINCT ?o ?p {
+                    ?o ?p ?_
                 } order by ?p
-            } group by ?s
+            } group by ?o
         }
-        BIND(URI(CONCAT("http://example.org/", ?sID)) AS ?hs) 
-        ?s ?p ?o
-        OPTIONAL {
-            {
-                SELECT ?o (SHA1(group concat(?p; separator = ",")) as ?oID) WHERE {
-                    SELECT DISTINCT ?o ?p {
-                        ?o ?p ?_
-                    } order by ?p
-                } group by ?o }
-            }
-            BIND(URI(CONCAT("http://example.org/", ?oID)) AS ?ho2)
-        }
-        BIND(IF(BOUND(?oID), ?ho2, ?o) AS ?ho)
-    }'
+        BIND(URI(CONCAT("http://example.org/", ?oID)) AS ?ho2)
+    }
+    BIND(IF(BOUND(?oID), ?ho2, ?o) AS ?ho)
+}'   
