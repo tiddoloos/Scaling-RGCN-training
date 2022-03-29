@@ -56,4 +56,4 @@ def process_rdf_graph(graph_path):
     edge = torch.tensor(edge_list, dtype=torch.long).t().contiguous()
     edge_index, edge_type = edge[:2], edge[2]
 
-    return edge_index, edge_type, nodes_dict, len(sorted_nodes), sorted_nodes
+    return edge_index, edge_type, nodes_dict, len(sorted_nodes), sorted_nodes, relations_dict

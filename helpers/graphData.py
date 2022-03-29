@@ -9,12 +9,13 @@ import torch
 from sklearn.model_selection import train_test_split
 
 class Graph:
-    def __init__(self, edge_index, edge_type, node_to_enum, num_nodes, nodes):
+    def __init__(self, edge_index, edge_type, node_to_enum, num_nodes, nodes, relations_dict):
         self.edge_index = edge_index
         self.edge_type  = edge_type
         self.node_to_enum = node_to_enum
         self.num_nodes = num_nodes
         self.nodes = nodes
+        self.relations = relations_dict
 
 class Dataset:
     graph_paths = {'AIFB': '../data/AIFB/AIFB_complete.n3'}
@@ -57,20 +58,15 @@ class Dataset:
 
     def get_training_data(self):
         sg_idx, sg_labels = self.get_idx_labels(self.sumGraph, self.sum2type)
-      
-        # sg_edge_index = self.sumGraph.edge_index
 
         self.sum_training_data = Data(edge_index = self.sumGraph.edge_index)
         self.sum_training_data.idx = torch.tensor(sg_idx, dtype = torch.long)
         self.sum_training_data.labels = torch.tensor(sg_labels)
 
         g_idx, g_labels = self.get_idx_labels(self.orgGraph, self.org2type)
-
-        g_edge_index = self.orgGraph.edge_index
-
-        self.org_training_data = Data(edge_index = g_edge_index)
         X_train, X_test, y_train, y_test = train_test_split(g_idx, g_labels, test_size = 0.20)
 
+        self.org_training_data = Data(edge_index = self.orgGraph.edge_index)    
         self.org_training_data.x_train = torch.tensor(X_train, dtype = torch.long)
         self.org_training_data.x_test = torch.tensor(X_test)
         self.org_training_data.y_train = torch.tensor(y_train, dtype = torch.long)
@@ -81,22 +77,26 @@ class Dataset:
         print("Statistic Datasets:")
         print("SUMMARY GRAPH")
         print(f"NUM_NODES = {self.sumGraph.num_nodes}")
+        print(f"NUM_RELATIONS = {len(self.sumGraph.relations.keys())}")
         print("ORGINAL GRAPH")
         print(f"NUM_NODES = {self.orgGraph.num_nodes}")
+        print(f"NUM_RELATIONS = {len(self.orgGraph.relations.keys())}")
         print(f"NUM CLASSES = {self.num_labels}")
         return
 
     def collect_graph_data(self, dataset):
-        edge_index, edge_type, nodes_dict, length_sorted_nodes, sorted_nodes = process_rdf_graph(Dataset.sum_graph_paths[dataset])
-        sumGraph = Graph(edge_index, edge_type, nodes_dict, length_sorted_nodes, sorted_nodes)
+        edge_index, edge_type, nodes_dict, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(Dataset.sum_graph_paths[dataset])
+        sumGraph = Graph(edge_index, edge_type, nodes_dict, length_sorted_nodes, sorted_nodes, relations_dict)
 
-        edge_index, edge_type, nodes_dict, length_sorted_nodes, sorted_nodes = process_rdf_graph(Dataset.graph_paths[dataset])
-        orgGraph = Graph(edge_index, edge_type, nodes_dict, length_sorted_nodes, sorted_nodes)
+        edge_index, edge_type, nodes_dict, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(Dataset.graph_paths[dataset])
+        orgGraph = Graph(edge_index, edge_type, nodes_dict, length_sorted_nodes, sorted_nodes, relations_dict)
     
         self.sumGraph = sumGraph
         self.orgGraph = orgGraph
+        
         self.get_training_data()
 
+#can be moved to main training file
 def init_data_object(dataset):
     sum2orgNodes_dict, sum2type_dict, org2type_dict, dfSum2type, typeLabels, sumNodesLabels, labels = main_map_org_nodes(dataset)
     graphData = Dataset(dataset, sum2orgNodes_dict, sum2type_dict, org2type_dict, dfSum2type, typeLabels, sumNodesLabels, len(labels))
