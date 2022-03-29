@@ -4,7 +4,6 @@ from collections import defaultdict
 import pandas as pd
 from csv import reader
 import ast
-from collections import defaultdict
 
 output_format = 'csv'
 
@@ -35,7 +34,7 @@ def map_org_labels(dataset_name):
     write_to_csv(f'../data/{dataset_name}/mappings/{dataset_name}_mapped_org_labels.{output_format}', node_to_types)
     return labels
 
-#save orginal nodes mapping to pd.DataFrame
+#save orginal nodes mapping, save in pd.DataFrame
 def create_map_csv(dataset_name, labels):
     column_names = ['node'] + labels
     dfOrg2Type = pd.DataFrame(columns=column_names)
@@ -51,6 +50,7 @@ def create_map_csv(dataset_name, labels):
             dfOrg2Type = pd.concat([dfOrg2Type, pd.DataFrame.from_records([map])])
     dfOrg2Type.set_index('node', inplace = True)
     dfOrg2Type.groupby(level=0).sum()
+    dfOrg2Type = dfOrg2Type.sort_index()
     dfOrg2Type.to_csv(f'../data/{dataset_name}/mappings/{dataset_name}_mapped_org2type.{output_format}')
     return dfOrg2Type
 
@@ -80,21 +80,31 @@ def map_sum_nodes(dataset_name, dfOrg2Type, labels):
             if orgNode in org2type_dict.keys():
                 mapping = org2type_dict[orgNode]
                 for ent_type in mapping:
-                    if mapping[ent_type]== float(1.0):
+                    if mapping[ent_type] == float(1.0):
                         map_dict[ent_type] += sum_node_link_values[sumNode]
         sum2type_dict[sumNode] = map_dict
 
-    #save to csv, need this later 
     dfSum2type = pd.DataFrame.from_dict(sum2type_dict, orient='index')
+    dfSum2type = dfSum2type.sort_index()
     dfSum2type.to_csv(f'../data/{dataset_name}/mappings/{dataset_name}_mapped_sum2type.{output_format}')
 
-    return sum2orgNodes_dict, sum2type_dict, org2type_dict
-   
-def main_map_org_nodes():
-    dataset = 'AIFB'
-    labels = map_org_labels(dataset)
-    dfOrg2type = create_map_csv('AIFB', labels)
-    sum2orgNodes_dict, sum2type_dict, org2type_dict = map_sum_nodes(dataset, dfOrg2type, labels)
+    return sum2orgNodes_dict, sum2type_dict, org2type_dict, dfSum2type
 
-if __name__=='__main__':
-    main_map_org_nodes()
+def label_mapping(df):
+    cols_list = sorted(list(df.columns))
+    index_list = sorted(list(df.index))
+
+    column_dict = dict()
+    index_dict = dict()
+    for type in cols_list:
+        column_dict[type] = cols_list.index(type)
+    for element in index_list:
+        index_dict[element] = index_list.index(element)
+    return column_dict, index_dict
+        
+def main_map_org_nodes(dataset):
+    labels = map_org_labels(dataset)
+    dfOrg2type = create_map_csv(dataset, labels)
+    sum2orgNodes_dict, sum2type_dict, org2type_dict, dfSum2type = map_sum_nodes(dataset, dfOrg2type, labels)
+    typeLabels, sumNodesLabels = label_mapping(dfSum2type)
+    return sum2orgNodes_dict, sum2type_dict, org2type_dict, dfSum2type, typeLabels, sumNodesLabels, labels
