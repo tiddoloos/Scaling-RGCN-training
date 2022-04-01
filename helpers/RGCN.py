@@ -8,6 +8,8 @@ class RGCN(nn.Module):
         super(RGCN, self).__init__()
         self.rgcn1 = RGCNConv(num_nodes, hidden_l, num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
+        nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_out')
+        nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_out')
 
     def forward(self, edge_index, edge_type):
         x = self.rgcn1(None, edge_index, edge_type)

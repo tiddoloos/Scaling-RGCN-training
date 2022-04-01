@@ -1,6 +1,7 @@
 from helpers.graphData import Dataset
 from helpers.RGCN import RGCN
 from helpers.createMappings import invert_dict
+from helpers.clean_createMapping import main
 import torch
 
 class modelTrainer:
@@ -95,6 +96,8 @@ class modelTrainer:
             #train orgModel
             self.train(self.orgModel, lr, weight_d, epochs)
 
-
-trainer = modelTrainer(hidden_l=16)
-trainer.main_training(benchmark=True)
+main('AIFB')
+# trainer_trans = modelTrainer(hidden_l=16)
+# trainer_trans.main_training(benchmark=False)
+# trainer_bench = modelTrainer(hidden_l=16)
+# trainer_bench.main_training(benchmark=True)
