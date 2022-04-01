@@ -90,7 +90,7 @@ def map_sum_nodes(dataset_name, dfOrg2Type, labels):
 
     return sum2orgNodes_dict, sum2type_dict, org2type_dict, dfSum2type
 
-def label_mapping(df):
+def enumerate_nodes(df):
     cols_list = sorted(list(df.columns))
     index_list = sorted(list(df.index))
 
@@ -101,10 +101,17 @@ def label_mapping(df):
     for element in index_list:
         index_dict[element] = index_list.index(element)
     return column_dict, index_dict
-        
+
+def invert_dict(org_dict):
+    invdict = defaultdict(list)
+    for k, v in org_dict.items():
+        for node in v:
+            invdict[node].append(k)
+    return invdict
+
 def main_createMappings(dataset):
     labels = map_org_labels(dataset)
     dfOrg2type = create_map_csv(dataset, labels)
     sum2orgNodes_dict, sum2type_dict, org2type_dict, dfSum2type = map_sum_nodes(dataset, dfOrg2type, labels)
-    typeLabels, sumNodesLabels = label_mapping(dfSum2type)
+    typeLabels, sumNodesLabels = enumerate_nodes(dfSum2type)
     return sum2orgNodes_dict, sum2type_dict, org2type_dict, dfSum2type, typeLabels, sumNodesLabels, labels

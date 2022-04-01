@@ -53,7 +53,7 @@ class Dataset:
 
         self.sum_training_data = Data(edge_index = self.sumGraph.edge_index)
         self.sum_training_data.idx = torch.tensor(sg_idx, dtype = torch.long)
-        self.sum_training_data.y_train = torch.tensor(sg_labels)
+        self.sum_training_data.y = torch.tensor(sg_labels)
 
         g_idx, g_labels = self.get_idx_labels(self.orgGraph, self.org2type)
         X_train, X_test, y_train, y_test = train_test_split(g_idx, g_labels,  test_size=0.2, random_state=1) 
@@ -62,11 +62,11 @@ class Dataset:
         self.org_training_data = Data(edge_index = self.orgGraph.edge_index)    
         self.org_training_data.x_train = torch.tensor(X_train, dtype = torch.long)
         self.org_training_data.x_test = torch.tensor(X_test)
-        self.org_training_data.x_val = torch.tensor(X_val)
-        self.org_training_data.y_val = torch.tensor(y_val)
+        self.org_training_data.x_val = torch.tensor(X_val, dtype = torch.long)
+        self.org_training_data.y_val = torch.tensor(y_val, dtype = torch.long)
         self.org_training_data.y_train = torch.tensor(y_train, dtype = torch.long)
         self.org_training_data.y_test = torch.tensor(y_test)
-        self.org_training_data.x = torch.tensor(g_idx, dtype=torch.long)
+        self.org_training_data.idx = torch.tensor(g_idx, dtype=torch.long)
         self.org_training_data.y = torch.tensor(g_labels)
 
         print("Statistic Datasets:")

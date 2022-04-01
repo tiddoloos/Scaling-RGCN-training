@@ -15,3 +15,28 @@ class RGCN(nn.Module):
         x = self.rgcn2(x, edge_index, edge_type)
         x = torch.sigmoid(x)
         return x
+    
+    def override_params(self, weight_1, bias_1, root_1, weight_2, bias_2, root_2):
+        self.rgcn1.weight = torch.nn.Parameter(weight_1)
+        self.rgcn1.bias = torch.nn.Parameter(bias_1)
+        self.rgcn1.root = torch.nn.Parameter(root_1)
+
+        self.rgcn2.weight = torch.nn.Parameter(weight_2)
+        self.rgcn2.bias = torch.nn.Parameter(bias_2)
+        self.rgcn2.root = torch.nn.Parameter(root_2)
+
+    def reset_weights(self):
+        for layer in self.children():
+            print(layer)
+            if hasattr(layer, 'reset_parameters'):
+                layer.reset_parameters()
+
+    def freeze_layers(self, freeze_first, freeze_second):
+        if freeze_first:
+            self.rgcn1.weight.requires_grad = False
+            self.rgcn1.bias.requires_grad = False
+            self.rgcn1.root.requires_grad = False
+        if freeze_second:
+            self.rgcn2.weight.requires_grad = False
+            self.rgcn2.bias.requires_grad = False
+            self.rgcn2.root.requires_grad = False
