@@ -1,6 +1,5 @@
 from helpers.graphData import Dataset
 from helpers.RGCN import RGCN
-from helpers.clean_createMapping import main_createMappings
 import torch
 
 class modelTrainer:

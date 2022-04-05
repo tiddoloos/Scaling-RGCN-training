@@ -1,11 +1,7 @@
 from helpers.utils import process_rdf_graph
-# from helpers.createMappings import main_createMappings
-from helpers.clean_createMapping import main_createMappings
-from collections import defaultdict
+from helpers.createMapping import main_createMappings
 import torch
-from collections import defaultdict
 from torch_geometric.data import Data
-import torch
 from sklearn.model_selection import train_test_split
 
 class Graph:
@@ -56,9 +52,8 @@ class Dataset:
             self.org_training_data.y_train = torch.tensor(y_train, dtype = torch.long)
             self.org_training_data.y_test = torch.tensor(y_test)
             self.org_training_data.idx = torch.tensor(g_idx, dtype=torch.long)
-            self.org_training_data.y = torch.tensor(g_labels)
+            self.org_training_data.y = torch.tensor(g_labels)   
 
-        #remove test data and then make summary.
         else:
             sg_idx, sg_labels = self.get_idx_labels(self.sumGraph, self.sum2type)
             self.sum_training_data = Data(edge_index = self.sumGraph.edge_index)
@@ -73,7 +68,7 @@ class Dataset:
             print(f"NUM_NODES = {self.orgGraph.num_nodes}")
             print(f"NUM_RELATIONS = {len(self.orgGraph.relations.keys())}")
             print(f"NUM CLASSES = {self.num_classes}")
-            
+
         return
 
     def collect_graph_data(self):
@@ -82,7 +77,7 @@ class Dataset:
         self.orgGraph = orgGraph
         self.make_training_data(isOrg=True)
 
-        # get test data en remove from graph
+        # remove val/test labels from graph
         # make summarized graph
 
         edge_index, edge_type, nodes_dict, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(self.sum_graph_paths[self.name])
