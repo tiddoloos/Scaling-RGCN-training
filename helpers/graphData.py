@@ -16,9 +16,10 @@ class Graph:
 class Dataset:
     graph_paths = {'AIFB': 'data/AIFB/AIFB_complete.n3'}
     sum_graph_paths = {'AIFB': 'data/AIFB/AIFB_attr_sum.n3'}
+    map_graph_paths = {'AIFB': 'data/AIFB/AIFB_attr_map.n3'}
 
-    def __init__(self, name: str()):
-        self.name = name
+    def __init__(self):
+        self.name = None
         self.orgNode2sumNode_dict = None
         self.sumNode2orgNode_dict = None
         self.org2type = None
@@ -51,11 +52,8 @@ class Dataset:
             self.org_training_data.y_val = torch.tensor(y_val, dtype = torch.long)
             self.org_training_data.y_train = torch.tensor(y_train, dtype = torch.long)
             self.org_training_data.y_test = torch.tensor(y_test)
-            # self.org_training_data.x = torch.tensor(g_idx, dtype=torch.long)
-            # self.org_training_data.y = torch.tensor(g_labels) 
 
         else:
-            # print(self.sum2type)
             sg_idx, sg_labels = self.get_idx_labels(self.sumGraph, self.sum2type)
             self.sum_training_data = Data(edge_index = self.sumGraph.edge_index)
             self.sum_training_data.x_train = torch.tensor(sg_idx, dtype = torch.long)
@@ -78,15 +76,12 @@ class Dataset:
         self.orgGraph = orgGraph
         self.make_training_data(isOrg=True)
 
-        # remove val/test labels from graph
-        # make summarized graph
-
         edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(self.sum_graph_paths[self.name])
         sumGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict)
         self.sumGraph = sumGraph
-        
         self.make_training_data()
 
-    def init_dataset(self):
-        self.sum2type, self.org2type, self.enum_classes, self.num_classes , self.orgNode2sumNode_dict, self.sumNode2orgNode_dict = main_createMappings(self.name)
+    def init_dataset(self, name):
+        self.name = name
+        self.sum2type, self.org2type, self.enum_classes, self.num_classes , self.orgNode2sumNode_dict, self.sumNode2orgNode_dict = main_createMappings(self.graph_paths[self.name], self.map_graph_paths[self.name] )
         self.collect_graph_data()

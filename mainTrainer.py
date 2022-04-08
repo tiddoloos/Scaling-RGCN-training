@@ -3,8 +3,8 @@ from helpers.RGCN import RGCN
 import torch
 
 class modelTrainer:
-    data = Dataset('AIFB')
-    data.init_dataset()
+    data = Dataset()
+    data.init_dataset('AIFB')
     def __init__(self, hidden_l):
         self.hidden_l = hidden_l
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -92,7 +92,7 @@ class modelTrainer:
             print('--START TRAINING ON ORIGINAL GRAPH--')
             self.train(self.orgModel, lr, weight_d, epochs)
 
-epochs = 50
+epochs = 5
 weight_d = 0.0005
 lr = 0.01
 trainer_trans = modelTrainer(hidden_l=16)

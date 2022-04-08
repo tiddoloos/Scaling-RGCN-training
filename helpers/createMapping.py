@@ -45,9 +45,9 @@ def vectorize_label_mapping(sumNode2orgNode_dict, org2type_dict, labels_dict, nu
         sum2type_vec[sumNode] = sg_labels
     return sum2type_vec, org2type_vec 
 
-def main_createMappings(dataset_name):
-    org_file = f'data/{dataset_name}/{dataset_name}_complete.n3'
-    sum_map_file = f'data/{dataset_name}/{dataset_name}_attr_map.n3'
+def main_createMappings(org_file, sum_map_file):
+    # org_file = f'data/{dataset_name}/{dataset_name}_complete.n3'
+    # sum_map_file = f'data/{dataset_name}/{dataset_name}_attr_map.n3'
 
     orgNode2sumNode_dict, sumNode2orgNode_dict = get_node_mappings_dict(sum_map_file)
 
