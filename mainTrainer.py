@@ -25,6 +25,7 @@ class modelTrainer:
         acc = self.calc_acc(pred, self.orgData.x_val, self.orgData.y_val)
         self.accuracies.append(acc)
         print(f'Accuracy on validation set = {acc}')
+        return acc
 
     def train(self, model, lr, weight_d, epochs, sum_graph=False):
         training_data = self.orgData
@@ -35,18 +36,21 @@ class modelTrainer:
         
         optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d)
         loss_f = torch.nn.BCELoss()
+        accuracies = []
+        losses = []
         for epoch in range(epochs):
             model.train()
             optimizer.zero_grad()
             out = model(graph.edge_index, graph.edge_type)
-            targets = training_data.y.to(torch.float32)
-            output = loss_f(out[training_data.idx], targets)
+            targets = training_data.y_train.to(torch.float32)
+            output = loss_f(out[training_data.x_train], targets)
             output.backward()
             optimizer.step()
             l = output.item()
+            losses.append(l)
             if not sum_graph:
                 model.eval()
-                self.evaluate(model, graph.edge_index, graph.edge_type)
+                accuracies.append(self.evaluate(model, graph.edge_index, graph.edge_type))
             print(f'Epoch: {epoch}, Loss: {l:.4f}')
         return
 
@@ -72,24 +76,26 @@ class modelTrainer:
         # transfer
         self.orgModel.override_params(weight_sg_1, bias_sg_1, root_sg_1,
                                             weight_sg_2, bias_sg_2, root_sg_2)
-        print('transfer done!')
+        print('weight transfer done')
 
     def main_training(self, epochs, weight_d, lr, benchmark =False):
         #train on sumModel
         if benchmark:
+            print('--START BENCHMARK TRAINING ON ORIGINAL GRAPH--')
             self.train(self.orgModel, lr, weight_d, epochs)
-            return
         else:
+            print('---START TRAINING ON SUMMARY GRAPH--')
             self.train(self.sumModel, lr, weight_d, epochs, sum_graph=True)
             #transfer weights
             self.transfer_weights()
             #train orgModel
+            print('--START TRAINING ON ORIGINAL GRAPH--')
             self.train(self.orgModel, lr, weight_d, epochs)
 
-epochs = 5
+epochs = 50
 weight_d = 0.0005
 lr = 0.01
 trainer_trans = modelTrainer(hidden_l=16)
 trainer_trans.main_training(epochs, weight_d, lr, benchmark=False)
-# trainer_bench = modelTrainer(hidden_l=16)
-# trainer_bench.main_training(benchmark=True)
+trainer_bench = modelTrainer(hidden_l=16)
+trainer_bench.main_training(epochs, weight_d, lr, benchmark=True)

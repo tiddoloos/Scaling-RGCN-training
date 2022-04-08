@@ -1,8 +1,6 @@
 from rdflib import Graph
 import torch
 from collections import Counter
-import os
-
 
 def make_rdf_graph(file_path):
     g = Graph()
