@@ -1,11 +1,13 @@
 from helpers.graphData import Dataset
 from helpers.RGCN import RGCN
 import torch
+from collections import defaultdict
+from helpers.plot import plot_main
 
 class modelTrainer:
     data = Dataset()
-    data.init_dataset('AIFB')
-    def __init__(self, hidden_l):
+    def __init__(self, hidden_l, dataset_name):
+        self.data.init_dataset(dataset_name)
         self.hidden_l = hidden_l
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.sumModel = RGCN(self.data.sumGraph.num_nodes, len(self.data.sumGraph.relations.keys()), self.hidden_l, self.data.num_classes)
@@ -34,8 +36,8 @@ class modelTrainer:
             training_data = self.sumData
             graph = self.data.sumGraph
         
-        optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d)
         loss_f = torch.nn.BCELoss()
+        optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d)
         accuracies = []
         losses = []
         for epoch in range(epochs):
@@ -52,7 +54,7 @@ class modelTrainer:
                 model.eval()
                 accuracies.append(self.evaluate(model, graph.edge_index, graph.edge_type))
             print(f'Epoch: {epoch}, Loss: {l:.4f}')
-        return
+        return accuracies, losses
 
     def transfer_weights(self):
         weight_sg_1 = torch.rand(len(self.data.sumGraph.relations.keys()), self.data.orgGraph.num_nodes, self.hidden_l)
@@ -78,24 +80,37 @@ class modelTrainer:
                                             weight_sg_2, bias_sg_2, root_sg_2)
         print('weight transfer done')
 
-    def main_training(self, epochs, weight_d, lr, benchmark =False):
+    def main_modelTrainer(self, epochs, weight_d, lr, benchmark=False):
         #train on sumModel
         if benchmark:
             print('--START BENCHMARK TRAINING ON ORIGINAL GRAPH--')
-            self.train(self.orgModel, lr, weight_d, epochs)
+            return self.train(self.orgModel, lr, weight_d, epochs)
+
         else:
             print('---START TRAINING ON SUMMARY GRAPH--')
-            self.train(self.sumModel, lr, weight_d, epochs, sum_graph=True)
+            _, sum_graph_loss = self.train(self.sumModel, lr, weight_d, epochs, sum_graph=True)
             #transfer weights
             self.transfer_weights()
             #train orgModel
             print('--START TRAINING ON ORIGINAL GRAPH--')
-            self.train(self.orgModel, lr, weight_d, epochs)
+            org_graph_acc, org_graph_loss = self.train(self.orgModel, lr, weight_d, epochs)
+            return sum_graph_loss, org_graph_acc, org_graph_loss
 
-epochs = 5
-weight_d = 0.0005
-lr = 0.01
-trainer_trans = modelTrainer(hidden_l=16)
-trainer_trans.main_training(epochs, weight_d, lr, benchmark=False)
-trainer_bench = modelTrainer(hidden_l=16)
-trainer_bench.main_training(epochs, weight_d, lr, benchmark=True)
+def initialize_training():
+    epochs = 51
+    weight_d = 0.0005
+    lr = 0.01
+    hidden_l=16
+    results_dict = dict()
+
+    # Transfer learning
+    trainer_trans = modelTrainer(hidden_l, 'AIFB')
+    results_dict['Summary graph loss'], results_dict['Orginal graph accuracy'], results_dict['Orginal graph loss'] = trainer_trans.main_modelTrainer(epochs, weight_d, lr, benchmark=False)
+
+    # benchmark
+    trainer_bench = modelTrainer(hidden_l, 'AIFB')
+    results_dict['Benchmark accuracy'], results_dict['Benchmark loss'] = trainer_bench.main_modelTrainer(epochs, weight_d, lr, benchmark=True)
+
+    plot_main('AIFB', results_dict, epochs)
+
+initialize_training()
