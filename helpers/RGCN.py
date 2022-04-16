@@ -32,13 +32,3 @@ class RGCN(nn.Module):
             print(layer)
             if hasattr(layer, 'reset_parameters'):
                 layer.reset_parameters()
-
-    def freeze_layers(self, freeze_first, freeze_second):
-        if freeze_first:
-            self.rgcn1.weight.requires_grad = False
-            self.rgcn1.bias.requires_grad = False
-            self.rgcn1.root.requires_grad = False
-        if freeze_second:
-            self.rgcn2.weight.requires_grad = False
-            self.rgcn2.bias.requires_grad = False
-            self.rgcn2.root.requires_grad = False
