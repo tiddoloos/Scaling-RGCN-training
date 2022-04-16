@@ -1,7 +1,8 @@
 from collections import defaultdict
 from helpers.utils import make_rdf_graph
+from typing import Tuple, Dict, List
 
-def nodes2type_mapping(path):
+def nodes2type_mapping(path: str) -> Tuple[List, Dict[str, List]]:
     rel = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
     graph = make_rdf_graph(path)
   
@@ -16,7 +17,7 @@ def nodes2type_mapping(path):
     labels = sorted(list(set(labels)))
     return labels, node2types_dict 
 
-def get_node_mappings_dict(path):
+def get_node_mappings_dict(path: str) -> Tuple[Dict[str, str], Dict[str, List]]:
     graph = make_rdf_graph(path)
     sumNode2orgNode_dict = defaultdict(list)
     orgNode2sumNode_dict = defaultdict()
@@ -27,7 +28,7 @@ def get_node_mappings_dict(path):
         orgNode2sumNode_dict[o_] = s_
     return orgNode2sumNode_dict, sumNode2orgNode_dict
 
-def vectorize_label_mapping(sumNode2orgNode_dict, org2type_dict, labels_dict, num_classes):
+def vectorize_label_mapping(sumNode2orgNode_dict: defaultdict(list), org2type_dict: defaultdict(list), labels_dict: dict, num_classes: int) -> Tuple[Dict[str, List], Dict[str, List]]:
     sum2type_vec = defaultdict()
     org2type_vec = defaultdict()
 
@@ -48,7 +49,7 @@ def vectorize_label_mapping(sumNode2orgNode_dict, org2type_dict, labels_dict, nu
         sum2type_vec[sumNode] = sg_labels
     return sum2type_vec, org2type_vec 
 
-def main_createMappings(org_file, sum_map_file):
+def main_createMappings(org_file: str, sum_map_file: str) -> Tuple[Dict, Dict, Dict, int, Dict, Dict, Dict, Dict]:
     orgNode2sumNode_dict, sumNode2orgNode_dict = get_node_mappings_dict(sum_map_file)
 
     classes, org2type_dict = nodes2type_mapping(org_file)
@@ -56,4 +57,4 @@ def main_createMappings(org_file, sum_map_file):
 
     sum2type, org2type  = vectorize_label_mapping(sumNode2orgNode_dict, org2type_dict, enum_classes, len(classes))
 
-    return sum2type, org2type, enum_classes, len(classes), orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict 
+    return sum2type, org2type, enum_classes, len(classes), orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict

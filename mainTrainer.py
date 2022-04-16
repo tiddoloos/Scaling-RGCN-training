@@ -29,7 +29,6 @@ class modelTrainer:
         return acc
 
     def train(self, model: RGCN, lr: float, weight_d: float, epochs: int, sum_graph=False) -> Tuple[List, List]:
-        print(type(model))
         training_data = self.orgData
         graph = self.data.orgGraph
         if sum_graph:
