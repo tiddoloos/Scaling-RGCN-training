@@ -1,5 +1,5 @@
 from helpers.utils import process_rdf_graph
-from helpers.createMapping import main_createMappings
+from helpers.createMapping import main_createMappings, vectorize_label_mapping
 import torch
 from torch_geometric.data import Data
 from sklearn.model_selection import train_test_split
@@ -22,6 +22,7 @@ class Dataset:
         self.name = None
         self.orgNode2sumNode_dict = None
         self.sumNode2orgNode_dict = None
+        self.org2type_dict = None
         self.org2type = None
         self.sum2type = None
         self.enum_classes = None
@@ -34,10 +35,27 @@ class Dataset:
     def get_idx_labels(self, graph, dictionary):
         train_indices, train_labels = [], []
         for node, labs in dictionary.items():
-            if sum(list(labs)) != 0.0 and graph.node_to_enum.get(node) is not None:
+            if sum(list(labs)) != 0 and graph.node_to_enum.get(node) is not None:
                 train_indices.append(graph.node_to_enum[node])
                 train_labels.append(list(labs))
         return train_indices, train_labels
+    
+    def remove_test_data(self, X_test):
+        #make copy of dicts to work with and keep orginal dicts in Dataset object
+        sum2orgnode = self.sumNode2orgNode_dict
+        org2type = self.org2type_dict
+
+        for orgNode, value in self.orgGraph.node_to_enum.items():
+            if value in X_test:
+                if len(org2type[orgNode]) > 2:
+                    print('TRUE')
+                org2type[orgNode]=[]
+                for sumNode, orgNodes in sum2orgnode.items():
+                    if orgNode in orgNodes:
+                        sum2orgnode[sumNode].remove(orgNode)
+        
+        #update sum2type to avoid test set leakage      
+        self.sum2type, _  =  vectorize_label_mapping(self.sumNode2orgNode_dict, self.org2type_dict, self.enum_classes, self.num_classes)
 
     def make_training_data(self, isOrg=False):
         if isOrg:
@@ -53,6 +71,9 @@ class Dataset:
             self.org_training_data.y_train = torch.tensor(y_train, dtype = torch.long)
             self.org_training_data.y_test = torch.tensor(y_test)
 
+            #remove test data before making summary graph training data
+            self.remove_test_data(X_test)
+            
         else:
             sg_idx, sg_labels = self.get_idx_labels(self.sumGraph, self.sum2type)
             self.sum_training_data = Data(edge_index = self.sumGraph.edge_index)
@@ -71,6 +92,8 @@ class Dataset:
         return
 
     def collect_graph_data(self):
+        self.sum2type, self.org2type, self.enum_classes, self.num_classes , self.orgNode2sumNode_dict, self.sumNode2orgNode_dict, self.org2type_dict = main_createMappings(self.graph_paths[self.name], self.map_graph_paths[self.name] )
+
         edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(self.graph_paths[self.name])
         orgGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict)
         self.orgGraph = orgGraph
@@ -83,5 +106,4 @@ class Dataset:
 
     def init_dataset(self, name):
         self.name = name
-        self.sum2type, self.org2type, self.enum_classes, self.num_classes , self.orgNode2sumNode_dict, self.sumNode2orgNode_dict = main_createMappings(self.graph_paths[self.name], self.map_graph_paths[self.name] )
         self.collect_graph_data()

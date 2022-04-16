@@ -41,19 +41,19 @@ def vectorize_label_mapping(sumNode2orgNode_dict, org2type_dict, labels_dict, nu
                 g_labels[labels_dict[t]] += 1
             org2type_vec[node] = g_labels
         for i in range(len(sg_labels)):
-            sg_labels[i] = sg_labels[i] / len(orgNodes)
+            div = 1
+            if len(orgNodes) != 0:
+                div = len(orgNodes)
+            sg_labels[i] = sg_labels[i] / div
         sum2type_vec[sumNode] = sg_labels
     return sum2type_vec, org2type_vec 
 
 def main_createMappings(org_file, sum_map_file):
-    # org_file = f'data/{dataset_name}/{dataset_name}_complete.n3'
-    # sum_map_file = f'data/{dataset_name}/{dataset_name}_attr_map.n3'
-
     orgNode2sumNode_dict, sumNode2orgNode_dict = get_node_mappings_dict(sum_map_file)
 
-    labels, org2type_dict = nodes2type_mapping(org_file)
-    labels_dict = {lab: i for i, lab in enumerate(labels)}
+    classes, org2type_dict = nodes2type_mapping(org_file)
+    enum_classes = {lab: i for i, lab in enumerate(classes)}
 
-    sum2type_vec, org2type_vec  = vectorize_label_mapping(sumNode2orgNode_dict, org2type_dict, labels_dict, len(labels))
+    sum2type, org2type  = vectorize_label_mapping(sumNode2orgNode_dict, org2type_dict, enum_classes, len(classes))
 
-    return sum2type_vec, org2type_vec, labels_dict, len(labels), orgNode2sumNode_dict, sumNode2orgNode_dict 
+    return sum2type, org2type, enum_classes, len(classes), orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict 
