@@ -30,7 +30,8 @@ class modelTrainer:
         print(f'Accuracy on validation set = {acc}')
         return acc
 
-    def train(self, model, lr, weight_d, epochs, sum_graph=False) -> Tuple[List, List]:
+    def train(self, model, lr: float, weight_d: float, epochs: int, sum_graph=False) -> Tuple[List, List]:
+        print(type(model))
         training_data = self.orgData
         graph = self.data.orgGraph
         if sum_graph:
