@@ -1,12 +1,13 @@
 from helpers.graphData import Dataset
 from helpers.RGCN import RGCN
 import torch
-from collections import defaultdict
+from torch import Tensor
 from helpers.plot import plot_main
+from typing import List, Tuple
 
 class modelTrainer:
     data = Dataset()
-    def __init__(self, hidden_l, dataset_name):
+    def __init__(self, hidden_l: int, dataset_name: str):
         self.data.init_dataset(dataset_name)
         self.hidden_l = hidden_l
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -16,12 +17,12 @@ class modelTrainer:
         self.orgData = self.data.org_training_data.to(self.device)
         self.accuracies = []
 
-    def calc_acc(self, pred, x, y):
+    def calc_acc(self, pred: Tensor, x: Tensor, y: Tensor) -> float:
         tot = torch.sum(y == 1).item()
         p = (torch.sum((pred[x] == y) * (pred[x] == 1))) / tot
         return p.item()
     
-    def evaluate(self, model, edge_index, edge_type):
+    def evaluate(self, model, edge_index, edge_type) -> float:
         pred = model(edge_index, edge_type)
         pred = torch.round(pred)
         acc = self.calc_acc(pred, self.orgData.x_val, self.orgData.y_val)
@@ -29,7 +30,7 @@ class modelTrainer:
         print(f'Accuracy on validation set = {acc}')
         return acc
 
-    def train(self, model, lr, weight_d, epochs, sum_graph=False):
+    def train(self, model, lr, weight_d, epochs, sum_graph=False) -> Tuple[List, List]:
         training_data = self.orgData
         graph = self.data.orgGraph
         if sum_graph:
@@ -56,7 +57,7 @@ class modelTrainer:
             print(f'Epoch: {epoch}, Loss: {l:.4f}')
         return accuracies, losses
 
-    def transfer_weights(self):
+    def transfer_weights(self) -> None:
         weight_sg_1 = torch.rand(len(self.data.sumGraph.relations.keys()), self.data.orgGraph.num_nodes, self.hidden_l)
         root_sg_1 = torch.rand((self.data.orgGraph.num_nodes, self.hidden_l))
 
@@ -80,7 +81,7 @@ class modelTrainer:
                                             weight_sg_2, bias_sg_2, root_sg_2)
         print('weight transfer done')
 
-    def main_modelTrainer(self, epochs, weight_d, lr, benchmark=False):
+    def main_modelTrainer(self, epochs: int, weight_d: float, lr: float, benchmark=False)-> Tuple[List[float], List[float], List[float]]:
         #train on sumModel
         if benchmark:
             print('--START BENCHMARK TRAINING ON ORIGINAL GRAPH--')
@@ -96,8 +97,8 @@ class modelTrainer:
             org_graph_acc, org_graph_loss = self.train(self.orgModel, lr, weight_d, epochs)
             return sum_graph_loss, org_graph_acc, org_graph_loss
 
-def initialize_training():
-    epochs = 51
+def initialize_training() -> None:
+    epochs = 2
     weight_d = 0.0005
     lr = 0.01
     hidden_l=16
