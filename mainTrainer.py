@@ -15,7 +15,6 @@ class modelTrainer:
         self.orgModel = RGCN(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
         self.sumData = self.data.sum_training_data.to(self.device)
         self.orgData = self.data.org_training_data.to(self.device)
-        self.accuracies = []
 
     def calc_acc(self, pred: Tensor, x: Tensor, y: Tensor) -> float:
         tot = torch.sum(y == 1).item()
@@ -26,11 +25,10 @@ class modelTrainer:
         pred = model(edge_index, edge_type)
         pred = torch.round(pred)
         acc = self.calc_acc(pred, self.orgData.x_val, self.orgData.y_val)
-        self.accuracies.append(acc)
         print(f'Accuracy on validation set = {acc}')
         return acc
 
-    def train(self, model, lr: float, weight_d: float, epochs: int, sum_graph=False) -> Tuple[List, List]:
+    def train(self, model: RGCN, lr: float, weight_d: float, epochs: int, sum_graph=False) -> Tuple[List, List]:
         print(type(model))
         training_data = self.orgData
         graph = self.data.orgGraph
