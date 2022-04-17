@@ -2,7 +2,6 @@ from helpers.graphData import Dataset, Graph
 from model.RGCN import RGCN
 import torch
 from torch import Tensor
-from helpers.plot import plot_main
 from typing import List, Tuple
 
 class modelTrainer:
