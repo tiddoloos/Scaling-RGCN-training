@@ -78,7 +78,7 @@ class modelTrainer:
         results = dict()
         if benchmark:
             print('--BENCHMARK TRAINING ON ORIGINAL GRAPH--')
-            results['Benchmark accuracy'], results['Benchmark loss'] = self.train(self.benchModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+            results['Benchmark Accuracy'], results['Benchmark Loss'] = self.train(self.benchModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
         else:
             #train sum model
@@ -87,12 +87,12 @@ class modelTrainer:
             count = 0
             for sum_graph in self.data.sumGraphs:
                 
-               _, results[f'sum loss {count}'] = self.train(self.sumModel, sum_graph, lr, weight_d, epochs)
+               _, results[f'Sum Loss {count}'] = self.train(self.sumModel, sum_graph, lr, weight_d, epochs)
                count += 1
         
             #transfer weights
             self.transfer_weights()
             #train orgModel
             print('--TRAINING ON ORIGINAL GRAPH--')
-            results['Transfer accuracy'], results['Transfer Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+            results['Transfer Accuracy'], results['Transfer Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
