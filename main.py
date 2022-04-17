@@ -21,7 +21,6 @@ def initialize_training() -> None:
     results_benchmark = trainer.main_modelTrainer(epochs, weight_d, lr, benchmark=True)
 
     results = {**results_transfer, **results_benchmark}
-
     plot_main('AIFB', results, epochs)
 
 

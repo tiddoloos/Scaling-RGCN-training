@@ -75,10 +75,12 @@ class modelTrainer:
 
     def main_modelTrainer(self, epochs: int, weight_d: float, lr: float, benchmark=False)-> Tuple[List[float], List[float], (List[float])]:
         results = dict()
+        
         if benchmark:
             print('--BENCHMARK TRAINING ON ORIGINAL GRAPH--')
             results['Benchmark Accuracy'], results['Benchmark Loss'] = self.train(self.benchModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
+        
         else:
             #train sum model
             print('---TRAINING ON SUMMARY GRAPHS--')

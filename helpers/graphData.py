@@ -36,8 +36,9 @@ class Dataset:
     
     def remove_test_data(self, X_test) -> None:
         '''This funtion updates the sum2type dict by removing the test data.
-        This is removed becasue a orignal node maps to a summary nodes which maps to a type (predicted class).
+        avoid test set leakage because orignal node maps to a summary nodes which maps to a type (predicted class).
         '''
+        
         #make copy of dicts to work with and keep orginal dicts in Dataset object
         for sumGraph in self.sumGraphs:
             
