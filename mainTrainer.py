@@ -71,32 +71,34 @@ class modelTrainer:
         
         # rgcn2
         weight_sg_2 = self.sumModel.rgcn2.weight
-        root_sg_2 = self.sumModel.rgcn2.root
         bias_sg_2 = self.sumModel.rgcn2.bias
+        root_sg_2 = self.sumModel.rgcn2.root
 
         # transfer
-        self.orgModel.override_params(weight_sg_1, bias_sg_1, root_sg_1,
-                                            weight_sg_2, bias_sg_2, root_sg_2)
+        self.orgModel.override_params(weight_sg_1, bias_sg_1, root_sg_1, weight_sg_2, bias_sg_2, root_sg_2)
         print('weight transfer done')
 
-    def main_modelTrainer(self, epochs: int, weight_d: float, lr: float, benchmark=False)-> Tuple[List[float], List[float], List[float]]:
-        #train on sumModel
+    def main_modelTrainer(self, epochs: int, weight_d: float, lr: float, benchmark=False)-> Tuple[List[float], List[float], (List[float])]:
         if benchmark:
             print('--START BENCHMARK TRAINING ON ORIGINAL GRAPH--')
             return self.train(self.orgModel, lr, weight_d, epochs)
 
         else:
+            #train sumModel
             print('---START TRAINING ON SUMMARY GRAPH--')
             _, sum_graph_loss = self.train(self.sumModel, lr, weight_d, epochs, sum_graph=True)
+
             #transfer weights
             self.transfer_weights()
+
             #train orgModel
             print('--START TRAINING ON ORIGINAL GRAPH--')
             org_graph_acc, org_graph_loss = self.train(self.orgModel, lr, weight_d, epochs)
+
             return sum_graph_loss, org_graph_acc, org_graph_loss
 
 def initialize_training() -> None:
-    epochs = 2
+    epochs = 51
     weight_d = 0.0005
     lr = 0.01
     hidden_l=16
