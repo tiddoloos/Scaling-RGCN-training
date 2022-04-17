@@ -1,5 +1,5 @@
 from helpers.graphData import Dataset, Graph
-from helpers.RGCN import RGCN
+from model.RGCN import RGCN
 import torch
 from torch import Tensor
 from helpers.plot import plot_main
