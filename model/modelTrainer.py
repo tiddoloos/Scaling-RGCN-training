@@ -96,22 +96,3 @@ class modelTrainer:
             print('--TRAINING ON ORIGINAL GRAPH--')
             results['Transfer accuracy'], results['Transfer Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
-
-def initialize_training() -> None:
-    epochs = 51
-    weight_d = 0.0005
-    lr = 0.01
-    hidden_l=16
-
-    # Transfer learning expriment
-    trainer = modelTrainer('AIFB', hidden_l)
-    results_transfer = trainer.main_modelTrainer(epochs, weight_d, lr, benchmark=False)
-    # results_dict['Summary graph loss'], results_dict['Orginal graph accuracy'], results_dict['Orginal graph loss'] = trainer_trans.main_modelTrainer(epochs, weight_d, lr, benchmark=False)
-
-    # Benchmark
-    results_benchmark = trainer.main_modelTrainer(epochs, weight_d, lr, benchmark=True)
-    results = {**results_transfer, **results_benchmark}
-
-    plot_main('AIFB', results, epochs)
-
-initialize_training()
