@@ -47,8 +47,6 @@ class Dataset:
 
             for orgNode, value in self.orgGraph.node_to_enum.items():
                 if value in X_test:
-                    if len(org2type[orgNode]) > 2:
-                        print('TRUE')
                     org2type[orgNode]=[]
                     for sumNode, orgNodes in sum2orgNode.items():
                         if orgNode in orgNodes:

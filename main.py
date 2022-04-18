@@ -3,7 +3,7 @@ from helpers.plot import plot_main
 
 def initialize_training() -> None:
     """This functions executes the experiment to scale grpah training for multi class entity prediction.
-    After training on multiple summary graphs graphs, 
+    After training on summary graphs, 
     the weights of the summary model will be transferd to a new model for training on the original graph.
     Also a benchmark experiment is conducted.
     """
