@@ -9,7 +9,7 @@ from os.path import isfile, join
 
 
 class Graph:
-    def __init__(self, edge_index,edge_type, node_to_enum, num_nodes, nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type):
+    def __init__(self, edge_index, edge_type, node_to_enum, num_nodes, nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type) -> None:
         self.edge_index = edge_index
         self.edge_type  = edge_type
         self.node_to_enum = node_to_enum
@@ -34,11 +34,10 @@ class Dataset:
         self.enum_classes = None
         self.num_classes = None
     
-    def remove_test_data(self, X_test) -> None:
-        '''This funtion updates the sum2type dict by removing the test data.
-        avoid test set leakage because orignal node maps to a summary nodes which maps to a type (predicted class).
-        '''
-        
+    def remove_test_data(self, X_test: list) -> None:
+        """This funtion updates the sum2type dict by removing the test data.
+        Avoids test set leakage because orignal node maps to a summary nodes which maps to a type (predicted class).
+        """ 
         #make copy of dicts to work with and keep orginal dicts in Dataset object
         for sumGraph in self.sumGraphs:
             
@@ -55,7 +54,7 @@ class Dataset:
             #update sum2type for each sumgraph to avoid test set leakage      
             sumGraph.sum2type, _  =  vectorize_label_mapping(sum2orgNode, org2type, self.enum_classes, self.num_classes)
 
-    def get_idx_labels(self, graph, dictionary):
+    def get_idx_labels(self, graph: Graph, dictionary: dict) -> Tuple[List[int], List[int]]:
         train_indices, train_labels = [], []
         for node, labs in dictionary.items():
             if sum(list(labs)) != 0 and graph.node_to_enum.get(node) is not None:
@@ -63,7 +62,7 @@ class Dataset:
                 train_labels.append(list(labs))
         return train_indices, train_labels
     
-    def make_training_data(self, graph, isOrg):
+    def make_training_data(self, graph: Graph, isOrg: bool) -> None:
         if isOrg==True:
             g_idx, g_labels = self.get_idx_labels(self.orgGraph, self.sumGraphs[0].org2type)
             X_train, X_test, y_train, y_test = train_test_split(g_idx, g_labels,  test_size=0.2, random_state=1) 
@@ -95,7 +94,7 @@ class Dataset:
             print(f"num Nodes = {graph.num_nodes}")
             print(f"num Relations= {len(graph.relations.keys())}")
 
-    def get_graph_data(self, map_path, sum_path, isOrg=False):
+    def get_graph_data(self, map_path: str, sum_path: str, isOrg: bool) -> None:
         if isOrg:
             edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(self.org_path[self.name])
             self.orgGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, None, None, None, None, None)

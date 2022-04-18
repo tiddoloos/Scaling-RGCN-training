@@ -73,7 +73,7 @@ class modelTrainer:
             print(f'Epoch: {epoch}, Loss: {l:.4f}')
         return accuracies, losses
 
-    def main_modelTrainer(self, epochs: int, weight_d: float, lr: float, benchmark=False)-> Dict(List[float]):
+    def main_modelTrainer(self, epochs: int, weight_d: float, lr: float, benchmark=False)-> Dict[str, List[float]]:
 
         results = dict()
         

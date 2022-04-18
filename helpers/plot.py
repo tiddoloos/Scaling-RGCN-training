@@ -16,7 +16,7 @@ def main_plot(dataset, results_dict, epochs):
         plt.margins(x=0)
         plt.legend(loc='best')
         plt.xticks(np.arange(0, len(epoch_list), 10))
-        plt.xlim(ymin=0)
+        plt.xlim(xmin=0)
         plt.yticks(np.arange(0, 1.1, 0.1))
         plt.ylim(ymin=0)
         # plt.savefig('')
