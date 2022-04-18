@@ -1,5 +1,5 @@
 from model.modelTrainer import modelTrainer
-from helpers.plot import plot_main
+from helpers.plot import main_plot
 
 def initialize_training() -> None:
     """This functions executes the experiment to scale grpah training for multi class entity prediction.
@@ -9,7 +9,7 @@ def initialize_training() -> None:
     """
 
     hidden_l = 16
-    epochs = 50
+    epochs = 51
     weight_d = 0.0005
     lr = 0.01
 
@@ -21,7 +21,7 @@ def initialize_training() -> None:
     results_benchmark = trainer.main_modelTrainer(epochs, weight_d, lr, benchmark=True)
 
     results = {**results_transfer, **results_benchmark}
-    plot_main('AIFB', results, epochs)
+    main_plot('AIFB', results, epochs)
 
 
 if __name__=='__main__':

@@ -2,7 +2,7 @@ from helpers.graphData import Dataset, Graph
 from model.RGCN import RGCN
 import torch
 from torch import Tensor
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 class modelTrainer:
     def __init__(self, name, hidden_l: int):
@@ -73,7 +73,8 @@ class modelTrainer:
             print(f'Epoch: {epoch}, Loss: {l:.4f}')
         return accuracies, losses
 
-    def main_modelTrainer(self, epochs: int, weight_d: float, lr: float, benchmark=False)-> Tuple[List[float], List[float], (List[float])]:
+    def main_modelTrainer(self, epochs: int, weight_d: float, lr: float, benchmark=False)-> Dict(List[float]):
+
         results = dict()
         
         if benchmark:
@@ -84,16 +85,15 @@ class modelTrainer:
         else:
             #train sum model
             print('---TRAINING ON SUMMARY GRAPHS--')
+            count = 0  
             self.sumModel = RGCN(self.data.sumGraphs[0].num_nodes, len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
-            count = 0
             for sum_graph in self.data.sumGraphs:
-                
                _, results[f'Sum Loss {count}'] = self.train(self.sumModel, sum_graph, lr, weight_d, epochs)
                count += 1
         
             #transfer weights
             self.transfer_weights()
             #train orgModel
-            print('--TRAINING ON ORIGINAL GRAPH--')
+            print('--TRAINING ON ORIGINAL GRAPH AFTER TRANSFER--')
             results['Transfer Accuracy'], results['Transfer Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
