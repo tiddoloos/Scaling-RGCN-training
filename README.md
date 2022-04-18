@@ -1,2 +1,2 @@
-# RGCN_thesis_tiddoloos
-RGCN
+# Scale graph training (RGCN) with graph Summarization techniques
+
