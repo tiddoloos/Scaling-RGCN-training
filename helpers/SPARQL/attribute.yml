@@ -1,7 +1,11 @@
+# summary: '
+# SELECT ?subject ?predicate ?object
+# WHERE {?subject ?predicate ?object} 
+# LIMIT 100
+# '
+
 summary: '
-CONSTRUCT {
-?hs ?p ?ho .
-}
+SELECT ?hs ?p ?ho
 WHERE 
 {
     {
@@ -60,4 +64,4 @@ WHERE
         BIND(URI(CONCAT("http://example.org/", ?oID)) AS ?ho2)
     }
     BIND(IF(BOUND(?oID), ?ho2, ?o) AS ?ho)
-}'   
+}'

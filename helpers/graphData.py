@@ -9,7 +9,8 @@ from os.path import isfile, join
 
 
 class Graph:
-    def __init__(self, edge_index, edge_type, node_to_enum, num_nodes, nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type) -> None:
+    def __init__(self, edge_index: list, edge_type, node_to_enum, num_nodes, nodes, relations_dict,
+                orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type) -> None:
         self.edge_index = edge_index
         self.edge_type  = edge_type
         self.node_to_enum = node_to_enum
@@ -38,7 +39,7 @@ class Dataset:
         """This funtion updates the sum2type dict by removing the test data.
         Avoids test set leakage because orignal node maps to a summary nodes which maps to a type (predicted class).
         """ 
-        #make copy of dicts to work with and keep orginal dicts in Dataset object
+        # make copy of dicts to work with and keep complete dicts in Graph objects
         for sumGraph in self.sumGraphs:
             
             sum2orgNode = sumGraph.sumNode2orgNode_dict
@@ -93,18 +94,6 @@ class Dataset:
             print("SUMMARY GRAPH STATISTICS")
             print(f"num Nodes = {graph.num_nodes}")
             print(f"num Relations= {len(graph.relations.keys())}")
-
-    def get_graph_data(self, map_path: str, sum_path: str, isOrg: bool) -> None:
-        if isOrg:
-            edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(self.org_path[self.name])
-            self.orgGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, None, None, None, None, None)
-            self.make_training_data(self.orgGraph, isOrg)
-        else:
-            sum2type, org2type, self.enum_classes, self.num_classes, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict = main_createMappings(self.org_path[self.name], map_path)
-            edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(sum_path)
-            sGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type)
-            self.sumGraphs.append(sGraph)
-            self.make_training_data(sGraph, isOrg)
     
     def get_file_names(self) -> Tuple[List[str], List[str]]:
         sum_files = [f for f in listdir(self.sum_path[self.name]) if isfile(join(self.sum_path[self.name], f))]
@@ -115,15 +104,21 @@ class Dataset:
         sum_files, map_files = self.get_file_names()
         assert len(sum_files) == len(map_files), 'for every summary file there needs to be a map file.'
 
-        # get summary graph data
+        # get data of all summary graphs
         for i in range(len(sum_files)):
+
             sum_path = f'{self.sum_path[self.name]}/{sum_files[i]}'
             map_path = f'{self.map_path[self.name]}/{map_files[i]}'
-            self.get_graph_data(map_path, sum_path, isOrg=False)
-        
-        # get original graph data
-        self.get_graph_data(None, None, isOrg=True)
-        
-            
-        
+    
+            sum2type, org2type, self.enum_classes, self.num_classes, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict = main_createMappings(self.org_path[self.name], map_path)
+            edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(sum_path)
 
+            sGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type)
+            self.sumGraphs.append(sGraph)
+            self.make_training_data(sGraph, isOrg=False)
+    
+        # get original graph data
+        edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(self.org_path[self.name])
+        self.orgGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, None, None, None, None, None)
+        self.make_training_data(self.orgGraph, isOrg=True)
+    
