@@ -1,5 +1,11 @@
 from model.modelTrainer import modelTrainer
 from helpers.plot import main_plot
+import argparse
+
+parser = argparse.ArgumentParser(description='experiment arguments')
+parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM'], help='inidcate dataset name')
+args = vars(parser.parse_args())
+
 
 def initialize_training() -> None:
     """This functions executes the experiment to scale grpah training for multi class entity prediction.
@@ -7,21 +13,20 @@ def initialize_training() -> None:
     the weights of the summary model will be transferd to a new model for training on the original graph.
     Also a benchmark experiment is conducted.
     """
-    
     hidden_l = 16
     epochs = 51
     weight_d = 0.0005
     lr = 0.01
 
     # Transfer learning expriment
-    trainer = modelTrainer('MUTAG', hidden_l)
+    trainer = modelTrainer(args['dataset'], hidden_l)
     results_transfer = trainer.main_modelTrainer(epochs, weight_d, lr, benchmark=False)
    
     # Benchmark
     results_benchmark = trainer.main_modelTrainer(epochs, weight_d, lr, benchmark=True)
 
     results = {**results_transfer, **results_benchmark}
-    main_plot('MUTAG', results, epochs)
+    main_plot(args['dataset'], results, epochs)
 
 
 if __name__=='__main__':
