@@ -1,11 +1,13 @@
 from rdflib import Graph
+import rdflib
 import torch
 from collections import Counter
 
-def make_rdf_graph(file_path):
+def make_rdf_graph(file_path: str) -> rdflib.Graph:
+    format = file_path.split('.')[-1] #work with .nt or n3
     g = Graph()
     data = open(file_path, 'rb')
-    g.parse(data, format = 'n3')
+    g.parse(data, format = format)
     return g
 
 def get_relations(graph, edge):
@@ -14,7 +16,7 @@ def get_relations(graph, edge):
     relations = list(relations - set(edge))
     return relations
 
-def freq(rel, freq_):
+def freq(rel: str, freq_):
         return freq_[rel] if rel in freq_ else 0
 
 def process_rdf_graph(graph_path):

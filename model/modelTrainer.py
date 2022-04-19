@@ -55,13 +55,10 @@ class modelTrainer:
     def train(self, model: RGCN, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
 
         training_data = graph.training_data.to(self.device)
-        # training_data = training_data.to(self.device)
 
         if sum_graph:
             self.sumModel.init_embedding(graph.num_nodes)
             self.sumModel.embedding(training_data.x_train)
-            print('traindata ',training_data.x_train)
-            # print(self.sumModel.embedding(training_data.x_train))
 
         loss_f = torch.nn.BCELoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d)

@@ -7,7 +7,7 @@ def initialize_training() -> None:
     the weights of the summary model will be transferd to a new model for training on the original graph.
     Also a benchmark experiment is conducted.
     """
-
+    
     hidden_l = 16
     epochs = 51
     weight_d = 0.0005

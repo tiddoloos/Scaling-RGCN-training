@@ -7,10 +7,10 @@ from torch_geometric.nn import RGCNConv
 class RGCN(nn.Module):
     def __init__(self, num_nodes: int, num_relations: int, hidden_l: int, num_labels: int, pretrained=None) -> None:
         super(RGCN, self).__init__()
-      
+        
+        self.embedding = None
         if pretrained!=None: #pass pre-trained embeddings, use this for original graph
             self.embedding = nn.Embedding.from_pretrained(pretrained)
-        self.embedding = None
 
         self.rgcn1 = RGCNConv(num_nodes, hidden_l, num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
