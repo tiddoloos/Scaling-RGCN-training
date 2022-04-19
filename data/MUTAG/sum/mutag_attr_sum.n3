@@ -1,0 +1,709 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf4j: <http://rdf4j.org/schema/rdf4j#> .
+@prefix sesame: <http://www.openrdf.org/schema/sesame#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix fn: <http://www.w3.org/2005/xpath-functions#> .
+
+<http://example.org/5b9e4e8375f0a774f85524899eeea87abb4e7937> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/ece5b891541ef8c766ed2c9cd8d0d771f6e8440c> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_slrl> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_rt> "" .
+
+<http://example.org/ae78fea02f0365362d5e9efeb6201017b2502498> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "" .
+
+<http://example.org/6d2fe29f37327aa6a37ae8622c5df7791c463c29> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "" .
+
+<http://example.org/e529ac2d113dacf3e284610842555ef4bee9bfd8> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "" .
+
+<http://example.org/1a0f8e35f1ba8c94e3b440eeb7b778e04a24b3b6> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "" .
+
+<http://example.org/0c4188a172c0d5f8a496225fe082deccbcc59430> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/e43643243503b80fe76236b57f48deb5e00e47f3> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#chromex> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "" .
+
+<http://example.org/fbcb3ba571f1865d6f1987c65ebaeaed81792cea> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "" .
+
+<http://example.org/1b473e8e7de32353678509c9ec3820c47f68618f> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#chromex> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "" .
+
+<http://example.org/72bbfcbceecb0dc7f63a3fca437b0d35a0e63b4b> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#micronuc_f> "";
+  <http://dl-learner.org/carcinogenesis#micronuc_m> "" .
+
+<http://example.org/60bb193414b11090218d48f213f94e1e04bb0362> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#chromex> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "";
+  <http://dl-learner.org/carcinogenesis#micronuc_f> "";
+  <http://dl-learner.org/carcinogenesis#micronuc_m> "" .
+
+<http://example.org/adf8ba4acd1829d04167e1aaf7768ac54c11499c> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "" .
+
+<http://example.org/b9e9ba3828b508fd929d2a2f45ac69357d764e73> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_slrl> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_rt> "" .
+
+<http://example.org/5c810261eb55518fc1ba3b285d1307f08d3976ff> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "" .
+
+<http://example.org/14fa82441c724e8cb780f635e75a69030acf94e7> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/bc0ae740f8d1428c36e04ffab66a561603ac2017> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#chromex> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/704d5d27774949e5cffa8f4a893c1f4afceb0833> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "" .
+
+<http://example.org/9d230d2f9c0f70aa284785dfa183b09e3df9c879> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#chromex> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "" .
+
+<http://example.org/3e337003622ae426d9b87c16cd75d4d7026214a9> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#chromex> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "" .
+
+<http://example.org/246d5f6f0328e90df5cd70c33924b93d92b4c400> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "" .
+
+<http://example.org/a2c48192e297e7d8776b0bfb1b2f842150cc0c34> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "" .
+
+<http://example.org/4566e9a9a26106fc9df4c9e5f86e37bb9ef02da7> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/5279fa9e6881e29273b2d0619f8f0e26ed5e5979> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#chromex> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "" .
+
+<http://example.org/3caafd1d33a0fb8b49ad31380705dffc5b5516f0> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "" .
+
+<http://example.org/6ef1679921be6c188d2dbf7bfa1be3cd6a51e219> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/a7d5f0bbb3dc7529fe8c2c6e93ca8df14b0a0343> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "" .
+
+<http://example.org/a7f28039ae35fad57ea5bf10c40f8277c3dc6f92> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/d130da502abed9301e2c00afd95616c56a2c6e9b> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "" .
+
+<http://example.org/794e9212a56d36c64454180656d77c680a6f9bf6> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_slrl> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_rt> "" .
+
+<http://example.org/02d37c2ac27baf25e694efdd6b0715dc087a5c13> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#chromex> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "" .
+
+<http://example.org/08b9314fb16e89362bc5600d33781d5e8a8f61dc> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/4a663304d07fd96e6a516eb10d2160787de4612c> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "" .
+
+<http://example.org/62a5c4416955d4edddaf5354769c75d50f64b6c2> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_slrl> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_rt> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/383397943ccffdb5cefb578bdfeb2c822f78f483> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_slrl> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_rt> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/434b8e221a30bacce5cd6e52b035a32338c11a12> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/58eb47ff1669b3e36ebdc55467cb2cb9ff75e509> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_slrl> "";
+  <http://dl-learner.org/carcinogenesis#chromex> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_rt> "" .
+
+<http://example.org/91ebde3c1fa0532383e1c61eee0ce0f348dcc060> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#chromex> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "" .
+
+<http://example.org/b39b6271ee8d9d463512901f567aaffe5f8a32eb> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "" .
+
+<http://example.org/b1873bf8763026471f8e9f5095d2e80813b8dadd> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_slrl> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#micronuc_f> "";
+  <http://dl-learner.org/carcinogenesis#micronuc_m> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_rt> "" .
+
+<http://example.org/8dae58e74c66dcb3f0f0360cdd6986ddfe35da86> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "" .
+
+<http://example.org/f2bfa1bf457c628a404ac0ec03ca37243838583b> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_slrl> "";
+  <http://dl-learner.org/carcinogenesis#chromex> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_rt> "" .
+
+<http://example.org/d431a387b310075533e61b93d41d21da1db2044b> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_slrl> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_rt> "" .
+
+<http://example.org/1e0d9bd21f35fe9802f50b22bf34b1ee0c9cfd21> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#micronuc_f> "";
+  <http://dl-learner.org/carcinogenesis#micronuc_m> "" .
+
+<http://example.org/5134126d4fbea827e5cad7a999817ba432894b22> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "" .
+
+<http://example.org/d852bad9580bb86884876e8370224d661357e5b3> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "";
+  <http://dl-learner.org/carcinogenesis#micronuc_f> "";
+  <http://dl-learner.org/carcinogenesis#micronuc_m> "" .
+
+<http://example.org/d73ac18cebe3aa9fc0cc3e70824a420ac48ca8ec> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#micronuc_f> "";
+  <http://dl-learner.org/carcinogenesis#micronuc_m> "" .
+
+<http://example.org/426fba7b011448f7cb1b689457bad95a1686cec0> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_slrl> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#drosophila_rt> "" .
+
+<http://example.org/2b5896b0e34454f154adf883b5d3c3dd1256574c> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/06d8d001f4cb802f38cdb35726a5f0b2c38d43ca> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_reduc> "" .
+
+<http://example.org/9b3217d79b0287ba9dc02989888b76a2778385c5> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_reduc> "" .
+
+<http://example.org/7f33d5a94a72c839d495102a48476f6691ecd52d> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/bf2f3a49a19e236bc723bc813480e8c264253af5> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_n> "" .
+
+<http://example.org/4496d949bb93c2afc7d5e0b93414932baf87dc75> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#salmonella_reduc> "" .
+
+<http://example.org/8304c34e5ce449c345f0d704215b3c55908d4209> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#mouse_lymph> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "" .
+
+<http://example.org/388eff8e8d650becec0046be6d997fcbdd40cace> a <http://dl-learner.org/carcinogenesis#Compound>;
+  <http://dl-learner.org/carcinogenesis#hasAtom> "";
+  <http://dl-learner.org/carcinogenesis#hasBond> "";
+  <http://dl-learner.org/carcinogenesis#hasStructure> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_ca> "";
+  <http://dl-learner.org/carcinogenesis#cytogen_sce> "";
+  <http://dl-learner.org/carcinogenesis#amesTestPositive> "";
+  <http://dl-learner.org/carcinogenesis#salmonella> "";
+  <http://dl-learner.org/carcinogenesis#chromaberr> "" .
+
+<http://example.org/b96237d5e3df2385ea936bd18198e405efefea2f> a <http://dl-learner.org/carcinogenesis#Carbon-22>,
+    <http://dl-learner.org/carcinogenesis#Atom>, <http://dl-learner.org/carcinogenesis#Carbon>,
+    <http://dl-learner.org/carcinogenesis#Hydrogen-3>, <http://dl-learner.org/carcinogenesis#Hydrogen>,
+    <http://dl-learner.org/carcinogenesis#Carbon-16>, <http://dl-learner.org/carcinogenesis#Chlorine-93>,
+    <http://dl-learner.org/carcinogenesis#Chlorine>, <http://dl-learner.org/carcinogenesis#Carbon-10>,
+    <http://dl-learner.org/carcinogenesis#Oxygen-45>, <http://dl-learner.org/carcinogenesis#Oxygen>,
+    <http://dl-learner.org/carcinogenesis#Hydrogen-8>, <http://dl-learner.org/carcinogenesis#Carbon-21>,
+    <http://dl-learner.org/carcinogenesis#Carbon-14>, <http://dl-learner.org/carcinogenesis#Sulfur>,
+    <http://dl-learner.org/carcinogenesis#Sulfur-77>, <http://dl-learner.org/carcinogenesis#Nitrogen>,
+    <http://dl-learner.org/carcinogenesis#Nitrogen-36>, <http://dl-learner.org/carcinogenesis#Oxygen-51>,
+    <http://dl-learner.org/carcinogenesis#Oxygen-40>, <http://dl-learner.org/carcinogenesis#Nitrogen-32>,
+    <http://dl-learner.org/carcinogenesis#Hydrogen-1>, <http://dl-learner.org/carcinogenesis#Oxygen-52>,
+    <http://dl-learner.org/carcinogenesis#Oxygen-50>, <http://dl-learner.org/carcinogenesis#Carbon-191>,
+    <http://dl-learner.org/carcinogenesis#Nitrogen-35>, <http://dl-learner.org/carcinogenesis#Tin-113>,
+    <http://dl-learner.org/carcinogenesis#Tin>, <http://dl-learner.org/carcinogenesis#Carbon-17>,
+    <http://dl-learner.org/carcinogenesis#Bromine-94>, <http://dl-learner.org/carcinogenesis#Bromine>,
+    <http://dl-learner.org/carcinogenesis#Nitrogen-38>, <http://dl-learner.org/carcinogenesis#Carbon-19>,
+    <http://dl-learner.org/carcinogenesis#Nitrogen-31>, <http://dl-learner.org/carcinogenesis#Oxygen-49>,
+    <http://dl-learner.org/carcinogenesis#Nitrogen-34>, <http://dl-learner.org/carcinogenesis#Carbon-26>,
+    <http://dl-learner.org/carcinogenesis#Oxygen-42>, <http://dl-learner.org/carcinogenesis#Sulfur-72>,
+    <http://dl-learner.org/carcinogenesis#Sulfur-70>, <http://dl-learner.org/carcinogenesis#Sulfur-76>,
+    <http://dl-learner.org/carcinogenesis#Phosphorus-62>, <http://dl-learner.org/carcinogenesis#Phosphorus>,
+    <http://dl-learner.org/carcinogenesis#Carbon-193>, <http://dl-learner.org/carcinogenesis#Carbon-192>,
+    <http://dl-learner.org/carcinogenesis#Nitrogen-33>, <http://dl-learner.org/carcinogenesis#Sulfur-74>,
+    <http://dl-learner.org/carcinogenesis#Sodium-81>, <http://dl-learner.org/carcinogenesis#Sodium>,
+    <http://dl-learner.org/carcinogenesis#Fluorine-92>, <http://dl-learner.org/carcinogenesis#Fluorine>,
+    <http://dl-learner.org/carcinogenesis#Nitrogen-37>, <http://dl-learner.org/carcinogenesis#Hydrogen-2>,
+    <http://dl-learner.org/carcinogenesis#Titanium-134>, <http://dl-learner.org/carcinogenesis#Titanium>,
+    <http://dl-learner.org/carcinogenesis#Carbon-27>, <http://dl-learner.org/carcinogenesis#Krypton-83>,
+    <http://dl-learner.org/carcinogenesis#Krypton>, <http://dl-learner.org/carcinogenesis#Selenium>,
+    <http://dl-learner.org/carcinogenesis#Selenium-102>, <http://dl-learner.org/carcinogenesis#Oxygen-41>,
+    <http://dl-learner.org/carcinogenesis#Sulfur-75>, <http://dl-learner.org/carcinogenesis#Carbon-29>,
+    <http://dl-learner.org/carcinogenesis#Zinc>, <http://dl-learner.org/carcinogenesis#Zinc-87>,
+    <http://dl-learner.org/carcinogenesis#Tellurium-129>, <http://dl-learner.org/carcinogenesis#Tellurium>,
+    <http://dl-learner.org/carcinogenesis#Carbon-232>, <http://dl-learner.org/carcinogenesis#Sulfur-78>,
+    <http://dl-learner.org/carcinogenesis#Lead-121>, <http://dl-learner.org/carcinogenesis#Lead>,
+    <http://dl-learner.org/carcinogenesis#Iodine-95>, <http://dl-learner.org/carcinogenesis#Iodine>,
+    <http://dl-learner.org/carcinogenesis#Phosphorus-61>, <http://dl-learner.org/carcinogenesis#Carbon-15>,
+    <http://dl-learner.org/carcinogenesis#Phosphorus-60>, <http://dl-learner.org/carcinogenesis#Calcium-84>,
+    <http://dl-learner.org/carcinogenesis#Calcium>, <http://dl-learner.org/carcinogenesis#Sulfur-79>,
+    <http://dl-learner.org/carcinogenesis#Manganese-85>, <http://dl-learner.org/carcinogenesis#Manganese>,
+    <http://dl-learner.org/carcinogenesis#Mercury-120>, <http://dl-learner.org/carcinogenesis#Mercury>,
+    <http://dl-learner.org/carcinogenesis#Copper-96>, <http://dl-learner.org/carcinogenesis#Copper>,
+    <http://dl-learner.org/carcinogenesis#Oxygen-53>, <http://dl-learner.org/carcinogenesis#Barium-115>,
+    <http://dl-learner.org/carcinogenesis#Barium>, <http://dl-learner.org/carcinogenesis#Arsenic>,
+    <http://dl-learner.org/carcinogenesis#Arsenic-101>, <http://dl-learner.org/carcinogenesis#Nitrogen-499>;
+  <http://dl-learner.org/carcinogenesis#charge> "" .
+
+<http://example.org/e0054c8ddb8b3eb9641a613b71beef5e1de62020> a <http://dl-learner.org/carcinogenesis#Bond-7>,
+    <http://dl-learner.org/carcinogenesis#Bond>, <http://dl-learner.org/carcinogenesis#Bond-1>,
+    <http://dl-learner.org/carcinogenesis#Bond-2>, <http://dl-learner.org/carcinogenesis#Bond-3>;
+  <http://dl-learner.org/carcinogenesis#inBond> "" .
+
+<http://example.org/8a73bab3730162f735669bd6f53cd9a403a2a733> a rdf:Property, owl:TransitiveProperty;
+  rdfs:subPropertyOf "";
+  <http://proton.semanticweb.org/protonsys#transitiveOver> "" .
+
+<http://example.org/cacba760f44bbbeb11ee7420fe73b89d6c00a27d> a rdf:Property, owl:TransitiveProperty;
+  rdfs:subPropertyOf "";
+  rdfs:domain "";
+  rdfs:range "";
+  <http://proton.semanticweb.org/protonsys#transitiveOver> "" .
+
+<http://example.org/3ea3043f269285545a5ae2479d5eff4b5198f01d> a owl:SymmetricProperty,
+    owl:TransitiveProperty;
+  rdfs:subPropertyOf "";
+  <http://proton.semanticweb.org/protonsys#transitiveOver> "";
+  owl:inverseOf "" .
+
+<http://example.org/3c197cb1f6842dc41aa48dc8b9032284bcf39a27> a owl:Ontology, owl:Class,
+    <http://dl-learner.org/carcinogenesis#Alcohol>, <http://dl-learner.org/carcinogenesis#Structure>,
+    <http://dl-learner.org/carcinogenesis#Alkyl_halide>, <http://dl-learner.org/carcinogenesis#Halide>,
+    <http://dl-learner.org/carcinogenesis#Amine>, <http://dl-learner.org/carcinogenesis#Amino>,
+    <http://dl-learner.org/carcinogenesis#Ar_halide>, <http://dl-learner.org/carcinogenesis#Cyanate>,
+    <http://dl-learner.org/carcinogenesis#Di10>, <http://dl-learner.org/carcinogenesis#Di>,
+    <http://dl-learner.org/carcinogenesis#Di227>, <http://dl-learner.org/carcinogenesis#Di23>,
+    <http://dl-learner.org/carcinogenesis#Di232>, <http://dl-learner.org/carcinogenesis#Di260>,
+    <http://dl-learner.org/carcinogenesis#Di281>, <http://dl-learner.org/carcinogenesis#Di48>,
+    <http://dl-learner.org/carcinogenesis#Di51>, <http://dl-learner.org/carcinogenesis#Di64>,
+    <http://dl-learner.org/carcinogenesis#Di66>, <http://dl-learner.org/carcinogenesis#Di67a>,
+    <http://dl-learner.org/carcinogenesis#Di8>, <http://dl-learner.org/carcinogenesis#Ester>,
+    <http://dl-learner.org/carcinogenesis#Ether>, <http://dl-learner.org/carcinogenesis#Ethoxy>,
+    <http://dl-learner.org/carcinogenesis#Five_ring>, <http://dl-learner.org/carcinogenesis#Ring>,
+    <http://dl-learner.org/carcinogenesis#Halide10>, <http://dl-learner.org/carcinogenesis#Imine>,
+    <http://dl-learner.org/carcinogenesis#Ketone>, <http://dl-learner.org/carcinogenesis#Methanol>,
+    <http://dl-learner.org/carcinogenesis#Methoxy>, <http://dl-learner.org/carcinogenesis#Methyl>,
+    <http://dl-learner.org/carcinogenesis#Nitro>, <http://dl-learner.org/carcinogenesis#Non_ar_5c_ring>,
+    <http://dl-learner.org/carcinogenesis#Non_ar_6c_ring>, <http://dl-learner.org/carcinogenesis#Non_ar_hetero_5_ring>,
+    <http://dl-learner.org/carcinogenesis#Non_ar_hetero_6_ring>, <http://dl-learner.org/carcinogenesis#Phenol>,
+    <http://dl-learner.org/carcinogenesis#Ring_size_4>, <http://dl-learner.org/carcinogenesis#Six_ring>,
+    <http://dl-learner.org/carcinogenesis#Sulfide>, <http://dl-learner.org/carcinogenesis#Sulfo>,
+    rdf:Property, rdfs:ContainerMembershipProperty, rdf:List .
+
+<http://example.org/9078e5b4100746f5d0cb7f30a43494d82b95a222> a owl:Class, rdfs:Class,
+    rdfs:Datatype;
+  rdfs:subClassOf "" .
+
+<http://example.org/57f08479689955f03d9794c59bbf8c1aba5fa371> a owl:Class;
+  owl:disjointWith "" .
+
+<http://example.org/5e3606b434360f57105605c59d58d8e1f54d3349> a rdf:Property, owl:DatatypeProperty,
+    owl:ObjectProperty;
+  rdfs:subPropertyOf "";
+  rdfs:domain "";
+  rdfs:range "" .
+
+<http://example.org/384a3d459115c385aa997a1982a506b2e9bcd99d> a owl:DatatypeProperty,
+    rdf:Property;
+  rdfs:domain "";
+  rdfs:range "" .
+
+<http://example.org/cad4083ce16561a39d7046c380a03676103a0f02> a rdf:Property;
+  rdfs:subPropertyOf "" .
+
+<http://example.org/2425a7d5ab8418b900a00335cc07cd4c117ac31f> a rdf:Property;
+  rdfs:domain "" .
+
+<http://example.org/0a5a75d33cdad2d50ab0dfa1cb6affd2f7812567> a rdf:Property;
+  rdfs:subPropertyOf "";
+  rdfs:range "" .
+
+<http://example.org/4cd0e4023291b3959bbff615f28c80c36007817a> a owl:SymmetricProperty;
+  owl:inverseOf "" .
+
+<http://example.org/8cb35b0cd23449bb6fc71d8f6d270e26b713b275> a rdf:Property, owl:SymmetricProperty;
+  rdfs:subPropertyOf "";
+  owl:inverseOf "" .
+
+<http://example.org/f6aca178e7942df3669a8b0fe581552aec96eda4> rdfs:range "" .
+
+<http://example.org/786d8a98659d94a97c84a5158ca8dbae2b473288> rdfs:subClassOf "" .
+
+<http://example.org/768cd07b0c00462603b9f95c06e02016d5cdd734> rdfs:subPropertyOf "" .

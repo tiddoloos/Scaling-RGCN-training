@@ -4,7 +4,7 @@ import torch
 from collections import Counter
 
 def make_rdf_graph(file_path: str) -> rdflib.Graph:
-    format = file_path.split('.')[-1] #work with .nt or n3
+    format = file_path.split('.')[-1]
     g = Graph()
     data = open(file_path, 'rb')
     g.parse(data, format = format)

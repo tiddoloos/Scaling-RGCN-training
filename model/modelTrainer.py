@@ -14,8 +14,6 @@ class modelTrainer:
         self.orgModel = RGCN(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
         self.benchModel = RGCN(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
         self.embeddings = []
-        # self.sumData = self.data.sum_training_data.to(self.device)
-        # self.orgData = self.data.org_training_data.to(self.device)
 
     def transfer_weights(self) -> None:
         weight_sg_1 = torch.rand(len(self.data.sumGraphs[0].relations.keys()), self.data.orgGraph.num_nodes, self.hidden_l)
@@ -81,7 +79,7 @@ class modelTrainer:
         
         if sum_graph:
             self.embeddings.append(self.sumModel.embedding(training_data.x_train))
-            print(f'updated embedding {self.sumModel.embedding(training_data.x_train)}')
+            # print(f'updated embedding {self.sumModel.embedding(training_data.x_train)}')
         
         return accuracies, losses
 
@@ -104,6 +102,7 @@ class modelTrainer:
             
             #transfer weights
             self.transfer_weights()
+
             #train orgModel
             print('--TRAINING ON ORIGINAL GRAPH AFTER TRANSFER--')
             results['Transfer Accuracy'], results['Transfer Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)

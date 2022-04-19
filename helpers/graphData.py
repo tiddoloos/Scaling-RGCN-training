@@ -9,7 +9,7 @@ from os.path import isfile, join
 
 
 class Graph:
-    def __init__(self, edge_index: list, edge_type, node_to_enum, num_nodes, nodes, relations_dict,
+    def __init__(self, edge_index, edge_type, node_to_enum, num_nodes, nodes, relations_dict,
                 orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type) -> None:
         self.edge_index = edge_index
         self.edge_type  = edge_type
@@ -25,9 +25,9 @@ class Graph:
         self.training_data = None
 
 class Dataset:
-    org_path = {'AIFB': 'data/AIFB/AIFB_complete.n3'}
-    sum_path = {'AIFB': 'data/AIFB/sum'}
-    map_path = {'AIFB': 'data/AIFB/map'}
+    org_path = {'AIFB': 'data/AIFB/AIFB_complete.n3', 'MUTAG': 'data/MUTAG/MUTAG_complete.nt'}
+    sum_path = {'AIFB': 'data/AIFB/sum', 'MUTAG': 'data/MUTAG/sum'}
+    map_path = {'AIFB': 'data/AIFB/map', 'MUTAG': 'data/MUTAG/map'}
     def __init__(self, name) -> None:
         self.name = name
         self.sumGraphs = []
@@ -96,8 +96,8 @@ class Dataset:
             print(f"num Relations= {len(graph.relations.keys())}")
     
     def get_file_names(self) -> Tuple[List[str], List[str]]:
-        sum_files = [f for f in listdir(self.sum_path[self.name]) if isfile(join(self.sum_path[self.name], f))]
-        map_files = [f for f in listdir(self.map_path[self.name]) if isfile(join(self.map_path[self.name], f))]
+        sum_files = [f for f in listdir(self.sum_path[self.name]) if not f.startswith('.') if isfile(join(self.sum_path[self.name], f))]
+        map_files = [f for f in listdir(self.map_path[self.name]) if not f.startswith('.') if isfile(join(self.map_path[self.name], f))]
         return sum_files, map_files
 
     def init_dataset(self) -> None:

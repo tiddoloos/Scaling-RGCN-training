@@ -14,14 +14,14 @@ def initialize_training() -> None:
     lr = 0.01
 
     # Transfer learning expriment
-    trainer = modelTrainer('AIFB', hidden_l)
+    trainer = modelTrainer('MUTAG', hidden_l)
     results_transfer = trainer.main_modelTrainer(epochs, weight_d, lr, benchmark=False)
    
     # Benchmark
     results_benchmark = trainer.main_modelTrainer(epochs, weight_d, lr, benchmark=True)
 
     results = {**results_transfer, **results_benchmark}
-    main_plot('AIFB', results, epochs)
+    main_plot('MUTAG', results, epochs)
 
 
 if __name__=='__main__':
