@@ -4,14 +4,10 @@ from torch import nn
 import torch.nn.functional as F
 from torch_geometric.nn import RGCNConv
 
-class RGCN(nn.Module):
-    def __init__(self, num_nodes: int, num_relations: int, hidden_l: int, num_labels: int, pretrained=None) -> None:
-        super(RGCN, self).__init__()
-        
+class rgcn_Layers(nn.Module):
+    def __init__(self, num_nodes: int, num_relations: int, hidden_l: int, num_labels: int) -> None:
+        super(rgcn_Layers, self).__init__()
         self.embedding = None
-        if pretrained!=None: #pass pre-trained embeddings, use this for original graph
-            self.embedding = nn.Embedding.from_pretrained(pretrained)
-
         self.rgcn1 = RGCNConv(num_nodes, hidden_l, num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
@@ -19,9 +15,15 @@ class RGCN(nn.Module):
     
     def init_embedding(self, num_nodes: int) -> None:
         self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=100)
+    
+    def sum_embeddings(self, embeddings: list, ):
+
+        pass
+
+        
 
     def forward(self, edge_index: Tensor, edge_type: Tensor) -> Tensor:
-        x = self.rgcn1(None, edge_index, edge_type)
+        x = self.rgcn1(self.embedding, edge_index, edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, edge_index, edge_type)
         x = torch.sigmoid(x)
@@ -35,3 +37,4 @@ class RGCN(nn.Module):
         self.rgcn2.weight = torch.nn.Parameter(weight_2)
         self.rgcn2.bias = torch.nn.Parameter(bias_2)
         self.rgcn2.root = torch.nn.Parameter(root_2)
+

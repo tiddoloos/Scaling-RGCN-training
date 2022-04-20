@@ -1,5 +1,5 @@
 from helpers.graphData import Dataset, Graph
-from model.RGCN import RGCN
+from model.RGCN import rgcn_Layers
 import torch
 from torch import Tensor
 from typing import List, Tuple, Dict
@@ -11,8 +11,8 @@ class modelTrainer:
         self.hidden_l = hidden_l
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.sumModel = None
-        self.orgModel = RGCN(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
-        self.benchModel = RGCN(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
+        self.orgModel = rgcn_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
+        self.benchModel = rgcn_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
         self.embeddings = []
 
     def transfer_weights(self) -> None:
@@ -50,13 +50,13 @@ class modelTrainer:
         print(f'Accuracy on validation set = {acc}')
         return acc
 
-    def train(self, model: RGCN, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
+    def train(self, model: rgcn_Layers, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
 
         training_data = graph.training_data.to(self.device)
 
-        if sum_graph:
-            self.sumModel.init_embedding(graph.num_nodes)
-            self.sumModel.embedding(training_data.x_train)
+        # if sum_graph:
+        #     self.sumModel.init_embedding(graph.num_nodes)
+        #     self.sumModel.embedding(training_data.x_train)
 
         loss_f = torch.nn.BCELoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d)
@@ -77,9 +77,9 @@ class modelTrainer:
                 accuracies.append(self.evaluate(model, graph.edge_index, graph.edge_type))
             print(f'Epoch: {epoch}, Loss: {l:.4f}')
         
-        if sum_graph:
-            self.embeddings.append(self.sumModel.embedding(training_data.x_train))
-            # print(f'updated embedding {self.sumModel.embedding(training_data.x_train)}')
+        # if sum_graph:
+        #     self.embeddings.append(self.sumModel.embedding(training_data.x_train))
+        #     # print(f'updated embedding {self.sumModel.embedding(training_data.x_train)}')
         
         return accuracies, losses
 
@@ -95,7 +95,7 @@ class modelTrainer:
             #train sum model
             print('---TRAINING ON SUMMARY GRAPHS--')
             count = 0  
-            self.sumModel = RGCN(self.data.sumGraphs[0].num_nodes, len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
+            self.sumModel = rgcn_Layers(self.data.sumGraphs[0].num_nodes, len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
             for sum_graph in self.data.sumGraphs:
                 _, results[f'Sum Loss {count}'] = self.train(self.sumModel, sum_graph, lr, weight_d, epochs)
                 count += 1
