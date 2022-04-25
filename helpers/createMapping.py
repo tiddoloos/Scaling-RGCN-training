@@ -21,11 +21,17 @@ def get_node_mappings_dict(path: str) -> Tuple[Dict[str, str], Dict[str, List]]:
     graph = make_rdf_graph(path)
     sumNode2orgNode_dict = defaultdict(list)
     orgNode2sumNode_dict = defaultdict()
+    count = 0
     for s, _, o in graph:
-        s_ = str(s).lower()
+        s_ = str(s).lower() 
         o_ = str(o).lower()
         sumNode2orgNode_dict[s_].append(o_)
         orgNode2sumNode_dict[o_] = s_
+        count += 1
+    # print('count in createmappings=', count)
+
+    # print(f'sumnode2org_node in create mappings = {len(sumNode2orgNode_dict.keys())}')
+    # print(f'orgnode2sumNode number of keys in create mappings = {len(orgNode2sumNode_dict.keys())}')
     return orgNode2sumNode_dict, sumNode2orgNode_dict
 
 def vectorize_label_mapping(sumNode2orgNode_dict: defaultdict(list), org2type_dict: defaultdict(list), labels_dict: dict, num_classes: int) -> Tuple[Dict[str, List], Dict[str, List]]:
@@ -49,8 +55,8 @@ def vectorize_label_mapping(sumNode2orgNode_dict: defaultdict(list), org2type_di
         sum2type_vec[sumNode] = sg_labels
     return sum2type_vec, org2type_vec 
 
-def main_createMappings(org_file: str, sum_map_file: str) -> Tuple[Dict, Dict, Dict, int, Dict, Dict, Dict, Dict]:
-    orgNode2sumNode_dict, sumNode2orgNode_dict = get_node_mappings_dict(sum_map_file)
+def main_createMappings(org_file: str, map_file: str) -> Tuple[Dict, Dict, Dict, int, Dict, Dict, Dict, Dict]:
+    orgNode2sumNode_dict, sumNode2orgNode_dict = get_node_mappings_dict(map_file)
 
     classes, org2type_dict = nodes2type_mapping(org_file)
     enum_classes = {lab: i for i, lab in enumerate(classes)}

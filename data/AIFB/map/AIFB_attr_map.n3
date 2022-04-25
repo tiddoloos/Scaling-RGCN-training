@@ -3211,7 +3211,7 @@
     <http://www.aifb.uni-karlsruhe.de/Publikationen/viewExternerAutorOWL/id842instance>,
     <http://www.aifb.uni-karlsruhe.de/Publikationen/viewExternerAutorOWL/id843instance> .
 
-<http://example.org/f7c39fcaf540b8b7cf38d7dbb50b3aea05c41a53> <http://issummaryof>
+<http://example.org/0f7300e2ae51488f75e41d41f77221c784cfec6f> <http://issummaryof>
     _:node1, _:node10, _:node100, _:node101, _:node102, _:node103, _:node104, _:node105,
     _:node106, _:node107, _:node108, _:node109, _:node11, _:node110, _:node111, _:node112,
     _:node113, _:node114, _:node115, _:node116, _:node117, _:node118, _:node119, _:node12,
@@ -3232,50 +3232,33 @@
     _:node93, _:node94, _:node95, _:node96, _:node97, _:node98, _:node99 .
 
 <http://example.org/3c197cb1f6842dc41aa48dc8b9032284bcf39a27> <http://issummaryof>
-    <file:/uploaded/generated/aifb_fixed_complete.n3>, <http://swrc.ontoware.org/ontology#abstract>,
-    <http://swrc.ontoware.org/ontology#address>, <http://swrc.ontoware.org/ontology#affiliation>,
-    <http://swrc.ontoware.org/ontology#atEvent>, <http://swrc.ontoware.org/ontology#author>,
-    <http://swrc.ontoware.org/ontology#booktitle>, <http://swrc.ontoware.org/ontology#carriedOutBy>,
-    <http://swrc.ontoware.org/ontology#chapter>, <http://swrc.ontoware.org/ontology#cooperateWith>,
-    <http://swrc.ontoware.org/ontology#date>, <http://swrc.ontoware.org/ontology#dealtWithIn>,
+    <file:/uploaded/generated/AIFB_complete.n3>, <http://swrc.ontoware.org/ontology#atEvent>,
+    <http://swrc.ontoware.org/ontology#cooperateWith>, <http://swrc.ontoware.org/ontology#date>,
     <http://swrc.ontoware.org/ontology#describesProject>, <http://swrc.ontoware.org/ontology#developedBy>,
-    <http://swrc.ontoware.org/ontology#edition>, <http://swrc.ontoware.org/ontology#editor>,
     <http://swrc.ontoware.org/ontology#email>, <http://swrc.ontoware.org/ontology#eventTitle>,
-    <http://swrc.ontoware.org/ontology#fax>, <http://swrc.ontoware.org/ontology#financedBy>,
-    <http://swrc.ontoware.org/ontology#finances>, <http://swrc.ontoware.org/ontology#givenBy>,
-    <http://swrc.ontoware.org/ontology#hasParts>, <http://swrc.ontoware.org/ontology#hasPrice>,
-    <http://swrc.ontoware.org/ontology#hasProject>, <http://swrc.ontoware.org/ontology#head>,
-    <http://swrc.ontoware.org/ontology#headOf>, <http://swrc.ontoware.org/ontology#homepage>,
-    <http://swrc.ontoware.org/ontology#howpublished>, <http://swrc.ontoware.org/ontology#isAbout>,
-    <http://swrc.ontoware.org/ontology#isWorkedOnBy>, <http://swrc.ontoware.org/ontology#isbn>,
-    <http://swrc.ontoware.org/ontology#journal>, <http://swrc.ontoware.org/ontology#keywords>,
-    <http://swrc.ontoware.org/ontology#location>, <http://swrc.ontoware.org/ontology#member>,
-    <http://swrc.ontoware.org/ontology#memberOfPC>, <http://swrc.ontoware.org/ontology#month>,
-    <http://swrc.ontoware.org/ontology#name>, <http://swrc.ontoware.org/ontology#note>,
-    <http://swrc.ontoware.org/ontology#number>, <http://swrc.ontoware.org/ontology#organization>,
-    <http://swrc.ontoware.org/ontology#organizerOrChairOf>, <http://swrc.ontoware.org/ontology#pages>,
-    <http://swrc.ontoware.org/ontology#participant>, <http://swrc.ontoware.org/ontology#phone>,
-    <http://swrc.ontoware.org/ontology#photo>, <http://swrc.ontoware.org/ontology#price>,
-    <http://swrc.ontoware.org/ontology#product>, <http://swrc.ontoware.org/ontology#publication>,
-    <http://swrc.ontoware.org/ontology#publishes>, <http://swrc.ontoware.org/ontology#school>,
-    <http://swrc.ontoware.org/ontology#series>, <http://swrc.ontoware.org/ontology#source>,
+    <http://swrc.ontoware.org/ontology#givenBy>, <http://swrc.ontoware.org/ontology#hasParts>,
+    <http://swrc.ontoware.org/ontology#hasPrice>, <http://swrc.ontoware.org/ontology#headOf>,
+    <http://swrc.ontoware.org/ontology#keywords>, <http://swrc.ontoware.org/ontology#location>,
+    <http://swrc.ontoware.org/ontology#memberOfPC>, <http://swrc.ontoware.org/ontology#organization>,
+    <http://swrc.ontoware.org/ontology#organizerOrChairOf>, <http://swrc.ontoware.org/ontology#participant>,
+    <http://swrc.ontoware.org/ontology#price>, <http://swrc.ontoware.org/ontology#product>,
+    <http://swrc.ontoware.org/ontology#school>, <http://swrc.ontoware.org/ontology#source>,
     <http://swrc.ontoware.org/ontology#student>, <http://swrc.ontoware.org/ontology#studiesAt>,
     <http://swrc.ontoware.org/ontology#supervises>, <http://swrc.ontoware.org/ontology#technicalReport>,
-    <http://swrc.ontoware.org/ontology#title>, <http://swrc.ontoware.org/ontology#type>,
-    <http://swrc.ontoware.org/ontology#volume>, <http://swrc.ontoware.org/ontology#worksAtProject>,
-    <http://swrc.ontoware.org/ontology#year>, <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id1960instance>,
-    <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id1962instance>, <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id1963instance>,
-    <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id1978instance>, <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id1982instance>,
-    <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id1998instance>, <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id2000instance>,
-    <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id2001instance>, <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id2007instance>,
-    <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id2024instance>, <http://www.aifb.uni-karlsruhe.de/Projekte/viewProjektOWL/id61instance>,
-    <http://www.aifb.uni-karlsruhe.de/Projekte/viewProjektOWL/id72instance>, <http://www.aifb.uni-karlsruhe.de/Projekte/viewProjektOWL/id73instance>,
-    <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id131instance>,
+    <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id1960instance>, <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id1962instance>,
+    <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id1963instance>, <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id1978instance>,
+    <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id1982instance>, <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id1998instance>,
+    <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id2000instance>, <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id2001instance>,
+    <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id2007instance>, <http://www.aifb.uni-karlsruhe.de/Personen/viewPersonOWL/id2024instance>,
+    <http://www.aifb.uni-karlsruhe.de/Projekte/viewProjektOWL/id61instance>, <http://www.aifb.uni-karlsruhe.de/Projekte/viewProjektOWL/id72instance>,
+    <http://www.aifb.uni-karlsruhe.de/Projekte/viewProjektOWL/id73instance>, <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id131instance>,
     <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id141instance>,
     <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id41instance>,
     <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id46instance>,
     <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id48instance>,
-    <http://www.aifb.uni-karlsruhe.de/WBS/dvr/owltools/merge/type>, xsd:string, owl:Thing .
+    rdf:nil, owl:Class, owl:Datatype, owl:DatatypeProperty, owl:ObjectProperty, owl:Ontology,
+    owl:Restriction, owl:SymmetricProperty, owl:TransitiveProperty, owl:equivalentClass,
+    owl:equivalentProperty, owl:sameAs .
 
 <http://example.org/9078e5b4100746f5d0cb7f30a43494d82b95a222> <http://issummaryof>
     <http://swrc.ontoware.org/ontology#AcademicStaff>, <http://swrc.ontoware.org/ontology#AdministrativeStaff>,
@@ -3304,14 +3287,49 @@
     <http://swrc.ontoware.org/ontology#TechnicalReport>, <http://swrc.ontoware.org/ontology#TechnicalStaff>,
     <http://swrc.ontoware.org/ontology#Thesis>, <http://swrc.ontoware.org/ontology#Topic>,
     <http://swrc.ontoware.org/ontology#Undergraduate>, <http://swrc.ontoware.org/ontology#University>,
-    <http://swrc.ontoware.org/ontology#Unpublished>, <http://swrc.ontoware.org/ontology#Workshop> .
+    <http://swrc.ontoware.org/ontology#Unpublished>, <http://swrc.ontoware.org/ontology#Workshop>,
+    rdf:Alt, rdf:Bag, rdf:List, rdf:Property, rdf:Seq, rdf:Statement, rdf:XMLLiteral,
+    rdfs:Class, rdfs:Container, rdfs:ContainerMembershipProperty, rdfs:Datatype, rdfs:Literal,
+    rdfs:Resource, xsd:nonNegativeInteger, xsd:string, owl:Thing .
+
+<http://example.org/cad4083ce16561a39d7046c380a03676103a0f02> <http://issummaryof>
+    <http://swrc.ontoware.org/ontology#abstract>, <http://swrc.ontoware.org/ontology#address>,
+    <http://swrc.ontoware.org/ontology#affiliation>, <http://swrc.ontoware.org/ontology#author>,
+    <http://swrc.ontoware.org/ontology#booktitle>, <http://swrc.ontoware.org/ontology#carriedOutBy>,
+    <http://swrc.ontoware.org/ontology#chapter>, <http://swrc.ontoware.org/ontology#dealtWithIn>,
+    <http://swrc.ontoware.org/ontology#edition>, <http://swrc.ontoware.org/ontology#editor>,
+    <http://swrc.ontoware.org/ontology#fax>, <http://swrc.ontoware.org/ontology#financedBy>,
+    <http://swrc.ontoware.org/ontology#finances>, <http://swrc.ontoware.org/ontology#hasProject>,
+    <http://swrc.ontoware.org/ontology#head>, <http://swrc.ontoware.org/ontology#homepage>,
+    <http://swrc.ontoware.org/ontology#howpublished>, <http://swrc.ontoware.org/ontology#isAbout>,
+    <http://swrc.ontoware.org/ontology#isWorkedOnBy>, <http://swrc.ontoware.org/ontology#isbn>,
+    <http://swrc.ontoware.org/ontology#journal>, <http://swrc.ontoware.org/ontology#member>,
+    <http://swrc.ontoware.org/ontology#month>, <http://swrc.ontoware.org/ontology#name>,
+    <http://swrc.ontoware.org/ontology#note>, <http://swrc.ontoware.org/ontology#number>,
+    <http://swrc.ontoware.org/ontology#pages>, <http://swrc.ontoware.org/ontology#phone>,
+    <http://swrc.ontoware.org/ontology#photo>, <http://swrc.ontoware.org/ontology#publication>,
+    <http://swrc.ontoware.org/ontology#publishes>, <http://swrc.ontoware.org/ontology#series>,
+    <http://swrc.ontoware.org/ontology#title>, <http://swrc.ontoware.org/ontology#type>,
+    <http://swrc.ontoware.org/ontology#volume>, <http://swrc.ontoware.org/ontology#worksAtProject>,
+    <http://swrc.ontoware.org/ontology#year>, <http://www.aifb.uni-karlsruhe.de/WBS/dvr/owltools/merge/type>,
+    owl:allValuesFrom, owl:inverseOf, owl:onProperty .
+
+<http://example.org/8cb35b0cd23449bb6fc71d8f6d270e26b713b275> <http://issummaryof>
+    <http://swrc.ontoware.org/ontology#carriesOut>, <http://swrc.ontoware.org/ontology#employs>,
+    <http://swrc.ontoware.org/ontology#projectInfo> .
 
 <http://example.org/4cd0e4023291b3959bbff615f28c80c36007817a> <http://issummaryof>
-    <http://swrc.ontoware.org/ontology#carriesOut>, <http://swrc.ontoware.org/ontology#cite>,
-    <http://swrc.ontoware.org/ontology#develops>, <http://swrc.ontoware.org/ontology#employs>,
+    <http://swrc.ontoware.org/ontology#cite>, <http://swrc.ontoware.org/ontology#develops>,
     <http://swrc.ontoware.org/ontology#hasPartEvent>, <http://swrc.ontoware.org/ontology#headOfGroup>,
-    <http://swrc.ontoware.org/ontology#projectInfo>, <http://swrc.ontoware.org/ontology#publisher>,
-    <http://swrc.ontoware.org/ontology#supervisor> .
+    <http://swrc.ontoware.org/ontology#publisher>, <http://swrc.ontoware.org/ontology#supervisor> .
 
-<http://example.org/cddbad157c4366e0e64f16ea2c71907e7d8b21df> <http://issummaryof>
+<http://example.org/77c8a83d9a993eeaba34db1752be3cba91e1cedd> <http://issummaryof>
     <http://swrc.ontoware.org/ontology#citedBy> .
+
+<http://example.org/5e3606b434360f57105605c59d58d8e1f54d3349> <http://issummaryof>
+    rdf:_1, rdf:first, rdf:object, rdf:predicate, rdf:rest, rdf:subject, rdf:value, rdfs:comment,
+    rdfs:domain, rdfs:isDefinedBy, rdfs:label, rdfs:member, rdfs:range, rdfs:seeAlso,
+    rdfs:subClassOf, rdfs:subPropertyOf .
+
+<http://example.org/2ceba78720cbe8261e89227cb3ba0beccbd7bd59> <http://issummaryof>
+    rdf:type .

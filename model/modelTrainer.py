@@ -13,7 +13,7 @@ class modelTrainer:
         self.sumModel = None
         self.orgModel = rgcn_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
         self.benchModel = rgcn_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
-        self.embeddings = []
+        self.graph_embeddings = {}
 
     def transfer_weights(self) -> None:
         weight_sg_1 = torch.rand(len(self.data.sumGraphs[0].relations.keys()), self.data.orgGraph.num_nodes, self.hidden_l)
@@ -51,13 +51,7 @@ class modelTrainer:
         return acc
 
     def train(self, model: rgcn_Layers, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
-
         training_data = graph.training_data.to(self.device)
-
-        # if sum_graph:
-        #     self.sumModel.init_embedding(graph.num_nodes)
-        #     self.sumModel.embedding(training_data.x_train)
-
         loss_f = torch.nn.BCELoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d)
         accuracies = []
@@ -75,11 +69,8 @@ class modelTrainer:
             if not sum_graph:
                 model.eval()
                 accuracies.append(self.evaluate(model, graph.edge_index, graph.edge_type))
-            print(f'Epoch: {epoch}, Loss: {l:.4f}')
-        
-        # if sum_graph:
-        #     self.embeddings.append(self.sumModel.embedding(training_data.x_train))
-        #     # print(f'updated embedding {self.sumModel.embedding(training_data.x_train)}')
+            if epoch%10==0:
+                print(f'Epoch: {epoch}, Loss: {l:.4f}')
         
         return accuracies, losses
 
@@ -95,6 +86,7 @@ class modelTrainer:
             #train sum model
             print('---TRAINING ON SUMMARY GRAPHS--')
             count = 0  
+            # print(len(self.data.sumGraphs[0].training_data.x_train))
             self.sumModel = rgcn_Layers(self.data.sumGraphs[0].num_nodes, len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
             for sum_graph in self.data.sumGraphs:
                 _, results[f'Sum Loss {count}'] = self.train(self.sumModel, sum_graph, lr, weight_d, epochs)

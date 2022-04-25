@@ -7,23 +7,18 @@ from torch_geometric.nn import RGCNConv
 class rgcn_Layers(nn.Module):
     def __init__(self, num_nodes: int, num_relations: int, hidden_l: int, num_labels: int) -> None:
         super(rgcn_Layers, self).__init__()
-        self.embedding = None
-        self.rgcn1 = RGCNConv(num_nodes, hidden_l, num_relations)
+        self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=514)
+        self.rgcn1 = RGCNConv(in_channels=514, out_channels=hidden_l, num_relations=num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
-    
-    def init_embedding(self, num_nodes: int) -> None:
-        self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=100)
-    
-    def sum_embeddings(self, embeddings: list, ):
 
+    def sum_embeddings(self, embeddings: list, mapping: dict) -> Tensor:
         pass
 
-        
 
     def forward(self, edge_index: Tensor, edge_type: Tensor) -> Tensor:
-        x = self.rgcn1(self.embedding, edge_index, edge_type)
+        x = self.rgcn1(self.embedding.weight, edge_index, edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, edge_index, edge_type)
         x = torch.sigmoid(x)
