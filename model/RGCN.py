@@ -7,15 +7,27 @@ from torch_geometric.nn import RGCNConv
 class rgcn_Layers(nn.Module):
     def __init__(self, num_nodes: int, num_relations: int, hidden_l: int, num_labels: int) -> None:
         super(rgcn_Layers, self).__init__()
-        self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=514)
-        self.rgcn1 = RGCNConv(in_channels=514, out_channels=hidden_l, num_relations=num_relations)
+        self.embedding = None
+        self.rgcn1 = RGCNConv(in_channels=64, out_channels=hidden_l, num_relations=num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
-    def sum_embeddings(self, embeddings: list, mapping: dict) -> Tensor:
-        pass
+    def sum_embeddings(self, graph, sum_graphs: list):
+        #simple summing of the embeddings
+        init_weight = torch.rand(graph.num_nodes, 64, requires_grad=False)
+        joint_weight = torch.zeros(1, 64)
+        print(init_weight)
 
+        for sum_graph in sum_graphs:
+            for orgnode, sumnode in sum_graph.orgNode2sumNode_dict.items():
+                init_weight[idx] = torch.zeros(1, 64)
+
+
+        pirnt()
+
+    def init_embeddings(self, num_nodes:int):
+        self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=64)
 
     def forward(self, edge_index: Tensor, edge_type: Tensor) -> Tensor:
         x = self.rgcn1(self.embedding.weight, edge_index, edge_type)

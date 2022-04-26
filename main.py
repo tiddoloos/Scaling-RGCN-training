@@ -14,7 +14,7 @@ def initialize_training() -> None:
     Also a benchmark experiment is conducted.
     """
     hidden_l = 16
-    epochs = 51
+    epochs = 1
     weight_d = 0.0005
     lr = 0.01
 

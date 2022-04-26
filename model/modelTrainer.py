@@ -13,7 +13,6 @@ class modelTrainer:
         self.sumModel = None
         self.orgModel = rgcn_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
         self.benchModel = rgcn_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
-        self.graph_embeddings = {}
 
     def transfer_weights(self) -> None:
         weight_sg_1 = torch.rand(len(self.data.sumGraphs[0].relations.keys()), self.data.orgGraph.num_nodes, self.hidden_l)
@@ -51,11 +50,14 @@ class modelTrainer:
         return acc
 
     def train(self, model: rgcn_Layers, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
+        #initialize embedding 
+
         training_data = graph.training_data.to(self.device)
         loss_f = torch.nn.BCELoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d)
         accuracies = []
         losses = []
+
         for epoch in range(epochs):
             model.train()
             optimizer.zero_grad()
@@ -86,14 +88,18 @@ class modelTrainer:
             #train sum model
             print('---TRAINING ON SUMMARY GRAPHS--')
             count = 0  
-            # print(len(self.data.sumGraphs[0].training_data.x_train))
             self.sumModel = rgcn_Layers(self.data.sumGraphs[0].num_nodes, len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
             for sum_graph in self.data.sumGraphs:
+                self.sumModel.init_embeddings(sum_graph.num_nodes)
                 _, results[f'Sum Loss {count}'] = self.train(self.sumModel, sum_graph, lr, weight_d, epochs)
+                #save embeddings in grpah object
+                sum_graph.embedding = self.sumModel.embedding
                 count += 1
-            
+            #make embedding for orgModel
+
+            self.orgModel.sum_embeddings(self.data.orgGraph, self.data.sumGraphs)
             #transfer weights
-            self.transfer_weights()
+            # self.transfer_weights()
 
             #train orgModel
             print('--TRAINING ON ORIGINAL GRAPH AFTER TRANSFER--')

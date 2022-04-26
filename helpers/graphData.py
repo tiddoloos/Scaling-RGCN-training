@@ -23,6 +23,7 @@ class Graph:
         self.org2type = org2type
         self.sum2type = sum2type
         self.training_data = None
+        self.embedding = None
 
 class Dataset:
     org_path = {'AIFB': 'data/AIFB/AIFB_complete.n3', 'MUTAG': 'data/MUTAG/MUTAG_complete.nt'}
@@ -39,18 +40,16 @@ class Dataset:
         """This funtion updates the sum2type dict by removing the test data.
         Avoids test set leakage because orignal node maps to a summary nodes which maps to a type (predicted class).
         """ 
+        #pas aan
 
         for sumGraph in self.sumGraphs:
             del_count = 0
             #make a copy to preserve orginal data in the data opject
             sum2orgNode = sumGraph.sumNode2orgNode_dict
             #pas aan in org2type
+            #todo pas aan en verwijder node uit org2type 
             org2type = sumGraph.org2type_dict
-            # hier klopt niks van
-            # print('len keys van org2tpye=', len(org2type.keys()))
-            # # print(org2type.keys())
-            # print(org2type)
-            # return
+    
             for orgNode, value in self.orgGraph.node_to_enum.items():
                 if value in X_test:
                     for sumNode, orgNodes in sum2orgNode.items():
@@ -62,14 +61,10 @@ class Dataset:
 
     def get_idx_labels(self, graph: Graph, dictionary: dict) -> Tuple[List[int], List[int]]:
         train_indices, train_labels = [], []
-        count = 0
         for node, labs in dictionary.items():
             if sum(list(labs)) != 0 and graph.node_to_enum.get(node) is not None:
                 train_indices.append(graph.node_to_enum[node])
                 train_labels.append(list(labs))
-            count +=1
-        print('idx count = ', count)    
-        print(f'number of training instances = {len(train_indices)}')
         return train_indices, train_labels
 
     def get_file_names(self) -> Tuple[List[str], List[str]]:
@@ -86,15 +81,11 @@ class Dataset:
             sum_path = f'{self.sum_path[self.name]}/{sum_files[i]}'
             map_path = f'{self.map_path[self.name]}/{map_files[i]}'
             sum2type, org2type, self.enum_classes, self.num_classes, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict = main_createMappings(self.org_path[self.name], map_path)
-            # print(len(sum2type.keys()))
-
             edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(sum_path)
- 
-            # print(f'GraphData node to enum ={len(node_to_enum)}')
 
             sGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type)
             self.sumGraphs.append(sGraph)
-        # print('sum to type keys=',len(sum2type.keys()))
+
         edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(self.org_path[self.name])
         self.orgGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, None, None, None, None, None)
 
@@ -118,7 +109,7 @@ class Dataset:
         print(f"Num Relations = {len(self.orgGraph.relations.keys())}")
         print(f"Num Classes = {self.num_classes}")
 
-        # get data of all summary graphs
+        # get training data of summary graphs
         for sGraph in self.sumGraphs:
             sg_idx, sg_labels = self.get_idx_labels(sGraph, sGraph.sum2type)
             sGraph.training_data = Data(edge_index = sGraph.edge_index)
