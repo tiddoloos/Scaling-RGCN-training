@@ -14,20 +14,22 @@ class rgcn_Layers(nn.Module):
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
     def sum_embeddings(self, graph, sum_graphs: list):
-        #simple summing of the embeddings
-        init_weight = torch.rand(graph.num_nodes, 64, requires_grad=False)
-        joint_weight = torch.zeros(1, 64)
-        print(init_weight)
+        #summing of the embeddings
+        summed_embedding = torch.rand(graph.num_nodes, 64, requires_grad=False)
 
-        for sum_graph in sum_graphs:
-            for orgnode, sumnode in sum_graph.orgNode2sumNode_dict.items():
-                init_weight[idx] = torch.zeros(1, 64)
-
-
-        pirnt()
+        for orgNode, idx in graph.node_to_enum.items():
+            sum_weight = torch.zeros(1, 64)
+            for sum_graph in sum_graphs:
+                #make sure to only continue if org node is linked to a sumNode
+                if orgNode in sum_graph.orgNode2sumNode_dict.keys():
+                    sumNode = sum_graph.orgNode2sumNode_dict[orgNode]
+                    sum_weight += sum_graph.embedding.weight[sum_graph.node_to_enum[sumNode]]
+            if torch.count_nonzero(sum_weight):
+                summed_embedding[idx] = sum_weight
+        self.embedding=nn.Embedding.from_pretrained(summed_embedding, freeze=False)
 
     def init_embeddings(self, num_nodes:int):
-        self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=64)
+        self.embgedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=64)
 
     def forward(self, edge_index: Tensor, edge_type: Tensor) -> Tensor:
         x = self.rgcn1(self.embedding.weight, edge_index, edge_type)

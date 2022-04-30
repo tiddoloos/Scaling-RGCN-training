@@ -32,8 +32,7 @@ def process_rdf_graph(graph_path):
     subjects = set(graph.subjects())
     objects = set(graph.objects())
     nodes = list(subjects.union(objects))
-    #remove duplicates if present
-    sorted_nodes = sorted(list(dict.fromkeys(nodes)))
+    sorted_nodes = sorted(nodes)
 
     # relation to integer idx
     relations_dict = {str(rel).lower(): i for i, rel in enumerate(list(relations))}

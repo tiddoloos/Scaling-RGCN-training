@@ -81,6 +81,7 @@ class modelTrainer:
         
         if benchmark:
             print('--BENCHMARK TRAINING ON ORIGINAL GRAPH--')
+            self.benchModel.init_embeddings(self.data.orgGraph.num_nodes)
             results['Benchmark Accuracy'], results['Benchmark Loss'] = self.train(self.benchModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
         
@@ -95,9 +96,10 @@ class modelTrainer:
                 #save embeddings in grpah object
                 sum_graph.embedding = self.sumModel.embedding
                 count += 1
-            #make embedding for orgModel
-
+            
+            #make embedding for orgModel by summing
             self.orgModel.sum_embeddings(self.data.orgGraph, self.data.sumGraphs)
+
             #transfer weights
             # self.transfer_weights()
 

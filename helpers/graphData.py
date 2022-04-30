@@ -119,3 +119,4 @@ class Dataset:
             print("SUMMARY GRAPH STATISTICS")
             print(f"num Nodes = {sGraph.num_nodes}")
             print(f"num Relations= {len(sGraph.relations.keys())}")
+            # assert len(sGraph.relations.keys()) == len(self.orgGraph.relations.keys()), f'the number of relations differ between the orginal and summary graph: {sGraph.relations.keys() - self.orgGraph.relations.keys()}'
