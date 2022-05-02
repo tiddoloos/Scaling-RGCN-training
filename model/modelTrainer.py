@@ -1,5 +1,5 @@
 from helpers.graphData import Dataset, Graph
-from model.RGCN import rgcn_Layers
+from model.RGCNtransfer import transfer_Layers
 import torch
 from torch import Tensor
 from typing import List, Tuple, Dict
@@ -12,8 +12,8 @@ class modelTrainer:
         self.hidden_l = hidden_l
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.sumModel = None
-        self.orgModel = rgcn_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
-        self.embModel = rgcn_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
+        self.orgModel = transfer_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
+        self.embModel = transfer_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
         self.benchModel = bench_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
 
     def transfer_weights(self) -> None:
@@ -60,7 +60,7 @@ class modelTrainer:
         print(f'Accuracy on validation set = {acc}')
         return acc
 
-    def train(self, model: rgcn_Layers, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
+    def train(self, model: transfer_Layers, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
         #initialize embedding 
 
         training_data = graph.training_data.to(self.device)
@@ -106,7 +106,7 @@ class modelTrainer:
             #train sum model
             print('---TRANSFER EXP TRAINING--')
             count = 0  
-            self.sumModel = rgcn_Layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
+            self.sumModel = transfer_Layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
             print('...Training on Summary Graphs...')
             for sum_graph in self.data.sumGraphs:
                 self.sumModel.init_embeddings(sum_graph.num_nodes)
