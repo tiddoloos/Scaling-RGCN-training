@@ -15,7 +15,7 @@ def initialize_training() -> None:
     """
 
     hidden_l = 16
-    epochs = 2
+    epochs = 51
     weight_d = 0.0005
     lr = 0.01
 

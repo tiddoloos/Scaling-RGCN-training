@@ -16,7 +16,6 @@ class transfer_Layers(nn.Module):
     def sum_embeddings(self, graph, sum_graphs: list):
         #summing of the embeddings
         summed_embedding = torch.rand(graph.num_nodes, 64, requires_grad=False)
-
         for orgNode, idx in graph.node_to_enum.items():
             sum_weight = torch.zeros(1, 64)
             for sum_graph in sum_graphs:
@@ -70,8 +69,8 @@ class baseline_Layers(nn.Module):
 
 class mlp_RGCN_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int):
-        super(mlp_RGCN_Layers, self).__init__()
         self.concat_emb = None
+        super(mlp_RGCN_Layers, self).__init__()
         self.lin1 = nn.Linear(in_features=128, out_features=32)
         self.lin2 = nn.Linear(in_features=32, out_features=64)
         self.rgcn1 = RGCNConv(in_channels=64, out_channels=hidden_l, num_relations=num_relations)
@@ -80,14 +79,10 @@ class mlp_RGCN_Layers(nn.Module):
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
     def forward(self, edge_index: Tensor, edge_type: Tensor):
-        emb = self.concat_emb.weight
-        x = self.lin1(emb)
-        print(x.shape)
-        x = nn.Sigmoid(x)
+        x = F.tanh(self.lin1(self.concat_emb.weight))
         x = self.lin2(x)
         print(x.shape)
         embedding = nn.Embedding.from_pretrained(x, freeze=True)
-
         x = self.rgcn1(embedding.weight, edge_index, edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, edge_index, edge_type)
@@ -105,6 +100,8 @@ class mlp_RGCN_Layers(nn.Module):
                     sumNode = sum_graph.orgNode2sumNode_dict[orgNode]
                     embedding_tensor[idx]  = sum_graph.embedding.weight[sum_graph.node_to_enum[sumNode]].detach()
             tensors.append(embedding_tensor)
+
+        #or use stack if dims get to high -> sqeenze in MLP
         concat_emb = torch.concat(tensors, dim=-1)
         self.concat_emb=nn.Embedding.from_pretrained(concat_emb, freeze=True)
     
