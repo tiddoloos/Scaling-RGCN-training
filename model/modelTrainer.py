@@ -1,9 +1,9 @@
 from helpers.graphData import Dataset, Graph
-from model.RGCNtransfer import transfer_Layers
+from model.layers import transfer_Layers, mlp_RGCN_Layers, attention_Layers, baseline_Layers
 import torch
 from torch import Tensor
 from typing import List, Tuple, Dict
-from model.RGCNbench import bench_Layers
+
 
 class modelTrainer:
     def __init__(self, name, hidden_l: int):
@@ -12,25 +12,11 @@ class modelTrainer:
         self.hidden_l = hidden_l
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.sumModel = None
-        self.orgModel = transfer_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
-        self.embModel = transfer_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
-        self.benchModel = bench_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
+        self.orgModel = None
+        self.embModel = None
+        self.benchModel = baseline_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
 
     def transfer_weights(self) -> None:
-        # weight_sg_1 = torch.rand(len(self.data.sumGraphs[0].relations.keys()), self.data.orgGraph.num_nodes, self.hidden_l)
-        # root_sg_1 = torch.rand((self.data.orgGraph.num_nodes, self.hidden_l))
-        # print(self.sumModel.rgcn1.weight.shape)
-        # # rgcn1
-        # for node in self.data.orgGraph.nodes:
-        #     node = str(node).lower()
-        #     #this is weird because we have multiple sumgraphs -> becasue of embeddings you dont know what weight does somethin for a particualr embedding
-        #     if self.data.sumGraphs[0].orgNode2sumNode_dict.get(node) != None:
-        #         o_idx = self.data.orgGraph.node_to_enum[node]
-        #         sg_idx = self.data.sumGraphs[0].node_to_enum[self.data.sumGraphs[0].orgNode2sumNode_dict[node]]
-        #         weight_sg_1[:, o_idx, :] = self.sumModel.rgcn1.weight[:, sg_idx, :]
-        #         root_sg_1[o_idx, :] = self.sumModel.rgcn1.root[sg_idx, :]
-        # bias_sg_1 = self.sumModel.rgcn1.bias
-        
         # rgcn1 
         weight_sg_1 = self.sumModel.rgcn1.weight
         bias_sg_1 = self.sumModel.rgcn1.bias
@@ -43,9 +29,6 @@ class modelTrainer:
 
         # transfer
         self.orgModel.override_params(weight_sg_1, bias_sg_1, root_sg_1, weight_sg_2, bias_sg_2, root_sg_2)
-
-        #only transfer for second rgcn layer
-        # self.orgModel.override_params(weight_sg_2, bias_sg_2, root_sg_2)
         print('weight transfer done')
 
     def calc_acc(self, pred: Tensor, x: Tensor, y: Tensor) -> float:
@@ -90,13 +73,14 @@ class modelTrainer:
     def main_modelTrainer(self, epochs: int, weight_d: float, lr: float, exp)-> Dict[str, List[float]]:
         results = dict()
         
-        if exp == 'benchmark':
-            print('--BENCHMARK EXP TRAINING--')
-            results['Benchmark Accuracy'], results['Benchmark Loss'] = self.train(self.benchModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+        if exp == 'baseline':
+            print('--BASELINE EXP TRAINING--')
+            results['Baseline Accuracy'], results['Baseline Loss'] = self.train(self.benchModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
         
         if exp == 'embedding':
             print('--EMBEDDING EXP TRAINING--')
+            self.embModel = transfer_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
             self.embModel.init_embeddings(self.data.orgGraph.num_nodes)
             results['Embedding Accuracy'], results['Embedding Loss'] = self.train(self.embModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
@@ -115,6 +99,7 @@ class modelTrainer:
                 sum_graph.embedding = self.sumModel.embedding
                 count += 1
             
+            self.orgModel = transfer_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
             #make embedding for orgModel by summing
             self.orgModel.sum_embeddings(self.data.orgGraph, self.data.sumGraphs)
 
@@ -125,3 +110,29 @@ class modelTrainer:
             print('...Training on Orginal Graph after transfer...')
             results['Transfer Accuracy'], results['Transfer Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
+        
+        if exp == 'mlp':
+            #train sum model
+            print('---MLP EMBEDDING EXP TRAINING--')
+            count = 0  
+            self.sumModel = transfer_Layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
+            print('...Training on Summary Graphs...')
+            for sum_graph in self.data.sumGraphs:
+                self.sumModel.init_embeddings(sum_graph.num_nodes)
+                _, results[f'Sum Loss {count}'] = self.train(self.sumModel, sum_graph, lr, weight_d, epochs)
+                #save embeddings in grpah object
+                sum_graph.embedding = self.sumModel.embedding
+                count += 1
+            
+            #make embedding for orgModel by summing
+            self.orgModel = mlp_RGCN_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
+            self.orgModel.concat_embeddings(self.data.orgGraph, self.data.sumGraphs)
+
+            #transfer weights
+            self.transfer_weights()
+
+            #train orgModel
+            print('...Training on Orginal Graph after transfer...')
+            results['Transfer Accuracy'], results['Transfer Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+            return results
+

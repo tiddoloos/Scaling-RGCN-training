@@ -13,23 +13,27 @@ def initialize_training() -> None:
     the weights of the summary model will be transferd to a new model for training on the original graph.
     Also a benchmark experiment is conducted.
     """
-    
+
     hidden_l = 16
-    epochs = 51
+    epochs = 2
     weight_d = 0.0005
     lr = 0.01
 
     # Transfer learning expriment
     trainer = modelTrainer(args['dataset'], hidden_l)
-    results_transfer = trainer.main_modelTrainer(epochs, weight_d, lr, exp='transfer')
+    # results_transfer = trainer.main_modelTrainer(epochs, weight_d, lr, exp='transfer')
+
+
+    results_mlp = trainer.main_modelTrainer(epochs, weight_d, lr, exp='mlp')
 
     #only init with node ebedding layer and no weight transfer or embedding trick
-    results_embedding = trainer.main_modelTrainer(epochs, weight_d, lr, exp='embedding')
+    # results_embedding = trainer.main_modelTrainer(epochs, weight_d, lr, exp='embedding')
    
     # Benchmark
-    results_benchmark = trainer.main_modelTrainer(epochs, weight_d, lr, exp='benchmark')
+    results_baseline = trainer.main_modelTrainer(epochs, weight_d, lr, exp='baseline')
 
-    results = {**results_transfer, **results_embedding, **results_benchmark}
+    # results = {**results_transfer, **results_embedding, **results_benchmark}
+    results = {**results_mlp, **results_baseline}
 
     main_plot(args['dataset'], results, epochs)
 
