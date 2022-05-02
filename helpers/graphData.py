@@ -116,7 +116,18 @@ class Dataset:
             sGraph.training_data.x_train = torch.tensor(sg_idx, dtype = torch.long)
             sGraph.training_data.y_train = torch.tensor(sg_labels)
 
+
+            #more relations in summary graph than in original graph
+            
+            # if len(sGraph.relations.keys()) > len(self.orgGraph.relations.keys()):
+            #    to_del =  sGraph.relations.keys() - self.orgGraph.relations.keys()
+            #    for rel in to_del:
+            #        del sGraph.relations[rel]
+            # if len(sGraph.relations.keys()) < len(self.orgGraph.relations.keys()):
+            #     to_del =  self.orgGraph.relations.keys() - sGraph.relations.keys()
+            #     for rel in to_del:
+            #         del sGraph.relations[rel]
+            
             print("SUMMARY GRAPH STATISTICS")
             print(f"num Nodes = {sGraph.num_nodes}")
             print(f"num Relations= {len(sGraph.relations.keys())}")
-            # assert len(sGraph.relations.keys()) == len(self.orgGraph.relations.keys()), f'the number of relations differ between the orginal and summary graph: {sGraph.relations.keys() - self.orgGraph.relations.keys()}'

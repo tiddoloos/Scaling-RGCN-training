@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from torch_geometric.nn import RGCNConv
 
 class rgcn_Layers(nn.Module):
-    def __init__(self, num_nodes: int, num_relations: int, hidden_l: int, num_labels: int) -> None:
+    def __init__(self, num_relations: int, hidden_l: int, num_labels: int) -> None:
         super(rgcn_Layers, self).__init__()
         self.embedding = None
         self.rgcn1 = RGCNConv(in_channels=64, out_channels=hidden_l, num_relations=num_relations)
@@ -27,9 +27,13 @@ class rgcn_Layers(nn.Module):
             if torch.count_nonzero(sum_weight):
                 summed_embedding[idx] = sum_weight
         self.embedding=nn.Embedding.from_pretrained(summed_embedding, freeze=False)
+    
+    def attention(self, graph, sum_graphs: list):
+
+        pass
 
     def init_embeddings(self, num_nodes:int):
-        self.embgedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=64)
+        self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=64)
 
     def forward(self, edge_index: Tensor, edge_type: Tensor) -> Tensor:
         x = self.rgcn1(self.embedding.weight, edge_index, edge_type)
@@ -46,4 +50,13 @@ class rgcn_Layers(nn.Module):
         self.rgcn2.weight = torch.nn.Parameter(weight_2)
         self.rgcn2.bias = torch.nn.Parameter(bias_2)
         self.rgcn2.root = torch.nn.Parameter(root_2)
+    
+    # def override_params(self, weight_2: Tensor, bias_2: Tensor, root_2: Tensor) -> None:
+    #     # self.rgcn1.weight = torch.nn.Parameter(weight_1)
+    #     # self.rgcn1.bias = torch.nn.Parameter(bias_1)
+    #     # self.rgcn1.root = torch.nn.Parameter(root_1)
+
+    #     self.rgcn2.weight = torch.nn.Parameter(weight_2)
+    #     self.rgcn2.bias = torch.nn.Parameter(bias_2)
+    #     self.rgcn2.root = torch.nn.Parameter(root_2)
 
