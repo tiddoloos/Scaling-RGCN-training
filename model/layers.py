@@ -81,7 +81,6 @@ class mlp_RGCN_Layers(nn.Module):
     def forward(self, edge_index: Tensor, edge_type: Tensor):
         x = F.tanh(self.lin1(self.concat_emb.weight))
         x = self.lin2(x)
-        print(x.shape)
         embedding = nn.Embedding.from_pretrained(x, freeze=True)
         x = self.rgcn1(embedding.weight, edge_index, edge_type)
         x = F.relu(x)
