@@ -43,21 +43,12 @@ class Dataset:
         #pas aan
 
         for sumGraph in self.sumGraphs:
-            del_count = 0
             #make a copy to preserve orginal data in the data opject
-            sum2orgNode = sumGraph.sumNode2orgNode_dict
-            #pas aan in org2type
-            #todo pas aan en verwijder node uit org2type 
             org2type = sumGraph.org2type_dict
-    
             for orgNode, value in self.orgGraph.node_to_enum.items():
                 if value in X_test:
-                    for sumNode, orgNodes in sum2orgNode.items():
-                        if orgNode in orgNodes:
-                            del_count += 1
-                            sum2orgNode[sumNode].remove(orgNode)
-            #update sum2type with the removed test data    
-            sumGraph.sum2type, _  =  vectorize_label_mapping(sum2orgNode, sumGraph.org2type_dict, self.enum_classes, self.num_classes)
+                    org2type[orgNode].clear()
+            sumGraph.sum2type, _  =  vectorize_label_mapping(sumGraph.sumNode2orgNode_dict, org2type, self.enum_classes, self.num_classes)
 
     def get_idx_labels(self, graph: Graph, dictionary: dict) -> Tuple[List[int], List[int]]:
         train_indices, train_labels = [], []
@@ -102,12 +93,7 @@ class Dataset:
         self.orgGraph.training_data.y_test = torch.tensor(y_test)
 
         #remove test data from summary nodes to types before making summary graph training data
-        # self.remove_test_data(X_test)
-
-        print("ORGINAL GRAPH STATISTICS")
-        print(f"Num Nodes = {self.orgGraph.num_nodes}")
-        print(f"Num Relations = {len(self.orgGraph.relations.keys())}")
-        print(f"Num Classes = {self.num_classes}")
+        self.remove_test_data(X_test)
 
         # get training data of summary graphs
         for sGraph in self.sumGraphs:
