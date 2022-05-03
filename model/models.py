@@ -1,4 +1,3 @@
-from pickletools import StackObject
 import torch
 from torch import Tensor
 from torch import nn
@@ -81,7 +80,7 @@ class emb_mlp_Layers(nn.Module):
     def forward(self, edge_index: Tensor, edge_type: Tensor):
         x = torch.tanh(self.lin1(self.concat_emb.weight))
         x = self.lin2(x)
-        embedding = nn.Embedding.from_pretrained(x, freeze=True) #think you do not need this nn.emb layer perse
+        embedding = nn.Embedding.from_pretrained(x, freeze=True)
         x = self.rgcn1(embedding.weight, edge_index, edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, edge_index, edge_type)

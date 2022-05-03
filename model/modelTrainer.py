@@ -69,6 +69,11 @@ class modelTrainer:
                 print(f'Epoch: {epoch}, Loss: {l:.4f}')
         
         return accuracies, losses
+    
+    def print_trainable_parameters(self, model, exp):
+        trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+        print(f'{exp} model number of trainable parameters: {trainable_params}')
+        return trainable_params
 
     def main_modelTrainer(self, epochs: int, weight_d: float, lr: float, emb_dim: int, exp: str)-> Dict[str, List[float]]:
         results = dict()
@@ -76,6 +81,7 @@ class modelTrainer:
         if exp == 'baseline':
             print('--BASELINE EXP TRAINING--')
             results['Baseline Accuracy'], results['Baseline Loss'] = self.train(self.baseModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+            self.print_trainable_parameters(self.baseModel, exp)
             return results
 
  #####################################################################################################################################
@@ -85,6 +91,7 @@ class modelTrainer:
             self.embModel = emb_sum_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, emb_dim)
             self.embModel.init_embeddings(self.data.orgGraph.num_nodes)
             results['Embedding Accuracy'], results['Embedding Loss'] = self.train(self.embModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+            self.print_trainable_parameters(self.embModel, exp)
             return results
 
 #####################################################################################################################################
@@ -92,7 +99,7 @@ class modelTrainer:
         if exp == 'sum':
             
             #train sum model
-            print('---TRANSFER EXP TRAINING--')
+            print('---TRANSFER SUM EXP TRAINING--')
             count = 0  
             self.sumModel = emb_sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, emb_dim)
             print('...Training on Summary Graphs...')
@@ -102,7 +109,7 @@ class modelTrainer:
                 #save embeddings in grpah object
                 sum_graph.embedding = self.sumModel.embedding
                 count += 1
-            
+
             self.orgModel = emb_sum_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, emb_dim)
             #make embedding for orgModel by summing
             self.orgModel.sum_embeddings(self.data.orgGraph, self.data.sumGraphs)
@@ -113,6 +120,8 @@ class modelTrainer:
             #train orgModel
             print('...Training on Orginal Graph after transfer...')
             results['Transfer + sum Accuracy'], results['Transfer + sum Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+            self.print_trainable_parameters(self.orgModel, exp)
+
             return results
         
 
@@ -144,6 +153,8 @@ class modelTrainer:
             #train orgModel
             print('...Training on Orginal Graph after transfer...')
             results['Transfer + mlp Accuracy'], results['Transfer + mlp Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+            self.print_trainable_parameters(self.orgModel, exp)
+
             return results
 
 #####################################################################################################################################
@@ -172,5 +183,7 @@ class modelTrainer:
             #train orgModel
             print('...Training on Orginal Graph after transfer...')
             results['Transfer + Attention Accuracy'], results['Transfer + Attention Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+            self.print_trainable_parameters(self.orgModel, exp)
+
             return results
 
