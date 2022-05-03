@@ -1,8 +1,7 @@
-import rdflib
+import yaml
 from rdflib.graph import Graph
 from rdflib.plugins.sparql import prepareQuery
 from rdflib.plugins.sparql.processor import SPARQLResult
-import yaml
 from typing import Tuple
 from pandas import DataFrame
 

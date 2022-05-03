@@ -1,6 +1,6 @@
+import torch
 from helpers.utils import process_rdf_graph
 from helpers.createMapping import main_createMappings, vectorize_label_mapping
-import torch
 from torch_geometric.data import Data
 from sklearn.model_selection import train_test_split
 from typing import Tuple, List
@@ -40,8 +40,6 @@ class Dataset:
         """This funtion updates the sum2type dict by removing the test data.
         Avoids test set leakage because orignal node maps to a summary nodes which maps to a type (predicted class).
         """ 
-        #pas aan
-
         for sumGraph in self.sumGraphs:
             #make a copy to preserve orginal data in the data opject
             org2type = sumGraph.org2type_dict
@@ -101,7 +99,6 @@ class Dataset:
             sGraph.training_data = Data(edge_index = sGraph.edge_index)
             sGraph.training_data.x_train = torch.tensor(sg_idx, dtype = torch.long)
             sGraph.training_data.y_train = torch.tensor(sg_labels)
-
 
             #more relations in summary graph than in original graph
             

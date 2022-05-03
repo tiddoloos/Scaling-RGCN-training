@@ -1,6 +1,6 @@
+import torch
 from helpers.graphData import Dataset, Graph
 from model.models import emb_sum_layers, emb_mlp_Layers, emb_att_Layers, baseline_Layers
-import torch
 from torch import Tensor
 from typing import List, Tuple, Dict
 
