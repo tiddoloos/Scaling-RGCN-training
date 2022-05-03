@@ -1,5 +1,5 @@
 from helpers.graphData import Dataset, Graph
-from model.layers import transfer_Layers, mlp_RGCN_Layers, attention_Layers, baseline_Layers
+from model.models import emb_sum_layers, emb_mlp_Layers, emb_att_Layers, baseline_Layers
 import torch
 from torch import Tensor
 from typing import List, Tuple, Dict
@@ -11,10 +11,10 @@ class modelTrainer:
         self.data.init_dataset()
         self.hidden_l = hidden_l
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.baseModel = baseline_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
         self.sumModel = None
         self.orgModel = None
         self.embModel = None
-        self.benchModel = baseline_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
 
     def transfer_weights(self) -> None:
         # rgcn1 
@@ -43,7 +43,7 @@ class modelTrainer:
         print(f'Accuracy on validation set = {acc}')
         return acc
 
-    def train(self, model: transfer_Layers, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
+    def train(self, model, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
         #initialize embedding 
 
         training_data = graph.training_data.to(self.device)
@@ -75,22 +75,26 @@ class modelTrainer:
         
         if exp == 'baseline':
             print('--BASELINE EXP TRAINING--')
-            results['Baseline Accuracy'], results['Baseline Loss'] = self.train(self.benchModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+            results['Baseline Accuracy'], results['Baseline Loss'] = self.train(self.baseModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
-        
+
+ #####################################################################################################################################
+
         if exp == 'embedding':
             print('--EMBEDDING EXP TRAINING--')
-            self.embModel = transfer_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
+            self.embModel = emb_sum_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
             self.embModel.init_embeddings(self.data.orgGraph.num_nodes)
             results['Embedding Accuracy'], results['Embedding Loss'] = self.train(self.embModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
-        
-        if exp == 'transfer':
+
+#####################################################################################################################################
+
+        if exp == 'sum':
             
             #train sum model
             print('---TRANSFER EXP TRAINING--')
             count = 0  
-            self.sumModel = transfer_Layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
+            self.sumModel = emb_sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
             print('...Training on Summary Graphs...')
             for sum_graph in self.data.sumGraphs:
                 self.sumModel.init_embeddings(sum_graph.num_nodes)
@@ -99,7 +103,7 @@ class modelTrainer:
                 sum_graph.embedding = self.sumModel.embedding
                 count += 1
             
-            self.orgModel = transfer_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
+            self.orgModel = emb_sum_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
             #make embedding for orgModel by summing
             self.orgModel.sum_embeddings(self.data.orgGraph, self.data.sumGraphs)
 
@@ -108,14 +112,18 @@ class modelTrainer:
 
             #train orgModel
             print('...Training on Orginal Graph after transfer...')
-            results['Transfer Accuracy'], results['Transfer Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+            results['Transfer + sum Accuracy'], results['Transfer + sum Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
         
+
+#####################################################################################################################################
+
+
         if exp == 'mlp':
             #train sum model
             print('---MLP EMBEDDING EXP TRAINING--')
             count = 0  
-            self.sumModel = transfer_Layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
+            self.sumModel = emb_sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
             print('...Training on Summary Graphs...')
             for sum_graph in self.data.sumGraphs:
                 self.sumModel.init_embeddings(sum_graph.num_nodes)
@@ -125,7 +133,7 @@ class modelTrainer:
                 count += 1
             
             #make embedding for orgModel by summing
-            self.orgModel = mlp_RGCN_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
+            self.orgModel = emb_mlp_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes)
             self.orgModel.concat_embeddings(self.data.orgGraph, self.data.sumGraphs)
 
             #transfer weights
@@ -133,6 +141,34 @@ class modelTrainer:
 
             #train orgModel
             print('...Training on Orginal Graph after transfer...')
-            results['Transfer Accuracy'], results['Transfer Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+            results['Transfer + mlp Accuracy'], results['Transfer + mlp Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+            return results
+
+#####################################################################################################################################
+
+
+        if exp == 'attention':
+        #train sum model
+            print('---ATTENTION EMBEDDING EXP TRAINING--')
+            count = 0  
+            self.sumModel = emb_sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes)
+            print('...Training on Summary Graphs...')
+            for sum_graph in self.data.sumGraphs:
+                self.sumModel.init_embeddings(sum_graph.num_nodes)
+                _, results[f'Sum Loss {count}'] = self.train(self.sumModel, sum_graph, lr, weight_d, epochs)
+                #save embeddings in grpah object
+                sum_graph.embedding = self.sumModel.embedding
+                count += 1
+            
+            self.orgModel = emb_att_Layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, len(self.data.sumGraphs))
+            #stack embeddings to use in attention layer
+            self.orgModel.stack_embeddings(self.data.orgGraph, self.data.sumGraphs)
+
+            #transfer weights
+            self.transfer_weights()
+
+            #train orgModel
+            print('...Training on Orginal Graph after transfer...')
+            results['Transfer + Attention Accuracy'], results['Transfer + Attention Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
             return results
 

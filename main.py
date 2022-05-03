@@ -21,19 +21,22 @@ def initialize_training() -> None:
 
     # Transfer learning expriment
     trainer = modelTrainer(args['dataset'], hidden_l)
-    # results_transfer = trainer.main_modelTrainer(epochs, weight_d, lr, exp='transfer')
+    results_transfer = trainer.main_modelTrainer(epochs, weight_d, lr, exp='sum')
 
-
+    #train mlp to create embeddigs for original grpah
     results_mlp = trainer.main_modelTrainer(epochs, weight_d, lr, exp='mlp')
 
+    #train attention layer to create embeddigs for original grpah
+    results_att = trainer.main_modelTrainer(epochs, weight_d, lr, exp='attention')
+
     #only init with node ebedding layer and no weight transfer or embedding trick
-    # results_embedding = trainer.main_modelTrainer(epochs, weight_d, lr, exp='embedding')
+    results_embedding = trainer.main_modelTrainer(epochs, weight_d, lr, exp='embedding')
    
     # Benchmark
     results_baseline = trainer.main_modelTrainer(epochs, weight_d, lr, exp='baseline')
 
     # results = {**results_transfer, **results_embedding, **results_benchmark}
-    results = {**results_mlp, **results_baseline}
+    results = {**results_att, **results_baseline, **results_transfer, **results_embedding, **results_mlp}
 
     main_plot(args['dataset'], results, epochs)
 
