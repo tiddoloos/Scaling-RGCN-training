@@ -18,22 +18,23 @@ def initialize_training() -> None:
     epochs = 51
     weight_d = 0.0005
     lr = 0.01
+    embedding_dimension = 64
 
     # Transfer learning expriment
     trainer = modelTrainer(args['dataset'], hidden_l)
-    results_transfer = trainer.main_modelTrainer(epochs, weight_d, lr, exp='sum')
+    results_transfer = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='sum')
 
     #train mlp to create embeddigs for original grpah
-    results_mlp = trainer.main_modelTrainer(epochs, weight_d, lr, exp='mlp')
+    results_mlp = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='mlp')
 
     #train attention layer to create embeddigs for original grpah
-    results_att = trainer.main_modelTrainer(epochs, weight_d, lr, exp='attention')
+    results_att = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension, exp='attention')
 
     #only init with node ebedding layer and no weight transfer or embedding trick
-    results_embedding = trainer.main_modelTrainer(epochs, weight_d, lr, exp='embedding')
+    results_embedding = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='embedding')
    
     # Benchmark
-    results_baseline = trainer.main_modelTrainer(epochs, weight_d, lr, exp='baseline')
+    results_baseline = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='baseline')
 
     # results = {**results_transfer, **results_embedding, **results_benchmark}
     results = {**results_att, **results_baseline, **results_transfer, **results_embedding, **results_mlp}

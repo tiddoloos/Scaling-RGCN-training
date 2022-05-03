@@ -22,19 +22,20 @@ class baseline_Layers(nn.Module):
 
 ###############################################################################################################
 class emb_sum_layers(nn.Module):
-    def __init__(self, num_relations: int, hidden_l: int, num_labels: int) -> None:
+    def __init__(self, num_relations: int, hidden_l: int, num_labels: int, emb_dim) -> None:
+        self.emb_dim = emb_dim
         super(emb_sum_layers, self).__init__()
         self.embedding = None
-        self.rgcn1 = RGCNConv(in_channels=64, out_channels=hidden_l, num_relations=num_relations)
+        self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
-    def sum_embeddings(self, graph, sum_graphs: list):
+    def sum_embeddings(self, graph, sum_graphs: list) -> None:
         #summing of the embeddings
-        summed_embedding = torch.rand(graph.num_nodes, 64, requires_grad=False)
+        summed_embedding = torch.rand(graph.num_nodes, self.emb_dim, requires_grad=False)
         for orgNode, idx in graph.node_to_enum.items():
-            sum_weight = torch.zeros(1, 64)
+            sum_weight = torch.zeros(1, self.emb_dim)
             for sum_graph in sum_graphs:
                 #make sure to only continue if org node is linked to a sumNode
                 if orgNode in sum_graph.orgNode2sumNode_dict.keys():
@@ -44,8 +45,8 @@ class emb_sum_layers(nn.Module):
                 summed_embedding[idx] = sum_weight.detach()
         self.embedding=nn.Embedding.from_pretrained(summed_embedding, freeze=False)
 
-    def init_embeddings(self, num_nodes:int):
-        self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=64)
+    def init_embeddings(self, num_nodes:int) -> None:
+        self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=self.emb_dim)
 
     def forward(self, edge_index: Tensor, edge_type: Tensor) -> Tensor:
         x = self.rgcn1(self.embedding.weight, edge_index, edge_type)
@@ -66,12 +67,13 @@ class emb_sum_layers(nn.Module):
 ##############################################################################################################
 
 class emb_mlp_Layers(nn.Module):
-    def __init__(self, num_relations: int, hidden_l: int, num_labels: int):
+    def __init__(self, num_relations: int, hidden_l: int, num_labels: int, in_f: int, out_f: int, emb_dim: int):
+        self.emb_dim = emb_dim
         self.concat_emb = None
         super(emb_mlp_Layers, self).__init__()
-        self.lin1 = nn.Linear(in_features=128, out_features=32)
-        self.lin2 = nn.Linear(in_features=32, out_features=64)
-        self.rgcn1 = RGCNConv(in_channels=64, out_channels=hidden_l, num_relations=num_relations)
+        self.lin1 = nn.Linear(in_features=in_f, out_features=out_f)
+        self.lin2 = nn.Linear(in_features=out_f, out_features=emb_dim)
+        self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
@@ -90,7 +92,7 @@ class emb_mlp_Layers(nn.Module):
         #make stacked tensor of embeddings
         tensors = []
         for sum_graph in sum_graphs:
-            embedding_tensor = torch.rand(graph.num_nodes, 64, requires_grad=False)
+            embedding_tensor = torch.rand(graph.num_nodes, self.emb_dim, requires_grad=False)
             for orgNode, idx in graph.node_to_enum.items():
                 if orgNode in sum_graph.orgNode2sumNode_dict.keys():
                     sumNode = sum_graph.orgNode2sumNode_dict[orgNode]
@@ -112,17 +114,18 @@ class emb_mlp_Layers(nn.Module):
 ######################################################################################################################
 
 class emb_att_Layers(nn.Module):
-    def __init__(self, num_relations: int, hidden_l: int, num_labels: int, num_sums: int):
+    def __init__(self, num_relations: int, hidden_l: int, num_labels: int, num_sums: int, emb_dim):
+        self.emb_dim = emb_dim
         super(emb_att_Layers, self).__init__()
         self.embedding = None
-        self.att = nn.MultiheadAttention(embed_dim=64, num_heads=num_sums)
-        self.rgcn1 = RGCNConv(in_channels=64, out_channels=hidden_l, num_relations=num_relations)
+        self.att = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=num_sums)
+        self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
     def init_embeddings(self, num_nodes:int):
-        self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=64)
+        self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=self.emb_dim)
 
     def forward(self, edge_index: Tensor, edge_type: Tensor) -> Tensor:
         attn_output, attn_output_weights = self.att(self.embedding, self.embedding, self.embedding)
@@ -136,7 +139,7 @@ class emb_att_Layers(nn.Module):
         #make stacked tensor of embedding
         tensors = []
         for sum_graph in sum_graphs:
-            embedding_tensor = torch.rand(graph.num_nodes, 64, requires_grad=False)
+            embedding_tensor = torch.rand(graph.num_nodes, self.emb_dim, requires_grad=False)
             for orgNode, idx in graph.node_to_enum.items():
                 if orgNode in sum_graph.orgNode2sumNode_dict.keys():
                     sumNode = sum_graph.orgNode2sumNode_dict[orgNode]
