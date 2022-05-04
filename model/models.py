@@ -37,9 +37,10 @@ class emb_sum_layers(nn.Module):
             sum_weight = torch.zeros(1, self.emb_dim)
             for sum_graph in sum_graphs:
                 #make sure to only continue if org node is linked to a sumNode
-                if orgNode in sum_graph.orgNode2sumNode_dict.keys():
+                if orgNode in sum_graph.orgNode2sumNode_dict:
                     sumNode = sum_graph.orgNode2sumNode_dict[orgNode]
-                    sum_weight += sum_graph.embedding.weight[sum_graph.node_to_enum[sumNode]]
+                    if sumNode in sum_graph.node_to_enum:
+                        sum_weight += sum_graph.embedding.weight[sum_graph.node_to_enum[sumNode]]
             if torch.count_nonzero(sum_weight):
                 summed_embedding[idx] = sum_weight.detach()
         self.embedding=nn.Embedding.from_pretrained(summed_embedding, freeze=False)
@@ -88,14 +89,15 @@ class emb_mlp_Layers(nn.Module):
         return x
     
     def concat_embeddings(self, graph, sum_graphs: list):
-        #make stacked tensor of embeddings
+        #make concatted tensor of embeddings
         tensors = []
         for sum_graph in sum_graphs:
             embedding_tensor = torch.rand(graph.num_nodes, self.emb_dim, requires_grad=False)
             for orgNode, idx in graph.node_to_enum.items():
                 if orgNode in sum_graph.orgNode2sumNode_dict.keys():
                     sumNode = sum_graph.orgNode2sumNode_dict[orgNode]
-                    embedding_tensor[idx]  = sum_graph.embedding.weight[sum_graph.node_to_enum[sumNode]].detach()
+                    if sumNode in sum_graph.node_to_enum:
+                        embedding_tensor[idx]  = sum_graph.embedding.weight[sum_graph.node_to_enum[sumNode]].detach()
             tensors.append(embedding_tensor)
         #or use stack if dims get to high -> sqeenze in MLP
         concat_emb = torch.concat(tensors, dim=-1)
@@ -142,7 +144,8 @@ class emb_att_Layers(nn.Module):
             for orgNode, idx in graph.node_to_enum.items():
                 if orgNode in sum_graph.orgNode2sumNode_dict.keys():
                     sumNode = sum_graph.orgNode2sumNode_dict[orgNode]
-                    embedding_tensor[idx]  = sum_graph.embedding.weight[sum_graph.node_to_enum[sumNode]].detach()
+                    if sumNode in sum_graph.node_to_enum:
+                        embedding_tensor[idx]  = sum_graph.embedding.weight[sum_graph.node_to_enum[sumNode]].detach()
             tensors.append(embedding_tensor)
         stacked_emb = torch.stack(tensors)
         self.embedding=stacked_emb

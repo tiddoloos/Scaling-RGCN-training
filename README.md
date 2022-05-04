@@ -1,2 +1,1 @@
-# Scale graph training (RGCN) with graph Summarization techniques
-
+# scaling RGCN training with graph summaries

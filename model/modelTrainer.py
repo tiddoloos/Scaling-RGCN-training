@@ -40,7 +40,6 @@ class modelTrainer:
         pred = model(edge_index, edge_type)
         pred = torch.round(pred)
         acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val)
-        print(f'Accuracy on validation set = {acc}')
         return acc
 
     def train(self, model, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
@@ -64,15 +63,18 @@ class modelTrainer:
             losses.append(l)
             if not sum_graph:
                 model.eval()
-                accuracies.append(self.evaluate(model, graph.edge_index, graph.edge_type))
+                acc = self.evaluate(model, graph.edge_index, graph.edge_type)
+                accuracies.append(acc)
             if epoch%10==0:
                 print(f'Epoch: {epoch}, Loss: {l:.4f}')
+                if not sum_graph:
+                    print(f'Accuracy on validation set = {acc}')
         
         return accuracies, losses
     
     def print_trainable_parameters(self, model, exp):
         trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-        print(f'{exp} model number of trainable parameters: {trainable_params}')
+        print(f'number of trainable parameters for {exp.upper()} model: {trainable_params}')
         return trainable_params
 
     def main_modelTrainer(self, epochs: int, weight_d: float, lr: float, emb_dim: int, exp: str)-> Dict[str, List[float]]:
