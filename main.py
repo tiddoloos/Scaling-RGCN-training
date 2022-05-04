@@ -12,14 +12,14 @@ def initialize_training() -> None:
     """This functions executes the experiment to scale grpah training for multi class entity prediction.
     After training on summary graphs, 
     the weights of the summary model will be transferd to a new model for training on the original graph.
-    Also a benchmark experiment is conducted.
+    Also a baseline experiment is conducted.
     """
 
     hidden_l = 16
     epochs = 51
     weight_d = 0.0005
     lr = 0.01
-    embedding_dimension = 64
+    embedding_dimension = 63
 
     # Transfer learning expriment
     trainer = modelTrainer(args['dataset'], hidden_l)
