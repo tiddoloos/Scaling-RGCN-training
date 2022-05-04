@@ -1,11 +1,13 @@
-import torch
-from helpers.utils import process_rdf_graph
-from helpers.createMapping import main_createMappings, vectorize_label_mapping
-from torch_geometric.data import Data
-from sklearn.model_selection import train_test_split
 from typing import Tuple, List
 from os import listdir
 from os.path import isfile, join
+
+import torch
+from torch_geometric.data import Data
+from sklearn.model_selection import train_test_split
+
+from helpers.utils import process_rdf_graph
+from helpers.createMapping import main_createMappings, encode_label_mapping
 
 
 class Graph:
@@ -46,7 +48,7 @@ class Dataset:
             for orgNode, value in self.orgGraph.node_to_enum.items():
                 if value in X_test:
                     org2type[orgNode].clear()
-            sumGraph.sum2type, _  =  vectorize_label_mapping(sumGraph.sumNode2orgNode_dict, org2type, self.enum_classes, self.num_classes)
+            sumGraph.sum2type, _  =  encode_label_mapping(sumGraph.sumNode2orgNode_dict, org2type, self.enum_classes, self.num_classes)
 
     def get_idx_labels(self, graph: Graph, dictionary: dict) -> Tuple[List[int], List[int]]:
         train_indices, train_labels = [], []
@@ -71,12 +73,17 @@ class Dataset:
             map_path = f'{self.map_path[self.name]}/{map_files[i]}'
             sum2type, org2type, self.enum_classes, self.num_classes, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict = main_createMappings(self.org_path[self.name], map_path)
             edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(sum_path)
-
+            
             sGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type)
             self.sumGraphs.append(sGraph)
 
         edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(self.org_path[self.name])
         self.orgGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, None, None, None, None, None)
+
+        print("ORIGINAL GRAPH STATISTICS")
+        print(f"num Nodes = {self.orgGraph.num_nodes}")
+        print(f"num Relations = {len(self.orgGraph.relations.keys())}")
+        print(f"num Classes = {self.num_classes}")
 
         g_idx, g_labels = self.get_idx_labels(self.orgGraph, self.sumGraphs[0].org2type)
         X_train, X_test, y_train, y_test = train_test_split(g_idx, g_labels,  test_size=0.2, random_state=1) 

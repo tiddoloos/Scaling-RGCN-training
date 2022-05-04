@@ -1,21 +1,21 @@
+from copy import copy, deepcopy
 from collections import defaultdict
 from helpers.utils import make_rdf_graph
 from typing import Tuple, Dict, List
 
 def nodes2type_mapping(path: str) -> Tuple[List, Dict[str, List]]:
     rel = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
-    graph = make_rdf_graph(path)
-  
     node2types_dict = defaultdict(list)
-    labels = []
+    graph = make_rdf_graph(path)
+    classes = []
     for s, p, o in graph:
         if str(p).lower() == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
             s_ = str(s).lower()
             type_ = str(o).lower()
             node2types_dict[s_].append(type_)
-            labels.append(type_)
-    labels = sorted(list(set(labels)))
-    return labels, node2types_dict 
+            classes.append(type_)
+    classes = sorted(list(set(classes)))
+    return classes, node2types_dict 
 
 def get_node_mappings_dict(path: str) -> Tuple[Dict[str, str], Dict[str, List]]:
     graph = make_rdf_graph(path)
@@ -28,7 +28,7 @@ def get_node_mappings_dict(path: str) -> Tuple[Dict[str, str], Dict[str, List]]:
         orgNode2sumNode_dict[o_] = s_
     return orgNode2sumNode_dict, sumNode2orgNode_dict
 
-def vectorize_label_mapping(sumNode2orgNode_dict: defaultdict(list), org2type_dict: defaultdict(list), labels_dict: dict, num_classes: int) -> Tuple[Dict[str, List], Dict[str, List]]:
+def encode_label_mapping(sumNode2orgNode_dict: defaultdict(list), org2type_dict: defaultdict(list), labels_dict: dict, num_classes: int) -> Tuple[Dict[str, List], Dict[str, List]]:
     sum2type_vec = defaultdict()
     org2type_vec = defaultdict()
 
@@ -50,11 +50,14 @@ def vectorize_label_mapping(sumNode2orgNode_dict: defaultdict(list), org2type_di
     return sum2type_vec, org2type_vec 
 
 def main_createMappings(org_file: str, map_file: str) -> Tuple[Dict, Dict, Dict, int, Dict, Dict, Dict, Dict]:
-    orgNode2sumNode_dict, sumNode2orgNode_dict = get_node_mappings_dict(map_file)
-
     classes, org2type_dict = nodes2type_mapping(org_file)
+    orgNode2sumNode_dict, sumNode2orgNode_dict = get_node_mappings_dict(map_file)
     enum_classes = {lab: i for i, lab in enumerate(classes)}
 
-    sum2type, org2type  = vectorize_label_mapping(sumNode2orgNode_dict, org2type_dict, enum_classes, len(classes))
-
-    return sum2type, org2type, enum_classes, len(classes), orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict
+    #commented: statements to check the change in the dict -> 
+    # cop = copy(org2type_dict)
+    sum2type_enc, org2type_enc  = encode_label_mapping(sumNode2orgNode_dict, copy(org2type_dict), enum_classes, len(classes))
+    # if cop == org2type_dict:
+    #     print('TRUE')
+    # print(org2type_dict)
+    return sum2type_enc, org2type_enc, enum_classes, len(classes), orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict
