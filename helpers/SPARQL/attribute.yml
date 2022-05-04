@@ -5,7 +5,9 @@
 # '
 
 summary: '
-SELECT ?hs ?p ?ho
+CONSTRUCT {
+?hs ?p ?ho .
+}
 WHERE 
 {
     {
