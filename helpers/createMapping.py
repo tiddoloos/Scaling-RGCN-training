@@ -33,7 +33,6 @@ def get_node_mappings_dict(path: str) -> Tuple[Dict[str, str], Dict[str, List]]:
 def encode_label_mapping(sumNode2orgNode_dict: defaultdict(list), org2type_dict: defaultdict(list), labels_dict: dict, num_classes: int) -> Tuple[Dict[str, List], Dict[str, List]]:
     sum2type_vec = defaultdict()
     org2type_vec = defaultdict()
-
     for sumNode, orgNodes in sumNode2orgNode_dict.items():
         sg_labels = [0 for _ in range(num_classes)]
         for node in orgNodes:
