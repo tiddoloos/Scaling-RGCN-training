@@ -1,7 +1,7 @@
-from copy import copy, deepcopy
+from copy import copy
 from collections import defaultdict
-from helpers.utils import make_rdf_graph
 from typing import Tuple, Dict, List
+from helpers.utils import make_rdf_graph
 
 def nodes2type_mapping(path: str) -> Tuple[List, Dict[str, List]]:
     rel = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
@@ -26,6 +26,8 @@ def get_node_mappings_dict(path: str) -> Tuple[Dict[str, str], Dict[str, List]]:
         o_ = str(o).lower()
         sumNode2orgNode_dict[s_].append(o_)
         orgNode2sumNode_dict[o_] = s_
+    sumNode2orgNode_dict = dict(sorted(sumNode2orgNode_dict.items()))
+    orgNode2sumNode_dict = dict(sorted(orgNode2sumNode_dict.items()))
     return orgNode2sumNode_dict, sumNode2orgNode_dict
 
 def encode_label_mapping(sumNode2orgNode_dict: defaultdict(list), org2type_dict: defaultdict(list), labels_dict: dict, num_classes: int) -> Tuple[Dict[str, List], Dict[str, List]]:
@@ -41,11 +43,10 @@ def encode_label_mapping(sumNode2orgNode_dict: defaultdict(list), org2type_dict:
                 sg_labels[labels_dict[t]] += 1
                 g_labels[labels_dict[t]] += 1
             org2type_vec[node] = g_labels
-        for i in range(len(sg_labels)):
-            div = 1
-            if len(orgNodes) != 0:
-                div = len(orgNodes)
-            sg_labels[i] = sg_labels[i] / div
+        div = 1
+        if len(orgNodes) > 0:
+            div = len(orgNodes)
+        sg_labels[:] = [x / div for x in sg_labels]
         sum2type_vec[sumNode] = sg_labels
     return sum2type_vec, org2type_vec 
 
