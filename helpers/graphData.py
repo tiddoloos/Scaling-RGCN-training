@@ -28,7 +28,7 @@ class Graph:
         self.embedding = None
 
 class Dataset:
-    org_path = {'AIFB': 'data/AIFB/AIFB_complete.n3', 'MUTAG': 'data/MUTAG/MUTAG_complete.nt'}
+    org_path = {'AIFB': 'data/AIFB/AIFB_complete.nt', 'MUTAG': 'data/MUTAG/MUTAG_complete.nt'}
     sum_path = {'AIFB': 'data/AIFB/sum', 'MUTAG': 'data/MUTAG/sum'}
     map_path = {'AIFB': 'data/AIFB/map', 'MUTAG': 'data/MUTAG/map'}
     def __init__(self, name) -> None:
@@ -109,7 +109,8 @@ class Dataset:
 
             #more relations in summary graph than in original graph
             
-            # if len(sGraph.relations.keys()) > len(self.orgGraph.relations.keys()):
+            if len(sGraph.relations.keys()) > len(self.orgGraph.relations.keys()):
+                print(sGraph.relations.keys() - self.orgGraph.relations.keys())
             #    to_del =  sGraph.relations.keys() - self.orgGraph.relations.keys()
             #    for rel in to_del:
             #        del sGraph.relations[rel]

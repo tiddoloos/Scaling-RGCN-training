@@ -1,5 +1,6 @@
 import rdflib
 import torch
+from rdflib.term import URIRef
 from rdflib import Graph
 from collections import Counter
 
@@ -11,16 +12,17 @@ def make_rdf_graph(file_path: str) -> rdflib.Graph:
     return g
 
 def get_relations(graph, edge):
-    relations = set(graph.predicates())
-    # makes sure type edge not considered
-    relations = list(relations - set(edge))
+    # remove all type edges??-> rdflib.term.URIRef('http://swrc.ontoware.org/ontology#type')?
+    relations = list(set(graph.predicates()))
+    # remove type edge
+    relations.remove(edge)
     return relations
 
 def freq(rel: str, freq_):
         return freq_[rel] if rel in freq_ else 0
 
 def process_rdf_graph(graph_path):
-    edge = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+    edge = URIRef('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
     
     graph = make_rdf_graph(graph_path)
     

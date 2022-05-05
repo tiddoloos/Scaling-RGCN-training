@@ -29,6 +29,9 @@ class emb_sum_layers(nn.Module):
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
+    
+    def init_embeddings(self, num_nodes:int) -> None:
+        self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=self.emb_dim)
 
     def sum_embeddings(self, graph, sum_graphs: list) -> None:
         #summing of the embeddings
@@ -44,9 +47,6 @@ class emb_sum_layers(nn.Module):
             if torch.count_nonzero(sum_weight):
                 summed_embedding[idx] = sum_weight.detach()
         self.embedding=nn.Embedding.from_pretrained(summed_embedding, freeze=False)
-
-    def init_embeddings(self, num_nodes:int) -> None:
-        self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=self.emb_dim)
 
     def forward(self, edge_index: Tensor, edge_type: Tensor) -> Tensor:
         x = self.rgcn1(self.embedding.weight, edge_index, edge_type)

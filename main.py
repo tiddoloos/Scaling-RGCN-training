@@ -19,6 +19,7 @@ def initialize_training() -> None:
     epochs = 51
     weight_d = 0.0005
     lr = 0.01
+    #embedding dimension must be devisible by the number of heads aka number of graph summaries (attention layer)
     embedding_dimension = 63
 
     # Transfer learning expriment
@@ -26,7 +27,7 @@ def initialize_training() -> None:
     if args['exp'] == None:
         results_transfer = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='sum')
 
-        #train mlp to create embeddigs for original grpah
+        #train mlp to create embeddigs for original graph
         results_mlp = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='mlp')
 
         #train attention layer to create embeddigs for original grpah
