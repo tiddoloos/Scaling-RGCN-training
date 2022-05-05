@@ -185,6 +185,8 @@ class modelTrainer:
             #train orgModel
             print('...Training on Orginal Graph after transfer...')
             results['Transfer + Attention Accuracy'], results['Transfer + Attention Loss'] = self.train(self.orgModel, self.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+
+            # in this calculation the parameters for making/updating the emedding are missing I think.
             self.print_trainable_parameters(self.orgModel, exp)
 
             return results
