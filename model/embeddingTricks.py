@@ -18,7 +18,7 @@ def get_tensor_list(graph: Graph, sum_graphs: list, emb_dim: int)-> List[Tensor]
 def stack_embeddings(graph: Graph, sum_graphs: list, emb_dim: int) -> None:
     tensors = get_tensor_list(graph, sum_graphs, emb_dim)
     stacked_emb = torch.stack(tensors)
-    # nn.Embeddeing can only handle 2d dimension so keep emb as is 
+    # nn.Embeddeing can only handle 2d dimension so keep emb as stacked 3d tensor
     graph.embedding=stacked_emb
 
 def concat_embeddings(graph: Graph, sum_graphs: list, emb_dim: int) -> None:
