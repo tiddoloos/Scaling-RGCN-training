@@ -3,7 +3,7 @@ from model.modelTrainer import modelTrainer
 from helpers.plot import main_plot
 
 parser = argparse.ArgumentParser(description='experiment arguments')
-parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM'], help='inidcate dataset name')
+parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM', 'TEST'], help='inidcate dataset name')
 parser.add_argument('-exp', type=str, choices=['sum', 'mlp', 'attention', 'embedding'], help='select experiment')
 args = vars(parser.parse_args())
 

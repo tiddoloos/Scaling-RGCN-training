@@ -24,6 +24,7 @@ def get_node_mappings_dict(path: str) -> Tuple[Dict[str, str], Dict[str, List]]:
     for s, _, o in graph:
         s_ = str(s).lower() 
         o_ = str(o).lower()
+        # if o_ != None or o_ != '':
         sumNode2orgNode_dict[s_].append(o_)
         orgNode2sumNode_dict[o_] = s_
     sumNode2orgNode_dict = dict(sorted(sumNode2orgNode_dict.items()))
@@ -53,11 +54,5 @@ def main_createMappings(org_file: str, map_file: str) -> Tuple[Dict, Dict, Dict,
     classes, org2type_dict = nodes2type_mapping(org_file)
     orgNode2sumNode_dict, sumNode2orgNode_dict = get_node_mappings_dict(map_file)
     enum_classes = {lab: i for i, lab in enumerate(classes)}
-
-    #commented: statements to check the change in the dict -> 
-    # cop = copy(org2type_dict)
     sum2type_enc, org2type_enc  = encode_label_mapping(sumNode2orgNode_dict, copy(org2type_dict), enum_classes, len(classes))
-    # if cop == org2type_dict:
-    #     print('TRUE')
-    # print(org2type_dict)
     return sum2type_enc, org2type_enc, enum_classes, len(classes), orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict

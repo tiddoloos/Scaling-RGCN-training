@@ -6,6 +6,11 @@ import hashlib
 import rdflib.term
 from rdflib import URIRef
 
+def check_blank(node):
+    if type(node) == rdflib.term.BNode:
+        node = URIRef('http://example.org/'+ str(node))
+    return node
+
 def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib.Path, format: str, id_creator: Callable[[rdflib.term.IdentifiedNode, rdflib.Graph], str]) -> None:
     g = rdflib.Graph()
     sumGraph = rdflib.Graph()
@@ -16,6 +21,10 @@ def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib
     mapping: Dict[str, str] = dict()
 
     for s_, p_, o_ in g:
+        if type(o_) is rdflib.term.Literal:
+            o_ = URIRef('http://example.org/string')
+        s_ = check_blank(s_)
+        o_ = check_blank(o_)
         s, p, o = str(s_), str(p_), str(o_)
         for node, node_str in [(s_, s), (o_, o)]:
             if node_str not in mapping:                
@@ -25,7 +34,7 @@ def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib
     sumGraph.serialize(destination=f'{sum_path}{sum_type}.nt', format='nt')
 
     map_p = 'http://issummaryof'
-    for node, sumNode in mapping.items():
+    for node, sumNode in mapping.items(): 
         map_triple = URIRef(sumNode), URIRef(map_p), URIRef(node)
         mapGraph.add(map_triple)
     mapGraph.serialize(destination=f'{map_path}{sum_type}.nt', format='nt')

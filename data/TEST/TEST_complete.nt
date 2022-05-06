@@ -5,5 +5,6 @@
 <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id779instance> <http://swrc.ontoware.org/ontology#isAbout> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id170instance> .
 <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id171instance> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://swrc.ontoware.org/ontology#InCollection> .
 <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id1068instance> <http://swrc.ontoware.org/ontology#isAbout> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id175instance> .
-<http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id779instance> <http://swrc.ontoware.org/ontology#isAbout> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id169instance> .
+<http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id779instance> <http://swrc.ontoware.org/ontology#isAbout> "test string"^^<http://www.w3.org/2001/XMLSchema#string>  .
 <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id172instance> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://swrc.ontoware.org/ontology#InCollection> .
+_:ub1bL312C18 <http://www.w3.org/2002/07/owl#onProperty> <http://swrc.ontoware.org/ontology#type> .

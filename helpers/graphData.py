@@ -28,11 +28,11 @@ class Graph:
         self.embedding = None
 
 class Dataset:
-    org_path = {'AIFB': 'data/AIFB/AIFB_complete.nt', 'MUTAG': 'data/MUTAG/MUTAG_complete.nt'}
-    sum_path = {'AIFB': 'data/AIFB/sum', 'MUTAG': 'data/MUTAG/sum'}
-    map_path = {'AIFB': 'data/AIFB/map', 'MUTAG': 'data/MUTAG/map'}
     def __init__(self, name) -> None:
         self.name = name
+        self.org_path = f'data/{name}/{name}_complete.nt'
+        self.sum_path = f'data/{name}/attr/sum/'
+        self.map_path = f'data/{name}/attr/map/'
         self.sumGraphs = []
         self.orgGraph = None
         self.enum_classes = None
@@ -59,8 +59,8 @@ class Dataset:
         return train_indices, train_labels
 
     def get_file_names(self) -> Tuple[List[str], List[str]]:
-        sum_files = [f for f in listdir(self.sum_path[self.name]) if not f.startswith('.') if isfile(join(self.sum_path[self.name], f))]
-        map_files = [f for f in listdir(self.map_path[self.name]) if not f.startswith('.') if isfile(join(self.map_path[self.name], f))]
+        sum_files = [f for f in listdir(self.sum_path) if not f.startswith('.') if isfile(join(self.sum_path, f))]
+        map_files = [f for f in listdir(self.map_path) if not f.startswith('.') if isfile(join(self.map_path, f))]
         return sum_files, map_files
 
     def init_dataset(self) -> None:
@@ -69,15 +69,15 @@ class Dataset:
 
         #collect summary graph data
         for i in range(len(sum_files)):
-            sum_path = f'{self.sum_path[self.name]}/{sum_files[i]}'
-            map_path = f'{self.map_path[self.name]}/{map_files[i]}'
-            sum2type, org2type, self.enum_classes, self.num_classes, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict = main_createMappings(self.org_path[self.name], map_path)
+            sum_path = f'{self.sum_path}/{sum_files[i]}'
+            map_path = f'{self.map_path}/{map_files[i]}'
+            sum2type, org2type, self.enum_classes, self.num_classes, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict = main_createMappings(self.org_path, map_path)
             edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(sum_path)
             
             sGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type)
             self.sumGraphs.append(sGraph)
 
-        edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(self.org_path[self.name])
+        edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(self.org_path)
         self.orgGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, None, None, None, None, None)
 
         print("ORIGINAL GRAPH STATISTICS")
@@ -106,19 +106,10 @@ class Dataset:
             sGraph.training_data = Data(edge_index = sGraph.edge_index)
             sGraph.training_data.x_train = torch.tensor(sg_idx, dtype = torch.long)
             sGraph.training_data.y_train = torch.tensor(sg_labels)
-
-            #more relations in summary graph than in original graph
-            
-            if len(sGraph.relations.keys()) > len(self.orgGraph.relations.keys()):
-                print(sGraph.relations.keys() - self.orgGraph.relations.keys())
-            #    to_del =  sGraph.relations.keys() - self.orgGraph.relations.keys()
-            #    for rel in to_del:
-            #        del sGraph.relations[rel]
-            # if len(sGraph.relations.keys()) < len(self.orgGraph.relations.keys()):
-            #     to_del =  self.orgGraph.relations.keys() - sGraph.relations.keys()
-            #     for rel in to_del:
-            #         del sGraph.relations[rel]
             
             print("SUMMARY GRAPH STATISTICS")
             print(f"num Nodes = {sGraph.num_nodes}")
             print(f"num Relations= {len(sGraph.relations.keys())}")
+            #more relations in summary graph than in original graph -> assert
+
+            assert len(sGraph.relations.keys()) ==  len(self.orgGraph.relations.keys()), 'number of relations in summary graph and original graph differ'
