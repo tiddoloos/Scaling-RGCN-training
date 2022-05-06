@@ -1,3 +1,4 @@
+import argparse
 import rdflib 
 import pathlib
 from typing import Any, Callable, Dict
@@ -5,8 +6,7 @@ import hashlib
 import rdflib.term
 from rdflib import URIRef
 
-
-def create_sum_mapping(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib.Path, format: str, id_creator: Callable[[rdflib.term.IdentifiedNode, rdflib.Graph], str]) -> None:
+def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib.Path, format: str, id_creator: Callable[[rdflib.term.IdentifiedNode, rdflib.Graph], str]) -> None:
     g = rdflib.Graph()
     sumGraph = rdflib.Graph()
     mapGraph = rdflib.Graph()
@@ -48,9 +48,13 @@ def forward_backward(node: rdflib.term.IdentifiedNode, graph: rdflib.Graph, sum_
     return node_id, sum_type
 
 
-path = './data/TEST/TEST_complete.nt'
-sum_path = './data/TEST/attr/sum/TEST_sum_'
-map_path = './data/TEST/attr/map/TEST_map_'
+parser = argparse.ArgumentParser(description='experiment arguments')
+parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM', 'TEST'], help='inidcate dataset name')
+dataset = vars(parser.parse_args())['dataset']
+
+path = f'./data/{dataset}/{dataset}_complete.nt'
+sum_path = f'./data/{dataset}/attr/sum/{dataset}_sum_'
+map_path = f'./data/{dataset}/attr/map/{dataset}_map_'
 format = path.split('.')[-1]
-create_sum_mapping(pathlib.Path(path), pathlib.Path(sum_path), pathlib.Path(map_path), format, forward_backward)
-create_sum_mapping(pathlib.Path(path), pathlib.Path(sum_path), pathlib.Path(map_path), format, forward)
+create_sum_map(pathlib.Path(path), pathlib.Path(sum_path), pathlib.Path(map_path), format, forward_backward)
+create_sum_map(pathlib.Path(path), pathlib.Path(sum_path), pathlib.Path(map_path), format, forward)
