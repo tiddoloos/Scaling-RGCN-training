@@ -43,6 +43,7 @@ def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib
         g.parse(data, format = format)
     mapping: Dict[str, str] = dict()
 
+    # create sum graph
     for s_, p_, o_ in g:
         if type(o_) is rdflib.term.Literal:
             o_ = URIRef('http://example.org/string')
@@ -56,9 +57,9 @@ def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib
         sumGraph.add(sum_triple)
     sumGraph.serialize(destination=f'{sum_path}{sum_type}.nt', format='nt')
 
-    map_p = 'http://issummaryof'
+    # create mappping as graph
     for node, sumNode in mapping.items(): 
-        map_triple = URIRef(sumNode), URIRef(map_p), URIRef(node)
+        map_triple = URIRef(sumNode), URIRef('http://issummaryof'), URIRef(node)
         mapGraph.add(map_triple)
     mapGraph.serialize(destination=f'{map_path}{sum_type}.nt', format='nt')
 

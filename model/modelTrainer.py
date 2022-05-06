@@ -4,7 +4,7 @@ from helpers.graphData import Dataset, Graph
 from model.models import emb_layers, emb_mlp_Layers, emb_att_Layers, base_Layers
 from torch import Tensor
 from typing import List, Tuple, Dict
-from model.embeddingUtils import stack_embeddings, sum_embeddings, concat_embeddings
+from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 
 
 class modelTrainer:
