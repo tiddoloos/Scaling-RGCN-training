@@ -4,7 +4,7 @@ from typing import List
 from torch import Tensor
 from torch import nn
 from torch_geometric.nn import RGCNConv
-from helpers.graphData import Graph
+from data.graphData import Graph
 
 class base_Layers(nn.Module):
     def __init__(self, num_nodes: int, num_relations: int, hidden_l: int, num_labels: int) -> None:

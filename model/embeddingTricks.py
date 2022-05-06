@@ -1,4 +1,4 @@
-from helpers.graphData import Graph
+from data.graphData import Graph
 import torch
 from torch import nn, Tensor
 from typing import List

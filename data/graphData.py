@@ -6,8 +6,8 @@ import torch
 from torch_geometric.data import Data
 from sklearn.model_selection import train_test_split
 
-from helpers.utils import process_rdf_graph
-from helpers.createMapping import main_createMappings, encode_label_mapping
+from data.graphUtils import process_rdf_graph
+from data.createMapping import main_createMappings, encode_label_mapping
 
 
 class Graph:

@@ -67,9 +67,9 @@ parser = argparse.ArgumentParser(description='experiment arguments')
 parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM', 'TEST'], help='inidcate dataset name')
 dataset = vars(parser.parse_args())['dataset']
 
-path = f'./data/{dataset}/{dataset}_complete.nt'
-sum_path = f'./data/{dataset}/attr/sum/{dataset}_sum_'
-map_path = f'./data/{dataset}/attr/map/{dataset}_map_'
+path = f'./{dataset}/{dataset}_complete.nt'
+sum_path = f'./{dataset}/attr/sum/{dataset}_sum_'
+map_path = f'./{dataset}/attr/map/{dataset}_map_'
 format = path.split('.')[-1]
 create_sum_map(pathlib.Path(path), pathlib.Path(sum_path), pathlib.Path(map_path), format, forward_backward)
 create_sum_map(pathlib.Path(path), pathlib.Path(sum_path), pathlib.Path(map_path), format, forward)

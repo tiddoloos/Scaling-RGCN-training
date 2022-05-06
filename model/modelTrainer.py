@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from helpers.graphData import Dataset, Graph
+from data.graphData import Dataset, Graph
 from model.models import emb_layers, emb_mlp_Layers, emb_att_Layers, base_Layers
 from torch import Tensor
 from typing import List, Tuple, Dict
