@@ -25,28 +25,31 @@ def initialize_training() -> None:
     # Transfer learning expriment
     trainer = modelTrainer(args['dataset'], hidden_l)
     if args['exp'] == None:
-        results_transfer = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='sum')
+        results_transfer_acc, results_transfer_loss = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='sum')
 
         #train mlp to create embeddigs for original graph
-        results_mlp = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='mlp')
+        results_mlp_acc, results_mlp_loss = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='mlp')
 
         #train attention layer to create embeddigs for original grpah
-        results_att = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension, exp='attention')
+        results_att_acc, results_att_loss = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension, exp='attention')
 
         #only init with node ebedding layer and no weight transfer or embedding trick
-        results_embedding = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='embedding')
+        results_embedding_acc, results_embedding_loss = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='embedding')
 
-        results_exp = {**results_att, **results_transfer, **results_embedding, **results_mlp}
+        results_exp_acc = {**results_att_acc, **results_transfer_acc, **results_embedding_acc, **results_mlp_acc}
+        results_exp_loss = {**results_att_loss , **results_transfer_loss , **results_embedding_loss , **results_mlp_loss }
     
     else:
-        results_exp = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp=args['exp'])
+        results_exp_acc, results_exp_loss = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp=args['exp'])
 
-    results_baseline = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='baseline')
+    results_baseline_acc, results_baseline_loss = trainer.main_modelTrainer(epochs, weight_d, lr, embedding_dimension,  exp='baseline')
 
 
-    results = {**results_exp, **results_baseline}
+    results_acc = {**results_exp_acc, **results_baseline_acc}
+    results_loss = {**results_exp_loss, **results_baseline_loss}
 
-    main_plot(args['dataset'], results, epochs)
+    main_plot('Accuracy', args['dataset'], results_acc, epochs)
+    main_plot('Loss', args['dataset'], results_loss, epochs)
 
 
 if __name__=='__main__':

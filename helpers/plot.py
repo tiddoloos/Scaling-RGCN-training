@@ -2,14 +2,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def main_plot(dataset, results_dict, epochs):
+def main_plot(metric, dataset, results_dict, epochs):
         epoch_list = [i for i in range(epochs)]
         for key, result in results_dict.items():
                 y = result
                 x = epoch_list 
                 plt.plot(x, y, label = key)
 
-        plt.title(f'Results on the {dataset} dataset')
+        plt.title(f'{metric} on {dataset} dataset during training epochs')
         plt.xlabel('Epochs')
         plt.ylabel('Accuracy/Loss')
         plt.grid(color='b', linestyle='-', linewidth=0.1)

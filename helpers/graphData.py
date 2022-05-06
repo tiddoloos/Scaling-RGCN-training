@@ -29,7 +29,6 @@ class Graph:
 
 class Dataset:
     def __init__(self, name) -> None:
-        self.name = name
         self.org_path = f'data/{name}/{name}_complete.nt'
         self.sum_path = f'data/{name}/attr/sum/'
         self.map_path = f'data/{name}/attr/map/'
@@ -97,7 +96,7 @@ class Dataset:
         self.orgGraph.training_data.y_train = torch.tensor(y_train, dtype = torch.long)
         self.orgGraph.training_data.y_test = torch.tensor(y_test)
 
-        #remove test data from summary nodes to types before making summary graph training data
+        # remove test data from summary nodes to types before making summary graph training data
         self.remove_test_data(X_test)
 
         # get training data of summary graphs
@@ -110,6 +109,6 @@ class Dataset:
             print("SUMMARY GRAPH STATISTICS")
             print(f"num Nodes = {sGraph.num_nodes}")
             print(f"num Relations= {len(sGraph.relations.keys())}")
-            #more relations in summary graph than in original graph -> assert
 
+            # if more relations in summary graph than in original graph -> assert
             assert len(sGraph.relations.keys()) ==  len(self.orgGraph.relations.keys()), 'number of relations in summary graph and original graph differ'
