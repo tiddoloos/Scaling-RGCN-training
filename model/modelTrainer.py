@@ -72,7 +72,7 @@ class modelTrainer:
         
         return accuracies, losses
     
-    def print_trainable_parameters(self, model, exp):
+    def print_trainable_parameters(self, model, exp: str) -> int:
         trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
         print(f'number of trainable parameters for {exp.upper()} model: {trainable_params}')
         return trainable_params
@@ -105,6 +105,8 @@ class modelTrainer:
             count = 0  
             self.sumModel = emb_sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, emb_dim)
             print('...Training on Summary Graphs...')
+            # for sum_graph in self.data.sumGraphs:
+            # TODO Refactor
             for sum_graph in self.data.sumGraphs:
                 self.sumModel.init_embeddings(sum_graph.num_nodes)
                 _, results[f'Sum Loss {count}'] = self.train(self.sumModel, sum_graph, lr, weight_d, epochs)

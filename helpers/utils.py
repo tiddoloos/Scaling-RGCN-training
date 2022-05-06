@@ -7,8 +7,8 @@ from collections import Counter
 def make_rdf_graph(file_path: str) -> rdflib.Graph:
     format = file_path.split('.')[-1]
     g = Graph()
-    data = open(file_path, 'rb')
-    g.parse(data, format = format)
+    with open(file_path, 'rb') as data:
+        g.parse(data, format = format)  
     return g
 
 def get_relations(graph, edge):

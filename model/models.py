@@ -34,7 +34,7 @@ class emb_sum_layers(nn.Module):
         self.embedding = nn.Embedding(num_embeddings=num_nodes, embedding_dim=self.emb_dim)
 
     def sum_embeddings(self, graph, sum_graphs: list) -> None:
-        #summing of the embeddings
+        # summing of the embeddings
         summed_embedding = torch.rand(graph.num_nodes, self.emb_dim, requires_grad=False)
         for orgNode, idx in graph.node_to_enum.items():
             sum_weight = torch.zeros(1, self.emb_dim)
