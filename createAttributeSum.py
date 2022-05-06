@@ -8,8 +8,31 @@ from rdflib import URIRef
 
 def check_blank(node):
     if type(node) == rdflib.term.BNode:
-        node = URIRef('http://example.org/'+ str(node))
+        node = URIRef('http://example.org/Bnode')
     return node
+
+def forward(node: rdflib.term.IdentifiedNode, graph: rdflib.Graph, sum_type = 'forw') -> str:
+    sorted_preds = sorted(list(graph.predicates(subject=node)))
+    hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
+    value = hash.hexdigest()
+    node_id = 'sumnode:' + value
+    return node_id, sum_type
+
+def backward(node: rdflib.term.IdentifiedNode, graph: rdflib.Graph, sum_type = 'backw') -> str:
+    sorted_preds = sorted(list(graph.predicates(object=node)))
+    incoming_hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
+    value = incoming_hash.hexdigest()
+    node_id = 'sumnode:' + value
+    return node_id, sum_type
+
+def forward_backward(node: rdflib.term.IdentifiedNode, graph: rdflib.Graph, sum_type = 'forw_back') -> str:
+    sorted_preds = sorted(list(graph.predicates(subject=node)))
+    incoming_hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
+    sorted_outgoing_preds = sorted(list(graph.predicates(object=node)))
+    outgoing_hash = hashlib.sha1(','.join(sorted_outgoing_preds).encode('utf8'))
+    value = incoming_hash.hexdigest() + "-" + outgoing_hash.hexdigest()
+    node_id = 'sumnode:' + value
+    return node_id, sum_type
 
 def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib.Path, format: str, id_creator: Callable[[rdflib.term.IdentifiedNode, rdflib.Graph], str]) -> None:
     g = rdflib.Graph()
@@ -38,30 +61,6 @@ def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib
         map_triple = URIRef(sumNode), URIRef(map_p), URIRef(node)
         mapGraph.add(map_triple)
     mapGraph.serialize(destination=f'{map_path}{sum_type}.nt', format='nt')
-
-def forward(node: rdflib.term.IdentifiedNode, graph: rdflib.Graph, sum_type = 'forw') -> str:
-    sorted_preds = sorted(list(graph.predicates(subject=node)))
-    hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
-    value = hash.hexdigest()
-    node_id = 'sumnode:' + value
-    return node_id, sum_type
-
-def backward(node: rdflib.term.IdentifiedNode, graph: rdflib.Graph, sum_type = 'backw') -> str:
-    sorted_preds = sorted(list(graph.predicates(object=node)))
-    incoming_hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
-    value = incoming_hash.hexdigest()
-    node_id = 'sumnode:' + value
-    return node_id, sum_type
-
-def forward_backward(node: rdflib.term.IdentifiedNode, graph: rdflib.Graph, sum_type = 'forw_back') -> str:
-    sorted_preds = sorted(list(graph.predicates(subject=node)))
-    incoming_hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
-    sorted_outgoing_preds = sorted(list(graph.predicates(object=node)))
-    outgoing_hash = hashlib.sha1(','.join(sorted_outgoing_preds).encode('utf8'))
-    value = incoming_hash.hexdigest() + "-" + outgoing_hash.hexdigest()
-    node_id = 'sumnode:' + value
-    return node_id, sum_type
-
 
 parser = argparse.ArgumentParser(description='experiment arguments')
 parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM', 'TEST'], help='inidcate dataset name')

@@ -24,7 +24,6 @@ def get_node_mappings_dict(path: str) -> Tuple[Dict[str, str], Dict[str, List]]:
     for s, _, o in graph:
         s_ = str(s).lower() 
         o_ = str(o).lower()
-        # if o_ != None or o_ != '':
         sumNode2orgNode_dict[s_].append(o_)
         orgNode2sumNode_dict[o_] = s_
     sumNode2orgNode_dict = dict(sorted(sumNode2orgNode_dict.items()))
