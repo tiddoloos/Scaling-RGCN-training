@@ -1,0 +1,7 @@
+<sumnode:8accd533f1bab7b2124e22999b95457fe24310d9-da39a3ee5e6b4b0d3255bfef95601890afd80709> <http://swrc.ontoware.org/ontology#isAbout> <sumnode:3c197cb1f6842dc41aa48dc8b9032284bcf39a27-181f2fc930e5394d067b93f5f1aff83b82f9217e> .
+<sumnode:bc4ce39c7237423206bffa4da32b8ef45ebb0f16-da39a3ee5e6b4b0d3255bfef95601890afd80709> <http://swrc.ontoware.org/ontology#isAbout> <sumnode:3c197cb1f6842dc41aa48dc8b9032284bcf39a27-181f2fc930e5394d067b93f5f1aff83b82f9217e> .
+<sumnode:3c197cb1f6842dc41aa48dc8b9032284bcf39a27-da39a3ee5e6b4b0d3255bfef95601890afd80709> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709-577ac08ff9047b969817424e691287b10de1994f> .
+<sumnode:3c197cb1f6842dc41aa48dc8b9032284bcf39a27-181f2fc930e5394d067b93f5f1aff83b82f9217e> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709-577ac08ff9047b969817424e691287b10de1994f> .
+<sumnode:8accd533f1bab7b2124e22999b95457fe24310d9-da39a3ee5e6b4b0d3255bfef95601890afd80709> <http://swrc.ontoware.org/ontology#isAbout> <sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709-bc4ce39c7237423206bffa4da32b8ef45ebb0f16> .
+<sumnode:bc4ce39c7237423206bffa4da32b8ef45ebb0f16-da39a3ee5e6b4b0d3255bfef95601890afd80709> <http://swrc.ontoware.org/ontology#isAbout> <sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709-bc4ce39c7237423206bffa4da32b8ef45ebb0f16> .
+
