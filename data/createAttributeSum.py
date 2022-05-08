@@ -8,13 +8,13 @@ from rdflib import URIRef
 
 def check_blank(node):
     if type(node) == rdflib.term.BNode:
-        node = URIRef('http://example.org/Bnode')
+        node = URIRef('http://example.org/'+ str(node))
     return node
 
 def forward(node: rdflib.term.IdentifiedNode, graph: rdflib.Graph, sum_type = 'forw') -> str:
     sorted_preds = sorted(list(graph.predicates(subject=node)))
     hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
-    value = hash.hexdigest()
+    value = hash.hexdigesgitt()
     node_id = 'sumnode:' + value
     return node_id, sum_type
 
