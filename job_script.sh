@@ -1,6 +1,14 @@
 #!/bin/bash
-#Set job requirements
 #SBATCH --job-name=test_run
 #SBATCH -N 1 --ntasks-per-node=16
+#SBATCH --ntasks=1
 #SBATCH -t 00:30:00
 
+cd $/home/loost/RGCN_MscThesis_TiddoLoos
+source activate Msc_Thesis
+
+#RUn Program
+python main.py -dataset AIFB -exp attention
+
+#Copy output data from scratch to home
+cp -r "$TMPDIR"/output_dir $HOME
