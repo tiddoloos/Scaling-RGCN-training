@@ -79,8 +79,8 @@ def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: in
         in_f = len(trainer.data.sumGraphs)*emb_dim
         out_f = round((in_f/2)*3 + trainer.data.num_classes)
         trainer.orgModel = emb_mlp_Layers(len(trainer.data.orgGraph.relations.keys()), trainer.hidden_l, trainer.data.num_classes, in_f, out_f, emb_dim)
-            #make embedding for orgModel by concatinating
-            
+        
+        #make embedding for orgModel by concatinating    
         concat_embeddings(trainer.data.orgGraph, trainer.data.sumGraphs, emb_dim)
 
         #transfer weights
@@ -107,7 +107,6 @@ def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: in
         for i in range(4):  
             for sum_graph in trainer.data.sumGraphs:
                 _, results_loss[f'Sum Loss {i}'] = trainer.train(trainer.sumModel, sum_graph, lr, weight_d, epochs)
-                #save embeddings in grpah object
                 # count += 1
         
         trainer.orgModel = emb_att_Layers(len(trainer.data.orgGraph.relations.keys()), trainer.hidden_l, trainer.data.num_classes, len(trainer.data.sumGraphs), emb_dim)

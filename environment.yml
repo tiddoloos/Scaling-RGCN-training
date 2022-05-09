@@ -6,7 +6,7 @@ channels:
   - defaults
 dependencies:
   - _pytorch_select=0.1
-  - appnope=0.1.2
+  # - appnope=0.1.2
   - asttokens=2.0.5
   - backcall=0.2.0
   - backports=1.0
@@ -56,7 +56,7 @@ dependencies:
   - libcblas=3.9.0
   - libcxx=12.0.0
   - libffi=3.3
-  - libgfortran=5.0.0
+  # - libgfortran=5.0.0
   - libgfortran5=9.3.0
   - libiconv=1.16
   - libidn2=2.3.2
@@ -71,7 +71,7 @@ dependencies:
   - libwebp=1.2.2
   - libwebp-base=1.2.2
   - libxml2=2.9.12
-  - llvm-openmp=12.0.0
+  # - llvm-openmp=12.0.0
   - lz4-c=1.9.3
   - markupsafe=2.1.0
   - matplotlib-base=3.5.1
@@ -144,6 +144,9 @@ dependencies:
   - zlib=1.2.11
   - zstd=1.4.9
   - pip:
+    - llvm-openmp=12.0.0
+    - libgfortran=5.0.0
+    - appnope=0.1.2
     - absl-py==1.0.0
     - amazon-ion==0.9.1
     - astunparse==1.6.3
