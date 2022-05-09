@@ -1,8 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=test_run
 #SBATCH -N 1 --ntasks-per-node=16
-#SBATCH --partition=gpu_shared
-#SBATCH --gpus=1
 #SBATCH -t 100:00:00
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
