@@ -7,11 +7,10 @@
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
 cd $/home/loost/RGCN_MscThesis_TiddoLoos
-source /home/${USER}/.bashrc
 source activate Msc_Thesis
 
 #Run Program
-python RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB -exp attention
+python main.py -dataset AIFB -exp attention
 
 #Copy output data from scratch to home
 cp -r "$TMPDIR"/output_dir $HOME
