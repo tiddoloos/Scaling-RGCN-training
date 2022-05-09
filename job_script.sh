@@ -5,7 +5,7 @@
 #SBATCH -t 00:30:00
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
-source /home/loost/.bashrc
+source /home/${USER}/.bashrc
 source activate scaling_rgcn
 
 cd $/home/loost/RGCN_MscThesis_TiddoLoos

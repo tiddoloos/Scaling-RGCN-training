@@ -53,8 +53,8 @@ def initialize_training() -> None:
     results_acc = {**results_exp_acc, **results_baseline_acc}
     results_loss = {**results_exp_loss, **results_baseline_loss}
 
-    main_plot('Accuracy', args['dataset'], results_acc, epochs)
-    main_plot('Loss', args['dataset'], results_loss, epochs)
+    # main_plot('Accuracy', args['dataset'], results_acc, epochs)
+    # main_plot('Loss', args['dataset'], results_loss, epochs)
 
 
 if __name__=='__main__':

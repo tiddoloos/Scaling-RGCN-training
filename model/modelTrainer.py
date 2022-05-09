@@ -67,9 +67,9 @@ class modelTrainer:
             optimizer.step()
             l = output.item()
             losses.append(l)
+            if not sum_graph:
+                    print(f'Accuracy on validation set = {acc}')
             if epoch%10==0:
                 print(f'Epoch: {epoch}, Loss: {l:.4f}')
-                if not sum_graph:
-                    print(f'Accuracy on validation set = {acc}')
         
         return accuracies, losses
