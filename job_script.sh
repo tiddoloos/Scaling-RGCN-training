@@ -5,8 +5,10 @@
 #SBATCH -t 00:30:00
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
-cd $/home/loost/RGCN_MscThesis_TiddoLoos
+source /home/loost/.bashrc
 source activate scaling_rgcn
+
+cd $/home/loost/RGCN_MscThesis_TiddoLoos
 
 #Run Program
 python main.py -dataset AIFB -exp attention
