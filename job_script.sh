@@ -3,7 +3,6 @@
 #SBATCH -N 1 --ntasks-per-node=16
 #SBATCH --ntasks=1
 #SBATCH -t 00:30:00
-#SBATCH --gpus=1
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
 cd $/home/loost/RGCN_MscThesis_TiddoLoos
