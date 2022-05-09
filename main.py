@@ -36,7 +36,7 @@ def initialize_training() -> None:
         trainer = modelTrainer(args['dataset'], hidden_l)
         results_att_acc, results_att_loss = run_experiment(trainer, epochs, weight_d, lr, embedding_dimension, exp='attention')
 
-        #only init with node ebedding layer and no weight transfer or embedding trick
+        #init with node ebedding layer and train on org grpah -> no weight transfer or embedding trick
         trainer = modelTrainer(args['dataset'], hidden_l)
         results_embedding_acc, results_embedding_loss = run_experiment(trainer, epochs, weight_d, lr, embedding_dimension,  exp='embedding')
 

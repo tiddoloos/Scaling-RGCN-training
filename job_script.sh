@@ -8,7 +8,7 @@
 source /home/${USER}/.bashrc
 source activate scaling_rgcn
 
-cd $/home/loost/RGCN_MscThesis_TiddoLoos
+cd /home/${USER}/RGCN_MscThesis_TiddoLoos
 
 #Run Program
 python main.py -dataset AIFB -exp attention
