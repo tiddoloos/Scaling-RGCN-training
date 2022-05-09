@@ -12,3 +12,6 @@ cd /home/${USER}/RGCN_MscThesis_TiddoLoos
 
 #Run Program
 python main.py -dataset AIFB -exp attention
+
+#Copy output data from scratch to home
+cp -r "$TMPDIR"/output_dir $HOME
