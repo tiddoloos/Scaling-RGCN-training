@@ -102,12 +102,10 @@ def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: in
 
         print('...Training on Summary Graphs...')
         #train sum model
-        # count = 0
-        # switching between sum graphs.
-        for i in range(4):  
-            for sum_graph in trainer.data.sumGraphs:
-                _, results_loss[f'Sum Loss {i}'] = trainer.train(trainer.sumModel, sum_graph, lr, weight_d, epochs)
-                # count += 1
+        count = 0
+        for sum_graph in trainer.data.sumGraphs:
+            _, results_loss[f'Sum Loss {i}'] = trainer.train(trainer.sumModel, sum_graph, lr, weight_d, epochs)
+            count += 1
         
         trainer.orgModel = emb_att_Layers(len(trainer.data.orgGraph.relations.keys()), trainer.hidden_l, trainer.data.num_classes, len(trainer.data.sumGraphs), emb_dim)
         #stack embeddings to use in attention layer
