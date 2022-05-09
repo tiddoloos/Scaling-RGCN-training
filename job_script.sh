@@ -6,7 +6,7 @@
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
 cd $/home/loost/RGCN_MscThesis_TiddoLoos
-source activate Msc_Thesis
+source activate scaling_rgcn
 
 #Run Program
 python main.py -dataset AIFB -exp attention
