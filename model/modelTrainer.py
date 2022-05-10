@@ -9,7 +9,7 @@ from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embed
 
 class modelTrainer:
     def __init__(self, name, hidden_l: int):
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
         self.data = Dataset(name)
         self.data.init_dataset()
         self.hidden_l = hidden_l
