@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from datetime import datetime
 
 
-def main_plot(metric, dataset, results_dict, epochs):
+def main_plot(metric, dataset, results_dict, epochs, exp):
         epoch_list = [i for i in range(epochs)]
         for key, result in results_dict.items():
                 y = result
@@ -21,3 +22,7 @@ def main_plot(metric, dataset, results_dict, epochs):
         plt.ylim(ymin=0)
         # plt.savefig('')
         plt.show()
+
+        dt = datetime.now()
+        str_date = dt.strftime('%d%B-%Y')
+        plt.savefig(f'"$TMPDIR"/output_dir/{metric}_{exp}_{str_date}.png')
