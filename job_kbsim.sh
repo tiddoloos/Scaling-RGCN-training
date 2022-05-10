@@ -13,7 +13,6 @@ module load 2021
 cd $TMPDIR
 cp ~/scala_setup/myorientdb.img .
 singularity run myorientdb.img
-sudo chmod -R 777 orientdb
 
 cd /home/${USER}/scala_setup/fluid-spark/
 #Run Program
