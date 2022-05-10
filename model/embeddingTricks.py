@@ -1,6 +1,6 @@
 from data.graphData import Graph
 import torch
-from torch import nn, Tensor
+from torch import device, nn, Tensor
 from typing import List
 
 def get_tensor_list(graph: Graph, sum_graphs: list, emb_dim: int)-> List[Tensor]:
@@ -32,7 +32,7 @@ def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
         # summing of embeddings
         tensors = get_tensor_list(graph, sum_graphs, emb_dim)
         summed_embedding = sum(tensors) 
-        graph.embedding=nn.Embedding.from_pretrained(summed_embedding, freeze=True)
+        graph.embedding=nn.Embedding.from_pretrained(summed_embedding, freeze=True).to(device)
 
 # def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
 #         # summing of the embeddings
