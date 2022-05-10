@@ -9,9 +9,7 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
-module purge all
 module load 2021
-module load Anaconda3/2021.05
 
 source /home/${USER}/.bashrc
 source activate scaling_rgcn
