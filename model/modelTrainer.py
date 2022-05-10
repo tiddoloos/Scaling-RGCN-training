@@ -48,7 +48,7 @@ class modelTrainer:
         model.to(self.device)
         training_data = graph.training_data.to(self.device)
         loss_f = torch.nn.BCELoss().to(self.device)
-        optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d).to(self.device)
+        optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d)
         accuracies = []
         losses = []
 
