@@ -13,10 +13,10 @@ source activate scaling_rgcn
 #Create output directory on scratch
 mkdir "$TMPDIR"/output_dir
 
-cd /home/${USER}/RGCN_MscThesis_TiddoLoos
+cd "$TMPDIR"/
 
 #Run Program
-python main.py -dataset AIFB -exp attention
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB -exp attention
 
 #Copy output directory from scratch to home
-cp -r "$TMPDIR"/output_dir $HOME
+cp -r ./output_dir $HOME
