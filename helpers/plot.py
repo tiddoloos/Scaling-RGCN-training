@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 from datetime import datetime
 
 
@@ -25,4 +26,5 @@ def main_plot(metric, dataset, results_dict, epochs, exp):
 
         dt = datetime.now()
         str_date = dt.strftime('%d%B-%Y')
+        print(os.getcwd())
         plt.savefig(f'./results/figures/{metric}_{exp}_{str_date}.png')
