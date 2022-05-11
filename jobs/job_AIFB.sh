@@ -10,13 +10,12 @@
 source /home/${USER}/.bashrc
 source activate scaling_rgcn
 
+cd "$TMPDIR"/
 #Create output directory on scratch
-mkdir "$TMPDIR"/output_dir
-
-cd /home/${USER}/RGCN_MscThesis_TiddoLoos
+mkdir ./output_dir
 
 #Run Program
-python main.py -dataset AIFB -exp attention
+python /home/${USER}/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB
 
 #Copy output directory from scratch to home
 cp -r "$TMPDIR"/output_dir $HOME

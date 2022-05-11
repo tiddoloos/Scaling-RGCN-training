@@ -21,10 +21,9 @@ def main_plot(metric, dataset, results_dict, epochs, exp):
         plt.xlim(xmin=0)
         plt.yticks(np.arange(0, 1.1, 0.1))
         plt.ylim(ymin=0)
-        # plt.savefig('')
         plt.show()
 
         dt = datetime.now()
         str_date = dt.strftime('%d%B-%Y')
         print(os.getcwd())
-        plt.savefig(f'./results/figures/{metric}_{exp}_{str_date}.png')
+        plt.savefig(f'./output_dir/{metric}_{exp}_{str_date}.png')
