@@ -17,4 +17,4 @@ mkdir ./output_dir
 python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB
 
 #Copy output directory from scratch to results folder on local machine
-scp "$TMPDIR"/output_dir/* /home/loost/output_dir/AIFB
+rsync ./output_dir/*. /home/loost/output_dir/AIFB

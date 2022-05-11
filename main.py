@@ -54,7 +54,7 @@ def initialize_training() -> None:
         timing.log('experiment done')
 
     results_baseline_acc, results_baseline_loss = run_experiment(trainer, epochs, weight_d, lr, embedding_dimension,  exp='baseline')
-    timing.log()
+    timing.log('experiment done')
 
 
     results_acc = {**results_exp_acc, **results_baseline_acc}
