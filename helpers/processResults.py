@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import json
 from datetime import datetime
 
 
-def main_plot(metric, dataset, results_dict, epochs, exp):
+def plot_and_save(metric, dataset, results_dict, epochs, exp):
         # save results as txt or json
         epoch_list = [i for i in range(epochs)]
         for key, result in results_dict.items():
@@ -26,3 +27,6 @@ def main_plot(metric, dataset, results_dict, epochs, exp):
         dt = datetime.now()
         str_date = dt.strftime('%d-%B-%Y-%I:%M-%p')
         plt.savefig(f'./output_dir/AIFB/{dataset}_{metric}_{exp}_{str_date}.png')
+
+        with open(f'./output_dir/AIFB/{dataset}_{metric}_{exp}_{str_date}.json', 'w') as write_file:
+                json.dump(results_dict, write_file, indent=4)
