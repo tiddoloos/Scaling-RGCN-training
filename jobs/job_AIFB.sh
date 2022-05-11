@@ -6,7 +6,7 @@
 #SBATCH --gpus=1
 #SBATCH -p gpu_short
 #SBATCH -t 1:00:00
-#SBATCH --mail-type=BEGIN,END
+#SBATCH --mail-type=END
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
 module load 2021 d
