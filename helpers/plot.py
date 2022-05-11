@@ -25,4 +25,4 @@ def main_plot(metric, dataset, results_dict, epochs, exp):
 
         dt = datetime.now()
         str_date = dt.strftime('%d%B-%Y')
-        plt.savefig(f'"$TMPDIR"/output_dir/{metric}_{exp}_{str_date}.png')
+        plt.savefig(f'output_dir/{metric}_{exp}_{str_date}.png')
