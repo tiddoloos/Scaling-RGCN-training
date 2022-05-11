@@ -4,9 +4,9 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --gpus=1
-#SBATCH --partition=gpu_shared
+#SBATCH -p gpu_short
 #SBATCH -t 100:00:00
-#SBATCH --mail-type=ALL
+#SBATCH --mail-type=BEGIN,END
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
 module load 2021

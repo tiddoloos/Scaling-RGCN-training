@@ -10,15 +10,16 @@
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
 module load 2021
+
 cd $TMPDIR
-cp ~/scala_setup/myorientdb.img .
-singularity run myorientdb.img
+cp ~/scala_setup/myorientdb.sif .
 
 cd /home/${USER}/scala_setup/fluid-spark/
+singularity run --pwd $PWD --writable-tmpfs --bind ./orientdb/databases:/orientdb/databases,./orientdb/backup:/orientdb/backup,./orientdb/config/orientdb-server-config.xml:/orientdb/config/orientdb-server-config.xml  $TMPDIR/myorientdb.sif
+
 #Run Program
 sbt "runMain Main resources/configs/tests/manual-test-1.conf"
 
 #stop image
-cd $TMPDIR
-singularity instance stop myorientdb.img
+singularity instance stop $TMPDIR/myorientdb.img
 

@@ -1,10 +1,8 @@
 import torch
-from torch import nn
 from data.graphData import Dataset, Graph
 from model.models import base_Layers
 from torch import Tensor
-from typing import List, Tuple, Dict
-from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
+from typing import List, Tuple
 
 
 class modelTrainer:
@@ -46,9 +44,10 @@ class modelTrainer:
 
     def train(self, model, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
         model.to(self.device)
-        training_data = graph.training_data.to(self.device)
         loss_f = torch.nn.BCELoss().to(self.device)
         optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d)
+        training_data = graph.training_data.to(self.device)
+
         accuracies = []
         losses = []
 
