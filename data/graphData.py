@@ -29,9 +29,9 @@ class Graph:
 
 class Dataset:
     def __init__(self, name) -> None:
-        self.org_path = f'/home/loost/RGCN_MscThesis_TiddoLoos/data/{name}/{name}_complete.nt'
-        self.sum_path = f'/home/loost/RGCN_MscThesis_TiddoLoos/data/{name}/attr/sum/'
-        self.map_path = f'/home/loost/RGCN_MscThesis_TiddoLoos/data/{name}/attr/map/'
+        self.org_path = f'data/{name}/{name}_complete.nt'
+        self.sum_path = f'data/{name}/attr/sum/'
+        self.map_path = f'data/{name}/attr/map/'
         self.sumGraphs = []
         self.orgGraph = None
         self.enum_classes = None
