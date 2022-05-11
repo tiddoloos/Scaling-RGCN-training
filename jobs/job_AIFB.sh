@@ -17,5 +17,5 @@ mkdir ./output_dir/AIFB
 python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB
 
 #Copy output directory from scratch to results folder on local machine
-scp -r loost@lisa.surfsara.nl:./output_dir/AIFB /Users/tiddo/Documents/Msc\ Artificial\ Intelligence/Thesis_RGCN/RGCN_MscThesis_TiddoLoos/results/
+scp -r loost@lisa.surfsara.nl:./output_dir/AIFB /Users/tiddo/Documents/Msc\ Artificial\ Intelligence/Thesis_RGCN/RGCN_MscThesis_TiddoLoos/results
 # scp output_dir/* /home/loost/output_dir/AIFB
