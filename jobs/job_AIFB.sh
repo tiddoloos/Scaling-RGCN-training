@@ -4,7 +4,6 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH -t 1:00:00
-#SBATCH --mail-type=END
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
 source /home/${USER}/.bashrc
@@ -19,6 +18,5 @@ cd "$TMPDIR"/
 python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB
 
 #Copy output directory from scratch to results folder on local machine
-rsync loost@lisa.surfsara.nl:output_dir/* ~/Users/tiddo/Documents/Msc\ Artificial\ Intelligence/Thesis_RGCN/RGCN_MscThesis_TiddoLoos/results/AIFB
-# scp loost@lisa.surfsara.nl:output_dir/* /Users/tiddo/Documents/Msc\ Artificial\ Intelligence/Thesis_RGCN/RGCN_MscThesis_TiddoLoos/results/AIFB
-
+scp loost@lisa.surfsara.nl:output_dir/* /Users/tiddo/Documents/Msc\ Artificial\ Intelligence/Thesis_RGCN/RGCN_MscThesis_TiddoLoos/results/AIFB
+spc output_dir/* /home/loost/output_dir/AIFB
