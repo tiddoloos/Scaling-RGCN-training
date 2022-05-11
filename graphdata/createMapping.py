@@ -1,7 +1,7 @@
 from copy import copy
 from collections import defaultdict
 from typing import Tuple, Dict, List
-from data.graphUtils import make_rdf_graph
+from graphdata.graphUtils import make_rdf_graph
 
 def nodes2type_mapping(path: str) -> Tuple[List, Dict[str, List]]:
     rel = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'

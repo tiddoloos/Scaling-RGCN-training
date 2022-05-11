@@ -9,10 +9,9 @@
 source /home/${USER}/.bashrc
 source activate scaling_rgcn
 
-#Create output directory on scratch
 cd "$TMPDIR"/
 mkdir ./output_dir
-scp $HOME/data ./
+scp -r $HOME/graphdata ./
 
 #Run Program
 python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB

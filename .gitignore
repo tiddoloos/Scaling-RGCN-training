@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # folder
-data/AM
+graphdata/AM

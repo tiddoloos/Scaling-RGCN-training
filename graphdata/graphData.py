@@ -6,8 +6,8 @@ import torch
 from torch_geometric.data import Data
 from sklearn.model_selection import train_test_split
 
-from data.graphUtils import process_rdf_graph
-from data.createMapping import main_createMappings, encode_label_mapping
+from graphdata.graphUtils import process_rdf_graph
+from graphdata.createMapping import main_createMappings, encode_label_mapping
 
 
 class Graph:
@@ -29,9 +29,9 @@ class Graph:
 
 class Dataset:
     def __init__(self, name) -> None:
-        self.org_path = f'./data/{name}/{name}_complete.nt'
-        self.sum_path = f'./data/{name}/attr/sum/'
-        self.map_path = f'./data/{name}/attr/map/'
+        self.org_path = f'./graphdata/{name}/{name}_complete.nt'
+        self.sum_path = f'./graphdata/{name}/attr/sum/'
+        self.map_path = f'./graphdata/{name}/attr/map/'
         self.sumGraphs = []
         self.orgGraph = None
         self.enum_classes = None
