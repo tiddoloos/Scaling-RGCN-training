@@ -108,9 +108,9 @@ def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: in
             count += 1
         
         trainer.orgModel = emb_att_Layers(len(trainer.data.orgGraph.relations.keys()), trainer.hidden_l, trainer.data.num_classes, len(trainer.data.sumGraphs), emb_dim)
-        
+
         #stack embeddings to use in attention layer
-        stack_embeddings(trainer.data.orgGraph, trainer.data.sumGraphs, emb_dim).to(trainer.device)
+        stack_embeddings(trainer.data.orgGraph, trainer.data.sumGraphs, emb_dim)
 
         #transfer weights
         trainer.transfer_weights()
