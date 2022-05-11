@@ -1,20 +1,20 @@
 #!/bin/bash
-#SBATCH --job-name=MUTAG_run
+#SBATCH --job-name=AIFB_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
-#SBATCH --gpus=1
-#SBATCH --partition=gpu_shared
-#SBATCH -t 100:00:00
-#SBATCH --mail-type=ALL
+#SBATCH -t 1:00:00
 #SBATCH --mail-user=t.j.loos@student.vu.nl
-
-module load 2021
 
 source /home/${USER}/.bashrc
 source activate scaling_rgcn
 
-cd /home/${USER}/RGCN_MscThesis_TiddoLoos
+#Create output directory on scratch
+cd "$TMPDIR"/
+mkdir ./output_dir
 
 #Run Program
-python main.py -dataset MUTAG -exp sum
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset MUTAG
+
+#Copy output directory from scratch to results folder on local machine
+scp output_dir/* $HOME/output_dir/MUTAG
