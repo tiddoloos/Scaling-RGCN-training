@@ -51,7 +51,7 @@ def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: in
 
         trainer.orgModel = emb_layers(len(trainer.data.orgGraph.relations.keys()), trainer.hidden_l, trainer.data.num_classes, emb_dim)
         #make embedding for orgModel by summing
-        sum_embeddings(trainer.data.orgGraph, trainer.data.sumGraphs, emb_dim).to(trainer.device)
+        sum_embeddings(trainer.data.orgGraph, trainer.data.sumGraphs, emb_dim)
         
         #transfer weights
         trainer.transfer_weights()
@@ -81,7 +81,7 @@ def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: in
         trainer.orgModel = emb_mlp_Layers(len(trainer.data.orgGraph.relations.keys()), trainer.hidden_l, trainer.data.num_classes, in_f, out_f, emb_dim)
         
         #make embedding for orgModel by concatinating    
-        concat_embeddings(trainer.data.orgGraph, trainer.data.sumGraphs, emb_dim).to(trainer.device)
+        concat_embeddings(trainer.data.orgGraph, trainer.data.sumGraphs, emb_dim)
 
         #transfer weights
         trainer.transfer_weights()
