@@ -1,5 +1,4 @@
 import argparse
-import time
 from model.modelTrainer import modelTrainer
 from helpers.plot import main_plot
 from experiments import run_experiment
@@ -17,7 +16,6 @@ def initialize_training() -> None:
     the weights of the summary model will be transferd to a new model for training on the original graph.
     Also a baseline experiment is conducted.
     """
-    start_time = time.time()
 
     hidden_l = 16
     epochs = 51
@@ -30,22 +28,22 @@ def initialize_training() -> None:
     # Transfer learning expriment
     if args['exp'] == None:
         results_transfer_acc, results_transfer_loss = run_experiment(trainer, epochs, weight_d, lr, embedding_dimension,  exp='sum')
-        timing.log
+        timing.log()
 
         #train mlp to create embeddigs for original graph
         # trainer = modelTrainer(args['dataset'], hidden_l)
         results_mlp_acc, results_mlp_loss = run_experiment(trainer, epochs, weight_d, lr, embedding_dimension,  exp='mlp')
-        timing.log
+        timing.log()
 
         #train attention layer to create embeddigs for original grpah
         # trainer = modelTrainer(args['dataset'], hidden_l)
         results_att_acc, results_att_loss = run_experiment(trainer, epochs, weight_d, lr, embedding_dimension, exp='attention')
-        timing.log
+        timing.log()
 
         #init with node ebedding layer and train on org grpah -> no weight transfer or embedding trick
         # trainer = modelTrainer(args['dataset'], hidden_l)
         results_embedding_acc, results_embedding_loss = run_experiment(trainer, epochs, weight_d, lr, embedding_dimension,  exp='embedding')
-        timing.log
+        timing.log()
 
         results_exp_acc = {**results_att_acc, **results_transfer_acc, **results_embedding_acc, **results_mlp_acc}
         results_exp_loss = {**results_att_loss , **results_transfer_loss , **results_embedding_loss , **results_mlp_loss }
@@ -53,10 +51,10 @@ def initialize_training() -> None:
     else:
         # trainer = modelTrainer(args['dataset'], hidden_l)
         results_exp_acc, results_exp_loss = run_experiment(trainer, epochs, weight_d, lr, embedding_dimension,  exp=args['exp'])
-        timing.log
+        timing.log()
 
     results_baseline_acc, results_baseline_loss = run_experiment(trainer, epochs, weight_d, lr, embedding_dimension,  exp='baseline')
-    timing.log
+    timing.log()
 
 
     results_acc = {**results_exp_acc, **results_baseline_acc}
