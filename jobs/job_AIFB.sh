@@ -3,13 +3,9 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
-#SBATCH --gpus=1
-#SBATCH -p gpu_short
 #SBATCH -t 1:00:00
 #SBATCH --mail-type=END
 #SBATCH --mail-user=t.j.loos@student.vu.nl
-
-module load 2021 d
 
 source /home/${USER}/.bashrc
 source activate scaling_rgcn
