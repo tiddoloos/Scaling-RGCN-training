@@ -18,5 +18,6 @@ cd "$TMPDIR"/
 #Run Program
 python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB
 
-#Copy output directory from scratch to home
-cp -r ./output_dir $HOME
+#Copy output directory from scratch to results folder on local machine
+scp loost@lisa.surfsara.nl:output_dir/* /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/RGCN_MscThesis_TiddoLoos/results/AIFB
+

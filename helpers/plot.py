@@ -4,6 +4,7 @@ from datetime import datetime
 
 
 def main_plot(metric, dataset, results_dict, epochs, exp):
+        # save results as txt or json
         epoch_list = [i for i in range(epochs)]
         for key, result in results_dict.items():
                 y = result
