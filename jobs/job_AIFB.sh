@@ -11,10 +11,12 @@ source activate scaling_rgcn
 
 #Create output directory on scratch
 cd "$TMPDIR"/
-mkdir "$TMPDIR"/output_dir
+mkdir ./output_dir
 
 #Run Program
 python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB
 
 #Copy output directory from scratch to results folder on local machine
-rsync "$TMPDIR"/output_dir/*. /home/loost/output_dir/AIFB
+scp -r output_dir $HOME
+scp output_dir/* $HOME
+scp -r "$TMPDIR"/output_dir $HOME
