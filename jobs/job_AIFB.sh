@@ -17,6 +17,4 @@ mkdir ./output_dir
 python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB
 
 #Copy output directory from scratch to results folder on local machine
-# scp -r output_dir $HOME
 scp output_dir/* $HOME/output_dir/AIFB
-# scp -r "$TMPDIR"/output_dir $HOME

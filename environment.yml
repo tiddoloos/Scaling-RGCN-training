@@ -2,10 +2,13 @@ name: scaling_rgcn
 channels:
   - defaults
 dependencies:
+  - _libgcc_mutex=0.1
   - ca-certificates=2022.4.26
   - certifi=2021.10.8
-  # - libcxx=12.0.0
+  - ld_impl_linux-64=2.35.1
   - libffi=3.3
+  - libgcc-ng=9.1.0
+  - libstdcxx-ng=9.1.0
   - ncurses=6.3
   - openssl=1.1.1n
   - pip=21.2.4
@@ -40,7 +43,6 @@ dependencies:
     - scikit-learn==1.0.2
     - scipy==1.8.0
     - six==1.16.0
-    - sklearn==0.0
     - threadpoolctl==3.1.0
     - torch==1.11.0
     - torch-cluster==1.6.0
@@ -49,6 +51,7 @@ dependencies:
     - torch-sparse==0.6.13
     - torch-spline-conv==1.2.1
     - tqdm==4.64.0
-    - typing-extensions==4.2.0
+    - typing_extensions==4.2.0
     - urllib3==1.26.9
-prefix: /Users/tiddo/opt/anaconda3/envs/scaling_rgcn
+prefix: /home/loost/anaconda3/envs/scaling_rgcn
+
