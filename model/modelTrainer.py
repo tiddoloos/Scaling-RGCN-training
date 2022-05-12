@@ -1,5 +1,5 @@
 import torch
-from data.graphData import Dataset, Graph
+from graphdata.graphData import Dataset, Graph
 from model.models import base_Layers
 from torch import Tensor
 from typing import List, Tuple

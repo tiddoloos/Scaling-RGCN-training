@@ -17,13 +17,10 @@ def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: in
     results_acc = dict()
     results_loss = dict()
     
-
     if exp == 'baseline':
         print('--BASELINE EXP TRAINING--')
         results_acc['Baseline Accuracy'], results_loss['Baseline Loss'] = trainer.train(trainer.baseModel, trainer.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
         print_trainable_parameters(trainer.baseModel, exp)
-        return results_acc, results_loss
-
 
 
     if exp == 'embedding':
@@ -32,18 +29,15 @@ def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: in
         trainer.data.orgGraph.embedding = nn.Embedding(trainer.data.orgGraph.num_nodes, emb_dim)
         results_acc['Embedding Accuracy'], results_loss['Embedding Loss'] = trainer.train(trainer.embModel, trainer.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
         print_trainable_parameters(trainer.embModel, exp)
-        return results_acc, results_loss
-
 
 
     if exp == 'sum':
-
-        #train summary model
         print('---TRANSFER SUM EXP TRAINING--')
+
         count = 0  
         trainer.sumModel = emb_layers(len(trainer.data.sumGraphs[0].relations.keys()), trainer.hidden_l, trainer.data.num_classes, emb_dim)
         init_sumgraph_embeddings(trainer, emb_dim)
-
+        #train summary model
         print('...Training on Summary Graphs...')
         for sum_graph in trainer.data.sumGraphs:
             _, results_loss[f'Sum Loss {count}'] = trainer.train(trainer.sumModel, sum_graph, lr, weight_d, epochs)
@@ -60,9 +54,6 @@ def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: in
         print('...Training on Orginal Graph after transfer...')
         results_acc['Transfer + sum Accuracy'], results_loss['Transfer + sum Loss'] = trainer.train(trainer.orgModel, trainer.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
         print_trainable_parameters(trainer.orgModel, exp)
-
-        return results_acc, results_loss
-
 
 
     if exp == 'mlp':
@@ -90,8 +81,6 @@ def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: in
         print('...Training on Orginal Graph after transfer...')
         results_acc['Transfer + mlp Accuracy'], results_loss['Transfer + mlp Loss'] = trainer.train(trainer.orgModel, trainer.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
         print_trainable_parameters(trainer.orgModel, exp)
-
-        return results_acc, results_loss
 
 
 
@@ -123,5 +112,5 @@ def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: in
         print_trainable_parameters(trainer.data.sumGraphs[0].embedding, 'Embedding')
         print_trainable_parameters(trainer.orgModel, exp)
 
-        return results_acc, results_loss
+    return results_acc, results_loss
 

@@ -1,6 +1,6 @@
-from data.graphData import Graph
+from graphdata.graphData import Graph
 import torch
-from torch import device, nn, Tensor
+from torch import nn, Tensor
 from typing import List
 
 def get_tensor_list(graph: Graph, sum_graphs: list, emb_dim: int)-> List[Tensor]:
