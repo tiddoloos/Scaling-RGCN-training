@@ -18,9 +18,6 @@ def initialize_training() -> None:
     Also a baseline experiment is conducted.
     """
 
-    device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
-    print(device)
-
     hidden_l = 16
     epochs = 51
     weight_d = 0.0005
