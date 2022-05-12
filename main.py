@@ -1,4 +1,5 @@
 import argparse
+import torch
 from model.modelTrainer import modelTrainer
 from helpers.processResults import plot_and_save
 from experiments import run_experiment
@@ -16,6 +17,9 @@ def initialize_training() -> None:
     the weights of the summary model will be transferd to a new model for training on the original graph.
     Also a baseline experiment is conducted.
     """
+
+    device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
+    print(device)
 
     hidden_l = 16
     epochs = 51
