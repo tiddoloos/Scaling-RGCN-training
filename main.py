@@ -6,7 +6,7 @@ from helpers import timing
 from model.modelTrainer import Trainer
 
 
-def initialize_training(args: dict) -> None:
+def initialize_expiremt(args: dict) -> None:
     """This functions executes the experiment to scale grpah training for multi class entity prediction.
     After training on summary graphs, 
     the weights of the summary model will be transferd to a new model for training on the original graph.
@@ -62,4 +62,4 @@ parser.add_argument('-exp', type=str, choices=['sum', 'mlp', 'attention', 'embed
 args = vars(parser.parse_args())
 
 if __name__=='__main__':
-    initialize_training(args)
+    initialize_expiremt(args)
