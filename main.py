@@ -18,7 +18,7 @@ def initialize_training() -> None:
     """
 
     hidden_l = 16
-    epochs = 2
+    epochs = 51
     weight_d = 0.0005
     lr = 0.01
     #embedding dimension must be devisible by the number of heads aka number of graph summaries (attention layer)
