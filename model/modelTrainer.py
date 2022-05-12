@@ -4,14 +4,13 @@ from model.models import base_Layers
 from torch import Tensor
 from typing import List, Tuple
 
-device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
-
 class modelTrainer:
+    device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
     def __init__(self, name, hidden_l: int):
         self.data = Dataset(name)
         self.data.init_dataset()
         self.hidden_l = hidden_l
-        self.baseModel = base_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes).to(device)
+        self.baseModel = base_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes).to(self.device)
         self.sumModel = None
         self.orgModel = None
         self.embModel = None
@@ -43,11 +42,11 @@ class modelTrainer:
         return acc
 
     def train(self, model, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
-        model.to(device)
-        graph.embedding.to(device)
-        loss_f = torch.nn.BCELoss().to(device)
+        model = model.to(self.device)
+        graph.embedding = graph.embedding.to(self.device)
+        loss_f = torch.nn.BCELoss().to(self.device)
         optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d)
-        training_data = graph.training_data.to(device)
+        training_data = graph.training_data.to(self.device)
 
         accuracies = []
         losses = []
@@ -72,3 +71,4 @@ class modelTrainer:
                 print(f'Epoch: {epoch}, Loss: {l:.4f}')
         
         return accuracies, losses
+    

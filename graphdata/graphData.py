@@ -9,13 +9,12 @@ from sklearn.model_selection import train_test_split
 from graphdata.graphUtils import process_rdf_graph
 from graphdata.createMapping import main_createMappings, encode_label_mapping
 
-device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
-
 class Graph:
+    device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
     def __init__(self, edge_index, edge_type, node_to_enum, num_nodes, nodes, relations_dict,
                 orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type) -> None:
-        self.edge_index = edge_index.to(device)
-        self.edge_type  = edge_type.to(device)
+        self.edge_index = edge_index.to(self.device)
+        self.edge_type  = edge_type.to(self.device)
         self.node_to_enum = node_to_enum
         self.num_nodes = num_nodes
         self.nodes = nodes
