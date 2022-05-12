@@ -1,19 +1,14 @@
 from torch import nn
-from model.models import emb_layers, emb_mlp_Layers, emb_att_Layers
 from typing import List, Dict
-from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
-import torch
 
-# device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
+from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings, init_sumgraph_embeddings
+from model.models import emb_layers, emb_mlp_Layers, emb_att_Layers
+
 
 def print_trainable_parameters(model, exp: str) -> int:
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f'number of trainable parameters for {exp.upper()} model: {trainable_params}')
     return trainable_params
-
-def init_sumgraph_embeddings(trainer, emb_dim: int):
-    for sum_graph in trainer.data.sumGraphs:
-        sum_graph.embedding = nn.Embedding(sum_graph.num_nodes, emb_dim)
 
 def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: int, exp: str)-> Dict[str, List[float]]:
     results_acc = dict()

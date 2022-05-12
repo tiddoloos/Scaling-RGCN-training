@@ -1,6 +1,8 @@
 import atexit
+
 from time import time, strftime, localtime
 from datetime import timedelta
+
 
 def secondsToStr(elapsed=None):
     if elapsed is None:

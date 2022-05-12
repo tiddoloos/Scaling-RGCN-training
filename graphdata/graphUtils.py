@@ -1,8 +1,10 @@
 import rdflib
 import torch
-from rdflib.term import URIRef
-from rdflib import Graph
+
 from collections import Counter
+from rdflib import Graph
+from rdflib.term import URIRef
+
 
 def make_rdf_graph(file_path: str) -> rdflib.Graph:
     format = file_path.split('.')[-1]
@@ -18,10 +20,10 @@ def get_relations(graph, edge):
     relations.remove(edge)
     return relations
 
-def freq(rel: str, freq_):
+def freq(rel: str, freq_: Counter):
         return freq_[rel] if rel in freq_ else 0
 
-def process_rdf_graph(graph_path):
+def process_rdf_graph(graph_path: str):
     edge = URIRef('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
     
     graph = make_rdf_graph(graph_path)

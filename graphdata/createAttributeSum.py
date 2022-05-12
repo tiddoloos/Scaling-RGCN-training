@@ -1,31 +1,33 @@
 import argparse
-import rdflib 
-import pathlib
-from typing import Any, Callable, Dict
 import hashlib
+import rdflib
 import rdflib.term
-from rdflib import URIRef
+import pathlib
 
-def check_blank(node: Any):
+from rdflib import URIRef
+from typing import Callable, Dict
+
+
+def check_blank(node: rdflib.term):
     if type(node) == rdflib.term.BNode:
         node = URIRef('http://example.org/'+ str(node))
     return node
 
-def forward(node: Any, graph: rdflib.Graph, sum_type = 'forw') -> str:
+def forward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'forw') -> str:
     sorted_preds = sorted(list(graph.predicates(subject=node)))
     hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
     value = hash.hexdigest()
     node_id = 'sumnode:' + value
     return node_id, sum_type
 
-def backward(node: Any, graph: rdflib.Graph, sum_type = 'backw') -> str:
+def backward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'backw') -> str:
     sorted_preds = sorted(list(graph.predicates(object=node)))
     incoming_hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
     value = incoming_hash.hexdigest()
     node_id = 'sumnode:' + value
     return node_id, sum_type
 
-def forward_backward(node: Any, graph: rdflib.Graph, sum_type = 'forw_back') -> str:
+def forward_backward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'forw_back') -> str:
     sorted_preds = sorted(list(graph.predicates(subject=node)))
     incoming_hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
     sorted_outgoing_preds = sorted(list(graph.predicates(object=node)))
@@ -34,7 +36,7 @@ def forward_backward(node: Any, graph: rdflib.Graph, sum_type = 'forw_back') -> 
     node_id = 'sumnode:' + value
     return node_id, sum_type
 
-def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib.Path, format: str, id_creator: Callable[[Any, rdflib.Graph], str]) -> None:
+def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib.Path, format: str, id_creator: Callable[[URIRef, rdflib.Graph], str]) -> None:
     g = rdflib.Graph()
     sumGraph = rdflib.Graph()
     mapGraph = rdflib.Graph()
@@ -45,7 +47,7 @@ def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib
 
     # create sum graph
     for s_, p_, o_ in g:
-        if type(o_) is rdflib.term.Literal:
+        if type(o_) == rdflib.term.Literal:
             o_ = URIRef('http://example.org/string')
         s_ = check_blank(s_)
         o_ = check_blank(o_)

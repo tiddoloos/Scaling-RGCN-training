@@ -1,10 +1,12 @@
 import torch
 import torch.nn.functional as F
-from typing import List
-from torch import Tensor
+
 from torch import nn
+from torch import Tensor
 from torch_geometric.nn import RGCNConv
+
 from graphdata.graphData import Graph
+
 
 class base_Layers(nn.Module):
     def __init__(self, num_nodes: int, num_relations: int, hidden_l: int, num_labels: int) -> None:

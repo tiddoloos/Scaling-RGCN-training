@@ -1,6 +1,7 @@
+import json
 import matplotlib.pyplot as plt
 import numpy as np
-import json
+
 from datetime import datetime
 
 

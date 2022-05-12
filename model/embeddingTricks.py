@@ -1,7 +1,15 @@
-from graphdata.graphData import Graph
 import torch
+
 from torch import nn, Tensor
 from typing import List
+
+from graphdata.graphData import Graph
+from model.modelTrainer import Trainer
+
+
+def init_sumgraph_embeddings(trainer: Trainer, emb_dim: int):
+    for sum_graph in trainer.data.sumGraphs:
+        sum_graph.embedding = nn.Embedding(sum_graph.num_nodes, emb_dim)
 
 def get_tensor_list(graph: Graph, sum_graphs: list, emb_dim: int)-> List[Tensor]:
     tensors = []

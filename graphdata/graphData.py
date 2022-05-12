@@ -1,18 +1,22 @@
+import torch
+
 from typing import Tuple, List, Dict
 from os import listdir
 from os.path import isfile, join
-
-import torch
+from torch import Tensor
 from torch_geometric.data import Data
 from sklearn.model_selection import train_test_split
 
 from graphdata.graphUtils import process_rdf_graph
-from graphdata.createMapping import main_createMappings, encode_label_mapping
+from graphdata.createMapping import main_createMappings, encode_node_labels
+
 
 class Graph:
     device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
-    def __init__(self, edge_index, edge_type, node_to_enum, num_nodes, nodes, relations_dict,
-                orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type) -> None:
+    def __init__(self, edge_index: Tensor, edge_type: Tensor, node_to_enum: dict,
+                num_nodes: int, nodes, relations_dict: dict, orgNode2sumNode_dict: dict, 
+                sumNode2orgNode_dict: dict, org2type_dict: dict, org2type: dict, sum2type: dict) -> None:
+
         self.edge_index = edge_index.to(self.device)
         self.edge_type  = edge_type.to(self.device)
         self.node_to_enum = node_to_enum
@@ -47,7 +51,7 @@ class Dataset:
             for orgNode, value in self.orgGraph.node_to_enum.items():
                 if value in X_test:
                     org2type[orgNode].clear()
-            sumGraph.sum2type, _  =  encode_label_mapping(sumGraph.sumNode2orgNode_dict, org2type, self.enum_classes, self.num_classes)
+            sumGraph.sum2type, _  =  encode_node_labels(sumGraph.sumNode2orgNode_dict, org2type, self.enum_classes, self.num_classes)
 
     def get_idx_labels(self, graph: Graph, node2type: Dict[str, List[float]]) -> Tuple[List[int], List[int]]:
         train_indices = list()

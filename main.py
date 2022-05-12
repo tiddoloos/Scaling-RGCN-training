@@ -1,17 +1,12 @@
 import argparse
-import torch
-from model.modelTrainer import modelTrainer
-from helpers.processResults import plot_and_save
+
 from experiments import run_experiment
+from helpers.processResults import plot_and_save
 from helpers import timing
-
-parser = argparse.ArgumentParser(description='experiment arguments')
-parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM', 'TEST'], help='inidcate dataset name')
-parser.add_argument('-exp', type=str, choices=['sum', 'mlp', 'attention', 'embedding'], help='select experiment')
-args = vars(parser.parse_args())
+from model.modelTrainer import Trainer
 
 
-def initialize_training() -> None:
+def initialize_training(args: dict) -> None:
     """This functions executes the experiment to scale grpah training for multi class entity prediction.
     After training on summary graphs, 
     the weights of the summary model will be transferd to a new model for training on the original graph.
@@ -25,7 +20,7 @@ def initialize_training() -> None:
     #embedding dimension must be devisible by the number of heads aka number of graph summaries (attention layer)
     embedding_dimension = 63
 
-    trainer = modelTrainer(args['dataset'], hidden_l)
+    trainer = Trainer(args['dataset'], hidden_l)
     # Transfer learning expriment
     if args['exp'] == None:
         results_transfer_acc, results_transfer_loss = run_experiment(trainer, epochs, weight_d, lr, embedding_dimension,  exp='sum')
@@ -64,5 +59,11 @@ def initialize_training() -> None:
     plot_and_save('Accuracy', args['dataset'], results_acc, epochs, args['exp'])
     plot_and_save('Loss', args['dataset'], results_loss, epochs, args['exp'])
 
+
+parser = argparse.ArgumentParser(description='experiment arguments')
+parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM', 'TEST'], help='inidcate dataset name')
+parser.add_argument('-exp', type=str, choices=['sum', 'mlp', 'attention', 'embedding'], help='select experiment')
+args = vars(parser.parse_args())
+
 if __name__=='__main__':
-    initialize_training()
+    initialize_training(args)

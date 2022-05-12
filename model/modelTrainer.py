@@ -1,12 +1,16 @@
 import torch
-from graphdata.graphData import Dataset, Graph
-from model.models import base_Layers
+
+from torch import nn
 from torch import Tensor
 from typing import List, Tuple
 
-class modelTrainer:
+from graphdata.graphData import Dataset, Graph
+from model.models import base_Layers
+
+
+class Trainer:
     device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
-    def __init__(self, name, hidden_l: int):
+    def __init__(self, name: str, hidden_l: int):
         self.data = Dataset(name)
         self.data.init_dataset()
         self.hidden_l = hidden_l
@@ -35,13 +39,13 @@ class modelTrainer:
         p = (torch.sum((pred[x] == y) * (pred[x] == 1))) / tot
         return p.item()
     
-    def evaluate(self, model, graph: Graph) -> float:
+    def evaluate(self, model: nn.Module, graph: Graph) -> float:
         pred = model(graph)
         pred = torch.round(pred)
         acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val)
         return acc
 
-    def train(self, model, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
+    def train(self, model: nn.Module, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
         model = model.to(self.device)
         graph.embedding = graph.embedding.to(self.device)
         loss_f = torch.nn.BCELoss().to(self.device)
