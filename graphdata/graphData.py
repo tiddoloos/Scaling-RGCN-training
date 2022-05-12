@@ -29,7 +29,7 @@ class Graph:
         self.embedding = None
 
 class Dataset:
-    def __init__(self, name) -> None:
+    def __init__(self, name: str) -> None:
         self.org_path = f'./graphdata/{name}/{name}_complete.nt'
         self.sum_path = f'./graphdata/{name}/attr/sum/'
         self.map_path = f'./graphdata/{name}/attr/map/'
@@ -38,7 +38,7 @@ class Dataset:
         self.enum_classes = None
         self.num_classes = None
     
-    def remove_test_data(self, X_test: list) -> None:
+    def remove_test_data(self, X_test: List[int]) -> None:
         """This funtion updates the sum2type dict by removing the test data.
         Avoids test set leakage because orignal node maps to a summary nodes which maps to a type (predicted class).
         """ 
