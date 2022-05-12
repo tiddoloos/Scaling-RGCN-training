@@ -1,11 +1,12 @@
 import json
-import matplotlib.pyplot as plt
+import matplotlib.pyplot 
 import numpy as np
 
 from datetime import datetime
 
 
 def plot_and_save(metric, dataset, results_dict, epochs, exp):
+        plt = matplotlib.pyplot
         epoch_list = [i for i in range(epochs)]
         for key, result in results_dict.items():
                 y = result
