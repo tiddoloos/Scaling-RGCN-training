@@ -41,7 +41,7 @@ def initialize_training(args: dict) -> None:
         results_exp_acc = {**results_att_acc, **results_transfer_acc, **results_embedding_acc, **results_mlp_acc}
         results_exp_loss = {**results_att_loss , **results_transfer_loss , **results_embedding_loss , **results_mlp_loss }
     
-    else:
+    if args['exp'] != None:
         results_exp_acc, results_exp_loss = run_experiment(trainer, epochs, weight_d, lr, embedding_dimension,  exp=args['exp'])
         timing.log('experiment done')
 
