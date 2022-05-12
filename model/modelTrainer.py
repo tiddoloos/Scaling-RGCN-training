@@ -43,10 +43,12 @@ class modelTrainer:
         return acc
 
     def train(self, model, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
+        self.data.to(self.device)
+        graph.to(self.device) # may not be necessary
         model.to(self.device)
         loss_f = torch.nn.BCELoss().to(self.device)
         optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d)
-        training_data = graph.training_data.to(self.device)
+        training_data = graph.training_data.to(self.device) # may not be necessary
 
         accuracies = []
         losses = []
