@@ -1,20 +1,24 @@
 #!/bin/bash
+#SBATCH --partition=gpu_shared
+#SBATCH --gres=gpu:1
 #SBATCH --job-name=MUTAG_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
-#SBATCH -t 1:00:00
+#SBATCH -t 100:00:00
+#SBATCH --mail-type=,END
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
 source /home/${USER}/.bashrc
 source activate scaling_rgcn
 
-#Create output directory on scratch
 cd "$TMPDIR"/
-mkdir ./output_dir
+mkdir ./results
+scp -r $HOME/graphdata ./
 
 #Run Program
 python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset MUTAG
 
 #Copy output directory from scratch to results folder on local machine
-scp output_dir/* $HOME/output_dir/MUTAG
+cd "$TMPDIR"/
+scp results/* $HOME/results/MUTAG
