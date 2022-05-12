@@ -61,6 +61,7 @@ class modelTrainer:
             optimizer.zero_grad()
             out = model(graph)
             targets = training_data.y_train.to(torch.float32)
+            targets.to(self.device)
             output = loss_f(out[training_data.x_train], targets)
             output.backward()
             optimizer.step()

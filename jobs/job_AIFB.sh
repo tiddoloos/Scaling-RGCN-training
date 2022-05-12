@@ -5,7 +5,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
-#SBATCH -t 1:00:00
+#SBATCH -t 20:00:00
 #SBATCH --mail-type=,END
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
