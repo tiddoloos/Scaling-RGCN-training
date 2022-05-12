@@ -11,7 +11,7 @@ source /home/${USER}/.bashrc
 source activate scaling_rgcn
 
 cd "$TMPDIR"/
-mkdir ./output_dir
+mkdir ./results
 scp -r $HOME/graphdata ./
 
 #Run Program
@@ -19,4 +19,4 @@ python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB -exp mlp
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
-scp output_dir/* $HOME/output_dir/AIFB
+scp results/* $HOME/results/AIFB

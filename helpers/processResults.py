@@ -25,7 +25,7 @@ def plot_and_save(metric, dataset, results_dict, epochs, exp):
 
         dt = datetime.now()
         str_date = dt.strftime('%d-%B-%Y-%I:%M-%p')
-        plt.savefig(f'./output_dir/{dataset}_{metric}_{exp}_{str_date}.png')
+        plt.savefig(f'./results/{dataset}_{metric}_{exp}_{str_date}.png')
 
-        with open(f'./output_dir/{dataset}_{metric}_{exp}_{str_date}.json', 'w') as write_file:
+        with open(f'./results/{dataset}_{metric}_{exp}_{str_date}.json', 'w') as write_file:
                 json.dump(results_dict, write_file, indent=4)

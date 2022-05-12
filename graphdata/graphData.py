@@ -1,4 +1,4 @@
-from typing import Tuple, List
+from typing import Tuple, List, Dict
 from os import listdir
 from os.path import isfile, join
 
@@ -49,10 +49,11 @@ class Dataset:
                     org2type[orgNode].clear()
             sumGraph.sum2type, _  =  encode_label_mapping(sumGraph.sumNode2orgNode_dict, org2type, self.enum_classes, self.num_classes)
 
-    def get_idx_labels(self, graph: Graph, dictionary: dict) -> Tuple[List[int], List[int]]:
-        train_indices, train_labels = [], []
-        for node, labs in dictionary.items():
-            if sum(list(labs)) != 0 and graph.node_to_enum.get(node) is not None:
+    def get_idx_labels(self, graph: Graph, node2type: Dict[str, List[float]]) -> Tuple[List[int], List[int]]:
+        train_indices = list()
+        train_labels = list()
+        for node, labs in node2type.items():
+            if sum(list(labs)) != 0.0 and graph.node_to_enum.get(node) is not None:
                 train_indices.append(graph.node_to_enum[node])
                 train_labels.append(list(labs))
         return train_indices, train_labels
@@ -60,7 +61,7 @@ class Dataset:
     def get_file_names(self) -> Tuple[List[str], List[str]]:
         sum_files = [f for f in listdir(self.sum_path) if not f.startswith('.') if isfile(join(self.sum_path, f))]
         map_files = [f for f in listdir(self.map_path) if not f.startswith('.') if isfile(join(self.map_path, f))]
-        return sum_files, map_files
+        return sorted(sum_files), sorted(map_files)
 
     def init_dataset(self) -> None:
         sum_files, map_files = self.get_file_names()
