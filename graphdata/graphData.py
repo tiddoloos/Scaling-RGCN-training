@@ -90,7 +90,7 @@ class Dataset:
         X_train, X_test, y_train, y_test = train_test_split(g_idx, g_labels,  test_size=0.2, random_state=1) 
         X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, random_state=1)
 
-        self.orgGraph.training_data = Data(edge_index = self.orgGraph.edge_index).to(device)  
+        self.orgGraph.training_data = Data(edge_index = self.orgGraph.edge_index)
         self.orgGraph.training_data.x_train = torch.tensor(X_train, dtype = torch.long)
         self.orgGraph.training_data.x_test = torch.tensor(X_test) 
         self.orgGraph.training_data.x_val = torch.tensor(X_val, dtype = torch.long)
@@ -104,7 +104,7 @@ class Dataset:
         # get training data of summary graphs
         for sGraph in self.sumGraphs:
             sg_idx, sg_labels = self.get_idx_labels(sGraph, sGraph.sum2type)
-            sGraph.training_data = Data(edge_index = sGraph.edge_index).to(device)
+            sGraph.training_data = Data(edge_index = sGraph.edge_index)
             sGraph.training_data.x_train = torch.tensor(sg_idx, dtype = torch.long)
             sGraph.training_data.y_train = torch.tensor(sg_labels)
             
