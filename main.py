@@ -3,7 +3,7 @@ import argparse
 from typing import Dict
 
 from experiments import run_experiment
-from helpers.processResults import plot_and_save
+from helpers.processResults import plot_and_save, print_max_result
 from helpers import timing
 from model.modelTrainer import Trainer
 
@@ -54,6 +54,8 @@ def initialize_expiremt(args: Dict[str, str]) -> None:
 
     results_acc = {**results_exp_acc, **results_baseline_acc}
     results_loss = {**results_exp_loss, **results_baseline_loss}
+
+    print_max_result(results_acc)
 
     plot_and_save('Accuracy', args['dataset'], results_acc, epochs, args['exp'])
     plot_and_save('Loss', args['dataset'], results_loss, epochs, args['exp'])

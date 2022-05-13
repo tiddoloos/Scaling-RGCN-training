@@ -3,7 +3,16 @@ import matplotlib.pyplot
 import numpy as np
 
 from datetime import datetime
+from typing import Dict, List
 
+
+def print_max_result(results_dict: Dict[str, List[float]]) -> None:
+        for exp, results in results_dict.items():
+                exp_strip = exp.replace(' Accuracy', '')
+                max_acc = max(results)
+                epoch = int(results.index(max_acc)) - 1 
+                max_acc = max_acc*100
+                print(f'{exp_strip.upper()}: After epoch {epoch}, Max accuracy {round(max_acc, 2)}%')
 
 def plot_and_save(metric, dataset, results_dict, epochs, exp):
         plt = matplotlib.pyplot
