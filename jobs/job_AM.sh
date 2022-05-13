@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=gpu_shared
 #SBATCH --gres=gpu:1
-#SBATCH --mem=1000G
+#SBATCH --mem=2000G
 #SBATCH --job-name=AM_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
