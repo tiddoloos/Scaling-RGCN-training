@@ -1,9 +1,9 @@
 import torch
+from torch import nn
 
 from typing import Tuple, List, Dict
 from os import listdir
 from os.path import isfile, join
-from torch import Tensor
 from torch_geometric.data import Data
 from sklearn.model_selection import train_test_split
 
@@ -12,13 +12,10 @@ from graphdata.createMapping import main_createMappings, encode_node_labels
 
 
 class Graph:
-    device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
-    def __init__(self, edge_index: Tensor, edge_type: Tensor, node_to_enum: dict,
+    # device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
+    def __init__(self, node_to_enum: dict,
                 num_nodes: int, nodes, relations_dict: dict, orgNode2sumNode_dict: dict, 
                 sumNode2orgNode_dict: dict, org2type_dict: dict, org2type: dict, sum2type: dict) -> None:
-
-        self.edge_index = edge_index.to(self.device)
-        self.edge_type  = edge_type.to(self.device)
         self.node_to_enum = node_to_enum
         self.num_nodes = num_nodes
         self.nodes = nodes
@@ -29,7 +26,6 @@ class Graph:
         self.org2type = org2type
         self.sum2type = sum2type
         self.training_data = None
-        self.embedding = None
 
 class Dataset:
     def __init__(self, name: str) -> None:
@@ -65,24 +61,30 @@ class Dataset:
     def get_file_names(self) -> Tuple[List[str], List[str]]:
         sum_files = [f for f in listdir(self.sum_path) if not f.startswith('.') if isfile(join(self.sum_path, f))]
         map_files = [f for f in listdir(self.map_path) if not f.startswith('.') if isfile(join(self.map_path, f))]
+        assert len(sum_files) == len(map_files), f'for every summary file there needs to be a map file.{sum_files} and {map_files}'
         return sorted(sum_files), sorted(map_files)
 
-    def init_dataset(self) -> None:
+    def init_dataset(self, emb_dim: int) -> None:
         sum_files, map_files = self.get_file_names()
-        assert len(sum_files) == len(map_files), f'for every summary file there needs to be a map file.{sum_files} and {map_files}'
 
         #collect summary graph data
         for i in range(len(sum_files)):
             sum_path = f'{self.sum_path}/{sum_files[i]}'
             map_path = f'{self.map_path}/{map_files[i]}'
             sum2type, org2type, self.enum_classes, self.num_classes, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict = main_createMappings(self.org_path, map_path)
-            edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(sum_path)
+            edge_index, edge_type, node_to_enum, num_nodes, sorted_nodes, relations_dict = process_rdf_graph(sum_path)
             
-            sGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type)
+            sGraph = Graph(node_to_enum, num_nodes, sorted_nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type)
+            sGraph.training_data = Data(edge_index = edge_index)
+            sGraph.training_data.edge_type = edge_type
+            sGraph.training_data.embedding = nn.Embedding(num_nodes, emb_dim)
             self.sumGraphs.append(sGraph)
 
-        edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict = process_rdf_graph(self.org_path)
-        self.orgGraph = Graph(edge_index, edge_type, node_to_enum, length_sorted_nodes, sorted_nodes, relations_dict, None, None, None, None, None)
+        org_edge_index, org_edge_type, org_node_to_enum, org_num_nodes, org_sorted_nodes, org_relations_dict = process_rdf_graph(self.org_path)
+        self.orgGraph = Graph(org_node_to_enum, org_num_nodes, org_sorted_nodes, org_relations_dict, None, None, None, None, None)
+        self.orgGraph.training_data = Data(edge_index = org_edge_index)
+        self.orgGraph.training_data.edge_type = org_edge_type
+        self.orgGraph.training_data.embedding = nn.Embedding(num_nodes, emb_dim)
 
         print("ORIGINAL GRAPH STATISTICS")
         print(f"num Nodes = {self.orgGraph.num_nodes}")
@@ -93,7 +95,6 @@ class Dataset:
         X_train, X_test, y_train, y_test = train_test_split(g_idx, g_labels,  test_size=0.2, random_state=1) 
         X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, random_state=1)
 
-        self.orgGraph.training_data = Data(edge_index = self.orgGraph.edge_index)
         self.orgGraph.training_data.x_train = torch.tensor(X_train, dtype = torch.long)
         self.orgGraph.training_data.x_test = torch.tensor(X_test) 
         self.orgGraph.training_data.x_val = torch.tensor(X_val, dtype = torch.long)
@@ -107,7 +108,6 @@ class Dataset:
         # get training data of summary graphs
         for sGraph in self.sumGraphs:
             sg_idx, sg_labels = self.get_idx_labels(sGraph, sGraph.sum2type)
-            sGraph.training_data = Data(edge_index = sGraph.edge_index)
             sGraph.training_data.x_train = torch.tensor(sg_idx, dtype = torch.long)
             sGraph.training_data.y_train = torch.tensor(sg_labels)
             

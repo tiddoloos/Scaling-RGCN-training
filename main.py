@@ -23,7 +23,7 @@ def initialize_expiremt(args: Dict[str, str]) -> None:
     embedding_dimension = 63
 
     # Initialize trainer here and create the data. Data is used and kept the same for each experiment for comparison
-    trainer = Trainer(args['dataset'], hidden_l)
+    trainer = Trainer(args['dataset'], hidden_l, embedding_dimension)
     
     if args['exp'] == None:
         results_transfer_acc, results_transfer_loss = run_experiment(trainer, epochs, weight_d, lr, embedding_dimension,  exp='sum')

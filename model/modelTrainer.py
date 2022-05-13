@@ -10,9 +10,9 @@ from model.models import base_Layers
 
 class Trainer:
     device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
-    def __init__(self, name: str, hidden_l: int):
+    def __init__(self, name: str, hidden_l: int, emb_dim):
         self.data = Dataset(name)
-        self.data.init_dataset()
+        self.data.init_dataset(emb_dim)
         self.hidden_l = hidden_l
         self.baseModel = base_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes).to(self.device)
         self.sumModel = None
@@ -47,10 +47,9 @@ class Trainer:
 
     def train(self, model: nn.Module, graph: Graph, lr: float, weight_d: float, epochs: int, sum_graph=True) -> Tuple[List, List]:
         model = model.to(self.device)
-        graph.embedding = graph.embedding.to(self.device)
+        training_data = graph.training_data.to(self.device)
         loss_f = torch.nn.BCELoss().to(self.device)
         optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_d)
-        training_data = graph.training_data.to(self.device)
 
         accuracies = []
         losses = []
@@ -58,11 +57,11 @@ class Trainer:
         for epoch in range(epochs):
             if not sum_graph:
                 model.eval()
-                acc = self.evaluate(model, graph)
+                acc = self.evaluate(model, training_data)
                 accuracies.append(acc)
             model.train()
             optimizer.zero_grad()
-            out = model(graph)
+            out = model(training_data)
             targets = training_data.y_train.to(torch.float32)
             output = loss_f(out[training_data.x_train], targets)
             output.backward()

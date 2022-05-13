@@ -1,7 +1,7 @@
 from torch import nn
 from typing import List, Dict
 
-from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings, init_sumgraph_embeddings
+from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 from model.modelTrainer import Trainer
 from model.models import emb_layers, emb_mlp_Layers, emb_att_Layers
 
@@ -24,7 +24,7 @@ def run_experiment(trainer: Trainer, epochs: int, weight_d: float, lr: float, em
     if exp == 'embedding':
         print('--EMBEDDING EXP TRAINING--')
         trainer.embModel = emb_layers(len(trainer.data.orgGraph.relations.keys()), trainer.hidden_l, trainer.data.num_classes, emb_dim)
-        trainer.data.orgGraph.embedding = nn.Embedding(trainer.data.orgGraph.num_nodes, emb_dim)
+        trainer.data.orgGraph.training_data.embedding = nn.Embedding(trainer.data.orgGraph.num_nodes, emb_dim)
         results_acc['Embedding Accuracy'], results_loss['Embedding Loss'] = trainer.train(trainer.embModel, trainer.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
         print_trainable_parameters(trainer.embModel, exp)
 
@@ -32,14 +32,11 @@ def run_experiment(trainer: Trainer, epochs: int, weight_d: float, lr: float, em
     if exp == 'sum':
         print('---TRANSFER SUM EXP TRAINING--')
 
-        count = 0  
         trainer.sumModel = emb_layers(len(trainer.data.sumGraphs[0].relations.keys()), trainer.hidden_l, trainer.data.num_classes, emb_dim)
-        init_sumgraph_embeddings(trainer, emb_dim)
         #train summary model
         print('...Training on Summary Graphs...')
-        for sum_graph in trainer.data.sumGraphs:
+        for count, sum_graph in enumerate(trainer.data.sumGraphs):
             _, results_loss[f'Sum Loss {count}'] = trainer.train(trainer.sumModel, sum_graph, lr, weight_d, epochs)
-            count += 1
 
         trainer.orgModel = emb_layers(len(trainer.data.orgGraph.relations.keys()), trainer.hidden_l, trainer.data.num_classes, emb_dim)
         #make embedding for orgModel by summing
@@ -57,13 +54,11 @@ def run_experiment(trainer: Trainer, epochs: int, weight_d: float, lr: float, em
     if exp == 'mlp':
         print('---MLP EMBEDDING EXP TRAINING--')
         trainer.sumModel = emb_layers(len(trainer.data.sumGraphs[0].relations.keys()), trainer.hidden_l, trainer.data.num_classes, emb_dim)
-        init_sumgraph_embeddings(trainer, emb_dim)
-        count = 0  
+    
         #train summary model
         print('...Training on Summary Graphs...')
-        for sum_graph in trainer.data.sumGraphs:
+        for count, sum_graph in enumerate(trainer.data.sumGraphs):
             _, results_loss[f'Sum Loss {count}'] = trainer.train(trainer.sumModel, sum_graph, lr, weight_d, epochs)
-            count += 1
         
         in_f = len(trainer.data.sumGraphs)*emb_dim
         out_f = round((in_f/2)*3 + trainer.data.num_classes)
@@ -85,14 +80,12 @@ def run_experiment(trainer: Trainer, epochs: int, weight_d: float, lr: float, em
     if exp == 'attention':
         print('---ATTENTION EMBEDDING EXP TRAINING--')
         trainer.sumModel = emb_layers(len(trainer.data.sumGraphs[0].relations.keys()), trainer.hidden_l, trainer.data.num_classes, emb_dim)
-        init_sumgraph_embeddings(trainer, emb_dim)
+        # init_sumgraph_embeddings(trainer, emb_dim)
 
         print('...Training on Summary Graphs...')
         #train sum model
-        count = 0
-        for sum_graph in trainer.data.sumGraphs:
+        for count, sum_graph in enumerate(trainer.data.sumGraphs):
             _, results_loss[f'Sum Loss {count}'] = trainer.train(trainer.sumModel, sum_graph, lr, weight_d, epochs)
-            count += 1
         
         trainer.orgModel = emb_att_Layers(len(trainer.data.orgGraph.relations.keys()), trainer.hidden_l, trainer.data.num_classes, len(trainer.data.sumGraphs), emb_dim)
 
@@ -107,7 +100,8 @@ def run_experiment(trainer: Trainer, epochs: int, weight_d: float, lr: float, em
         results_acc['Transfer + Attention Accuracy'], results_loss['Transfer + Attention Loss'] = trainer.train(trainer.orgModel, trainer.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
 
         # in this calculation the parameters for making/updating the emedding do count aswell
-        print_trainable_parameters(trainer.data.sumGraphs[0].embedding, 'Embedding')
+        for sum_graph in trainer.data.sumGraphs:
+            print_trainable_parameters(sum_graph.training_data.embedding, 'embedding')
         print_trainable_parameters(trainer.orgModel, exp)
 
     return results_acc, results_loss
