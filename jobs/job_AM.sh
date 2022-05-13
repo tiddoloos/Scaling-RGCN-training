@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=gpu_shared
 #SBATCH --gres=gpu:1
-#SBATCH --mem=250G
+#SBATCH --mem=1000G
 #SBATCH --job-name=AM_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -18,7 +18,7 @@ mkdir ./results
 scp -r $HOME/graphdata ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -exp attention
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
