@@ -23,7 +23,7 @@ class base_Layers(nn.Module):
         x = torch.sigmoid(x)
         return x
 
-###############################################################################################################
+
 class emb_layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, emb_dim) -> None:
         super(emb_layers, self).__init__()
@@ -48,7 +48,6 @@ class emb_layers(nn.Module):
         self.rgcn2.bias = torch.nn.Parameter(bias_2)
         self.rgcn2.root = torch.nn.Parameter(root_2)
     
-##############################################################################################################
 
 class emb_mlp_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, in_f: int, out_f: int, emb_dim):
@@ -79,7 +78,6 @@ class emb_mlp_Layers(nn.Module):
         self.rgcn2.bias = torch.nn.Parameter(bias_2)
         self.rgcn2.root = torch.nn.Parameter(root_2)
 
-######################################################################################################################
 
 class emb_att_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, num_sums: int, emb_dim):

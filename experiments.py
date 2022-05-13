@@ -2,15 +2,16 @@ from torch import nn
 from typing import List, Dict
 
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings, init_sumgraph_embeddings
+from model.modelTrainer import Trainer
 from model.models import emb_layers, emb_mlp_Layers, emb_att_Layers
 
 
-def print_trainable_parameters(model, exp: str) -> int:
+def print_trainable_parameters(model: nn.Module, exp: str) -> int:
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f'number of trainable parameters for {exp.upper()} model: {trainable_params}')
     return trainable_params
 
-def run_experiment(trainer, epochs: int, weight_d: float, lr: float, emb_dim: int, exp: str)-> Dict[str, List[float]]:
+def run_experiment(trainer: Trainer, epochs: int, weight_d: float, lr: float, emb_dim: int, exp: str)-> Dict[str, List[float]]:
     results_acc = dict()
     results_loss = dict()
     
