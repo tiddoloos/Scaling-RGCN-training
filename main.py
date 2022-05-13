@@ -65,6 +65,7 @@ parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM', 'TEST'
 parser.add_argument('-exp', type=str, choices=['sum', 'mlp', 'attention', 'embedding'], help='select experiment')
 args = vars(parser.parse_args())
 
+
 experiments = {
 'sum': {'sum_layers': emb_layers, 'org_layers': emb_layers, 'embedding_trick': sum_embeddings, 'transfer': True},
 'mlp': {'sum_layers': emb_layers, 'org_layers': emb_mlp_Layers, 'embedding_trick': concat_embeddings, 'transfer': True},

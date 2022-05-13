@@ -4,6 +4,7 @@ from torch import nn
 from torch import Tensor
 from torch_geometric.data import Data
 from typing import List, Tuple, Callable
+
 from graphdata.graphData import Dataset, Graph
 from model.embeddingTricks import init_embedding
 from model.models import base_Layers, emb_layers
@@ -85,14 +86,14 @@ class Trainer:
 
         if transfer == True:
             for sumgraph in self.data.sumGraphs:
-                init_embedding(sumgraph, None, self.emb_dim)
+                init_embedding(sumgraph, self.emb_dim)
             print('Training on Summary Graphs...')
             sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.emb_dim)
             #train sum model
             for count, sum_graph in enumerate(self.data.sumGraphs):
                 _, results_loss[f'Sum Loss {count}'] = self.train(sumModel, sum_graph)
 
-        init_embedding(self.data.orgGraph, None, self.emb_dim)
+        init_embedding(self.data.orgGraph, self.emb_dim)
         orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.emb_dim)
        
         if transfer == True:
