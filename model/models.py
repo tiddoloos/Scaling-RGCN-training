@@ -90,7 +90,7 @@ class emb_att_Layers(nn.Module):
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
     def forward(self, graph: Graph) -> Tensor:
-        attn_output, attn_output_weights = self.att(graph.embedding, graph.embedding, graph.embedding)
+        attn_output, _ = self.att(graph.embedding, graph.embedding, graph.embedding)
         x = self.rgcn1(attn_output[0], graph.edge_index, graph.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, graph.edge_index, graph.edge_type)
