@@ -5,6 +5,8 @@ from typing import List
 
 from graphdata.graphData import Graph
 
+def init_embedding(graph: Graph, _, emb_dim: int):
+    graph.training_data.embedding = nn.Embedding(graph.num_nodes, emb_dim)
 
 def get_tensor_list(graph: Graph, sum_graphs: list, emb_dim: int)-> List[Tensor]:
     tensors = []
