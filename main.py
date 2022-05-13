@@ -6,8 +6,8 @@ from torch import nn
 # from experiments import run_experiment
 from helpers.processResults import plot_and_save, print_max_result
 from helpers import timing
-from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings, init_embedding
-from model.models import emb_layers, emb_mlp_Layers, emb_att_Layers, base_Layers
+from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
+from model.models import emb_layers, emb_mlp_Layers, emb_att_Layers
 from model.modelTrainer import Trainer
 
 
