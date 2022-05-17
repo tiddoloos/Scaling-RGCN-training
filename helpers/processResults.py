@@ -4,6 +4,7 @@ import numpy as np
 
 from datetime import datetime
 from typing import Dict, List
+from torch import nn
 
 
 def print_max_result(results_dict: Dict[str, List[float]]) -> None:
@@ -40,3 +41,8 @@ def plot_and_save(metric, dataset, results_dict, epochs, exp):
 
         with open(f'./results/{dataset}_{metric}_{exp}_{str_date}.json', 'w') as write_file:
                 json.dump(results_dict, write_file, indent=4)
+
+def print_trainable_parameters(model: nn.Module, exp: str) -> int:
+    trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    print(f'number of trainable parameters for {exp.upper()} model: {trainable_params}')
+    return trainable_params
