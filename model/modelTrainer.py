@@ -1,26 +1,24 @@
+from traceback import print_list
 import torch
 
-from torch import nn
+from torch import embedding, nn
 from torch import Tensor
 from torch_geometric.data import Data
 from typing import List, Tuple, Callable
 
 from graphdata.graphData import Dataset, Graph
 from model.embeddingTricks import init_embedding
-from model.models import base_Layers, emb_layers
 
 
 class Trainer:
     device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
-    def __init__(self, name: str, hidden_l: int, epochs: int, emb_dim: int, lr: float, weight_d: float):
-        self.data = Dataset(name)
-        self.data.init_dataset(emb_dim)
+    def __init__(self, data: Dataset, hidden_l: int, epochs: int, emb_dim: int, lr: float, weight_d: float):
+        self.data = data
         self.hidden_l = hidden_l
         self.epochs = epochs
         self.emb_dim = emb_dim
         self.lr = lr
         self.weight_d = weight_d
-        self.baseModel = base_Layers(self.data.orgGraph.num_nodes, len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes).to(self.device)
 
     def transfer_weights(self, sumModel, orgModel) -> None:
         # rgcn1 
@@ -80,24 +78,21 @@ class Trainer:
     
     def exp_runner(self, sum_layers: nn.Module, org_layers: nn.Module, embedding_trick: Callable, transfer: bool, exp: str):
         print(3*'-', f'{exp.upper()} EXPERIMENT', 3*'-')
-
         results_acc = dict()
         results_loss = dict()
 
         if transfer == True:
-            for sumgraph in self.data.sumGraphs:
-                init_embedding(sumgraph, self.emb_dim)
             print('Training on Summary Graphs...')
             sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.emb_dim)
-            #train sum model
             for count, sum_graph in enumerate(self.data.sumGraphs):
                 _, results_loss[f'Sum Loss {count}'] = self.train(sumModel, sum_graph)
 
-        init_embedding(self.data.orgGraph, self.emb_dim)
         orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.emb_dim)
-       
-        if transfer == True:
+    
+        if embedding_trick != None:
             embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
+
+        if transfer == True:
             self.transfer_weights(sumModel, orgModel)
 
         print('Training on Orginal Graph...')

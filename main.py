@@ -1,18 +1,18 @@
 import argparse
 
+from copy import deepcopy
 from typing import Callable, Dict
-from torch import nn
 
-# from experiments import run_experiment
+from graphdata.graphData import Dataset
 from helpers.processResults import plot_and_save, print_max_result
 from helpers import timing
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
-from model.models import emb_layers, emb_mlp_Layers, emb_att_Layers
+from model.models import emb_layers, emb_mlp_Layers, emb_att_Layers, base_Layers
 from model.modelTrainer import Trainer
 
 
 
-def initialize_expiremt(args: Dict[str, str], experiments: Dict[str, Callable]) -> None:
+def initialize_expiremt(args: Dict[str, str], experiments: Dict[str, Dict[str, Callable]]) -> None:
     """This functions executes experiments to scale graph training with RGCN. 
     After training on summary graphs, the weights of and node embeddings of 
     the summary model will be transferd to a new model for training on the 
@@ -29,11 +29,14 @@ def initialize_expiremt(args: Dict[str, str], experiments: Dict[str, Callable]) 
     results_exp_acc = dict()
     results_exp_loss = dict()
 
-    # Initialize trainer here and create the data. Data is used and kept the same for each experiment for comparison
-    trainer = Trainer(args['dataset'], hidden_l, epochs, embedding_dimension, lr, weight_d)
+    # Initialize trainer here and create the data.
+    # Deepcopy is used to keep original data unchanged.
+    data = Dataset(args['dataset'])
+    data.init_dataset(embedding_dimension)
     
     if args['exp'] == None:
         for exp, exp_settings in experiments.items():
+            trainer = Trainer(deepcopy(data), hidden_l, epochs, embedding_dimension, lr, weight_d)
             results_acc, results_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
             results_exp_acc.update(results_acc)
             results_exp_loss.update(results_loss)
@@ -42,20 +45,23 @@ def initialize_expiremt(args: Dict[str, str], experiments: Dict[str, Callable]) 
     if args['exp'] != None:
         exp = args['exp']
         exp_settings = experiments[exp]
+        trainer = Trainer(deepcopy(data), hidden_l, epochs, embedding_dimension, lr, weight_d)
         results_exp_acc, results_exp_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
         timing.log('experiment done')
 
     results_baseline_acc = dict()
     results_baseline_loss = dict()
-    results_baseline_acc['baseline Accuracy'], results_baseline_loss['baseline Loss'] = trainer.train(trainer.baseModel, trainer.data.orgGraph, sum_graph=False)
-    timing.log('experiment done')
 
+    baseline_data = deepcopy(data)
+    trainer = Trainer(data, hidden_l, epochs, embedding_dimension, lr, weight_d)
+    baselineModel = base_Layers(data.orgGraph.num_nodes, len(data.orgGraph.relations.keys()), hidden_l, data.num_classes)
+    results_baseline_acc['baseline Accuracy'], results_baseline_loss['baseline Loss'] = trainer.train(baselineModel, baseline_data.orgGraph, sum_graph=False)
+    timing.log('experiment done')
 
     results_acc = {**results_exp_acc, **results_baseline_acc}
     results_loss = {**results_exp_loss, **results_baseline_loss}
 
     print_max_result(results_acc)
-
     plot_and_save('Accuracy', args['dataset'], results_acc, epochs, args['exp'])
     plot_and_save('Loss', args['dataset'], results_loss, epochs, args['exp'])
 
@@ -64,7 +70,6 @@ parser = argparse.ArgumentParser(description='experiment arguments')
 parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM', 'TEST'], help='inidcate dataset name')
 parser.add_argument('-exp', type=str, choices=['sum', 'mlp', 'attention', 'embedding'], help='select experiment')
 args = vars(parser.parse_args())
-
 
 experiments = {
 'sum': {'sum_layers': emb_layers, 'org_layers': emb_layers, 'embedding_trick': sum_embeddings, 'transfer': True},

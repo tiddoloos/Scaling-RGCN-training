@@ -1,4 +1,3 @@
-from gc import freeze
 import torch
 from torch import nn
 
@@ -77,12 +76,15 @@ class Dataset:
             sGraph = Graph(node_to_enum, num_nodes, sorted_nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type)
             sGraph.training_data = Data(edge_index = edge_index)
             sGraph.training_data.edge_type = edge_type
+            sGraph.training_data.embedding = nn.Embedding(sGraph.num_nodes, emb_dim)
             self.sumGraphs.append(sGraph)
 
+        #collect original graph data
         org_edge_index, org_edge_type, org_node_to_enum, org_num_nodes, org_sorted_nodes, org_relations_dict = process_rdf_graph(self.org_path)
         self.orgGraph = Graph(org_node_to_enum, org_num_nodes, org_sorted_nodes, org_relations_dict, None, None, None, None, None)
         self.orgGraph.training_data = Data(edge_index = org_edge_index)
         self.orgGraph.training_data.edge_type = org_edge_type
+        self.orgGraph.training_data.embedding = nn.Embedding(self.orgGraph.num_nodes, emb_dim)
 
         print("ORIGINAL GRAPH STATISTICS")
         print(f"num Nodes = {self.orgGraph.num_nodes}")
@@ -100,7 +102,7 @@ class Dataset:
         self.orgGraph.training_data.y_train = torch.tensor(y_train, dtype = torch.long)
         self.orgGraph.training_data.y_test = torch.tensor(y_test)
 
-        # remove test data from summary nodes to types before making summary graph training data
+        # remove test data from summary graph data before making summary graph training data
         self.remove_test_data(X_test)
 
         # get training data of summary graphs
@@ -113,5 +115,5 @@ class Dataset:
             print(f"num Nodes = {sGraph.num_nodes}")
             print(f"num Relations= {len(sGraph.relations.keys())}")
 
-            # if more relations in summary graph than in original graph -> assert
+            # Assertion error: if more relations in summary graph than in original graph
             assert len(sGraph.relations.keys()) ==  len(self.orgGraph.relations.keys()), 'number of relations in summary graph and original graph differ'
