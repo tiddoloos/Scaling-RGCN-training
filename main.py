@@ -75,7 +75,8 @@ experiments = {
 'sum': {'sum_layers': emb_layers, 'org_layers': emb_layers, 'embedding_trick': sum_embeddings, 'transfer': True},
 'mlp': {'sum_layers': emb_layers, 'org_layers': emb_mlp_Layers, 'embedding_trick': concat_embeddings, 'transfer': True},
 'attention': {'sum_layers': emb_layers, 'org_layers': emb_att_Layers, 'embedding_trick': stack_embeddings, 'transfer': True},
-'embedding': {'sum_layers': None, 'org_layers': emb_layers, 'embedding_trick': None, 'transfer': False}}
+'embedding': {'sum_layers': None, 'org_layers': emb_layers, 'embedding_trick': None, 'transfer': False}
+}
 
 
 if __name__=='__main__':

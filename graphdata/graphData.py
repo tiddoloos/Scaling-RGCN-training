@@ -41,7 +41,7 @@ class Dataset:
         Avoids test set leakage because orignal node maps to a summary nodes which maps to a type (predicted class).
         """ 
         for sumGraph in self.sumGraphs:
-            #make a copy to preserve orginal data in the data opject
+            # make a copy to preserve orginal data in the data opject
             org2type = sumGraph.org2type_dict
             for orgNode, value in self.orgGraph.node_to_enum.items():
                 if value in X_test:
@@ -66,7 +66,7 @@ class Dataset:
     def init_dataset(self, emb_dim: int) -> None:
         sum_files, map_files = self.get_file_names()
 
-        #collect summary graph data
+        # init summary graph data
         for i in range(len(sum_files)):
             sum_path = f'{self.sum_path}/{sum_files[i]}'
             map_path = f'{self.map_path}/{map_files[i]}'
@@ -79,7 +79,7 @@ class Dataset:
             sGraph.training_data.embedding = nn.Embedding(sGraph.num_nodes, emb_dim)
             self.sumGraphs.append(sGraph)
 
-        #collect original graph data
+        # init original graph data
         org_edge_index, org_edge_type, org_node_to_enum, org_num_nodes, org_sorted_nodes, org_relations_dict = process_rdf_graph(self.org_path)
         self.orgGraph = Graph(org_node_to_enum, org_num_nodes, org_sorted_nodes, org_relations_dict, None, None, None, None, None)
         self.orgGraph.training_data = Data(edge_index = org_edge_index)
@@ -91,6 +91,7 @@ class Dataset:
         print(f"num Relations = {len(self.orgGraph.relations.keys())}")
         print(f"num Classes = {self.num_classes}")
 
+        # init original graph training data
         g_idx, g_labels = self.get_idx_labels(self.orgGraph, self.sumGraphs[0].org2type)
         X_train, X_test, y_train, y_test = train_test_split(g_idx, g_labels,  test_size=0.2, random_state=1) 
         X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, random_state=1)
@@ -105,7 +106,7 @@ class Dataset:
         # remove test data from summary graph data before making summary graph training data
         self.remove_test_data(X_test)
 
-        # get training data of summary graphs
+        # init summary graph data
         for sGraph in self.sumGraphs:
             sg_idx, sg_labels = self.get_idx_labels(sGraph, sGraph.sum2type)
             sGraph.training_data.x_train = torch.tensor(sg_idx, dtype = torch.long)
