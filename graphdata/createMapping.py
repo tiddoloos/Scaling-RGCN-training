@@ -1,4 +1,4 @@
-from copy import copy
+from copy import deepcopy
 from collections import defaultdict
 from typing import Tuple, Dict, List
 
@@ -55,5 +55,5 @@ def main_createMappings(org_file: str, map_file: str) -> Tuple[Dict, Dict, Dict,
     classes, org2type_dict = nodes2type_mapping(org_file)
     orgNode2sumNode_dict, sumNode2orgNode_dict = get_node_mappings_dict(map_file)
     enum_classes = {lab: i for i, lab in enumerate(classes)}
-    sum2type_enc, org2type_enc  = encode_node_labels(sumNode2orgNode_dict, copy(org2type_dict), enum_classes, len(classes))
+    sum2type_enc, org2type_enc  = encode_node_labels(sumNode2orgNode_dict, deepcopy(org2type_dict), enum_classes, len(classes))
     return sum2type_enc, org2type_enc, enum_classes, len(classes), orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict

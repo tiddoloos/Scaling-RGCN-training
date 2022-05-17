@@ -48,6 +48,8 @@ def run_experiment(trainer: Trainer, epochs: int, weight_d: float, lr: float, em
         #train orgModel
         print('...Training on Orginal Graph after transfer...')
         results_acc['Transfer + sum Accuracy'], results_loss['Transfer + sum Loss'] = trainer.train(trainer.orgModel, trainer.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+        for sum_graph in trainer.data.sumGraphs:
+            print_trainable_parameters(sum_graph.training_data.embedding, 'embedding')
         print_trainable_parameters(trainer.orgModel, exp)
 
 
@@ -73,14 +75,15 @@ def run_experiment(trainer: Trainer, epochs: int, weight_d: float, lr: float, em
         #train orgModel
         print('...Training on Orginal Graph after transfer...')
         results_acc['Transfer + mlp Accuracy'], results_loss['Transfer + mlp Loss'] = trainer.train(trainer.orgModel, trainer.data.orgGraph, lr, weight_d, epochs, sum_graph=False)
+
+        for sum_graph in trainer.data.sumGraphs:
+            print_trainable_parameters(sum_graph.training_data.embedding, 'embedding')
         print_trainable_parameters(trainer.orgModel, exp)
-
-
+        
 
     if exp == 'attention':
         print('---ATTENTION EMBEDDING EXP TRAINING--')
         trainer.sumModel = emb_layers(len(trainer.data.sumGraphs[0].relations.keys()), trainer.hidden_l, trainer.data.num_classes, emb_dim)
-        # init_sumgraph_embeddings(trainer, emb_dim)
 
         print('...Training on Summary Graphs...')
         #train sum model
@@ -104,5 +107,7 @@ def run_experiment(trainer: Trainer, epochs: int, weight_d: float, lr: float, em
             print_trainable_parameters(sum_graph.training_data.embedding, 'embedding')
         print_trainable_parameters(trainer.orgModel, exp)
 
-    return results_acc, results_loss
+        return results_acc, results_loss
+
+
 
