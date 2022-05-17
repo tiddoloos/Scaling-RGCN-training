@@ -12,7 +12,7 @@ from model.modelTrainer import Trainer
 
 
 
-def initialize_expiremt(args: Dict[str, str], experiments: Dict[str, Dict[str, Callable]]) -> None:
+def initialize_expiremts(args: Dict[str, str], experiments: Dict[str, Dict[str, Callable]]) -> None:
     """This functions executes experiments to scale graph training with RGCN. 
     After training on summary graphs, the weights of and node embeddings of 
     the summary model will be transferd to a new model for training on the 
@@ -79,4 +79,4 @@ experiments = {
 
 
 if __name__=='__main__':
-    initialize_expiremt(args, experiments)
+    initialize_expiremts(args, experiments)

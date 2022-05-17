@@ -7,7 +7,6 @@ from torch_geometric.data import Data
 from typing import List, Tuple, Callable
 
 from graphdata.graphData import Dataset, Graph
-from model.embeddingTricks import init_embedding
 
 
 class Trainer:
