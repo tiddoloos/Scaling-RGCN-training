@@ -26,15 +26,13 @@ def initialize_expiremts(args: Dict[str, str], experiments: Dict[str, Dict[str, 
     #embedding dimension must be devisible by the number of summary graphs (attention layer)
     embedding_dimension = 63
 
-    results_exp_acc = dict()
-    results_exp_loss = dict()
-
-    # Initialize trainer here and create the data.
-    # Deepcopy is used to keep original data unchanged.
+    # initialzie the data and use deepcopy to keep original data unchanged.
     data = Dataset(args['dataset'])
     data.init_dataset(embedding_dimension)
     
     if args['exp'] == None:
+        results_exp_acc = dict()
+        results_exp_loss = dict()
         for exp, exp_settings in experiments.items():
             trainer = Trainer(deepcopy(data), hidden_l, epochs, embedding_dimension, lr, weight_d)
             results_acc, results_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
@@ -81,3 +79,4 @@ experiments = {
 
 if __name__=='__main__':
     initialize_expiremts(args, experiments)
+    
