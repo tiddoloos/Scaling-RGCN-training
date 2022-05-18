@@ -3,7 +3,7 @@ import torch
 from torch import nn, Tensor
 from typing import List
 
-from graphdata.graphData import Graph
+from graphdata.dataset import Graph
 
 def init_embedding(graph: Graph, emb_dim: int):
     graph.training_data.embedding = nn.Embedding(graph.num_nodes, emb_dim)
@@ -24,7 +24,7 @@ def stack_embeddings(graph: Graph, sum_graphs: list, emb_dim: int) -> None:
     tensors = get_tensor_list(graph, sum_graphs, emb_dim)
     stacked_emb = torch.stack(tensors)
     # nn.Embeddeing can only handle 2d dimension so skip nn.Embedding
-    graph.training_data.embedding=stacked_emb
+    graph.training_data.embedding=stacked_emb.detach()
 
 def concat_embeddings(graph: Graph, sum_graphs: list, emb_dim: int) -> None:
     #make concatted tensor of embeddings
