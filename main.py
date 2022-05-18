@@ -1,13 +1,14 @@
 import argparse
 
 from copy import deepcopy
-from typing import Callable, Dict
+from collections import defaultdict
+from typing import Callable, Dict, List
 
 from graphdata.graphData import Dataset
 from helpers.processResults import plot_and_save, print_max_result
 from helpers import timing
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
-from model.models import emb_layers, emb_mlp_Layers, emb_att_Layers, base_Layers
+from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers, BaseLayers
 from model.modelTrainer import Trainer
 
 
@@ -47,12 +48,12 @@ def initialize_expiremts(args: Dict[str, str], experiments: Dict[str, Dict[str, 
         results_exp_acc, results_exp_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
         timing.log('experiment done')
 
-    results_baseline_acc = dict()
-    results_baseline_loss = dict()
+    results_baseline_acc = defaultdict(list)
+    results_baseline_loss = defaultdict(list)
 
     baseline_data = deepcopy(data)
     trainer = Trainer(data, hidden_l, epochs, embedding_dimension, lr, weight_d)
-    baselineModel = base_Layers(data.orgGraph.num_nodes, len(data.orgGraph.relations.keys()), hidden_l, data.num_classes)
+    baselineModel = BaseLayers(embedding_dimension, len(data.orgGraph.relations.keys()), hidden_l, data.num_classes)
     results_baseline_acc['baseline Accuracy'], results_baseline_loss['baseline Loss'] = trainer.train(baselineModel, baseline_data.orgGraph, sum_graph=False)
     timing.log('experiment done')
 
@@ -70,13 +71,12 @@ parser.add_argument('-exp', type=str, choices=['sum', 'mlp', 'attention', 'embed
 args = vars(parser.parse_args())
 
 experiments = {
-'sum': {'sum_layers': emb_layers, 'org_layers': emb_layers, 'embedding_trick': sum_embeddings, 'transfer': True},
-'mlp': {'sum_layers': emb_layers, 'org_layers': emb_mlp_Layers, 'embedding_trick': concat_embeddings, 'transfer': True},
-'attention': {'sum_layers': emb_layers, 'org_layers': emb_att_Layers, 'embedding_trick': stack_embeddings, 'transfer': True},
-'embedding': {'sum_layers': None, 'org_layers': emb_layers, 'embedding_trick': None, 'transfer': False}
+'sum': {'sum_layers': Emb_Layers, 'org_layers': Emb_Layers, 'embedding_trick': sum_embeddings, 'transfer': True},
+'mlp': {'sum_layers': Emb_Layers, 'org_layers': Emb_MLP_Layers, 'embedding_trick': concat_embeddings, 'transfer': True},
+'attention': {'sum_layers': Emb_Layers, 'org_layers': Emb_ATT_Layers, 'embedding_trick': stack_embeddings, 'transfer': True},
+'embedding': {'sum_layers': None, 'org_layers': Emb_Layers, 'embedding_trick': None, 'transfer': False}
 }
 
 
 if __name__=='__main__':
     initialize_expiremts(args, experiments)
-    

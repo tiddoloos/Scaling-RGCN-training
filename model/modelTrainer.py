@@ -18,6 +18,7 @@ class Trainer:
         self.emb_dim = emb_dim
         self.lr = lr
         self.weight_d = weight_d
+    
 
     def transfer_weights(self, sumModel, orgModel) -> None:
         # rgcn1 

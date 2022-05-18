@@ -7,9 +7,10 @@ from torch_geometric.nn import RGCNConv
 from torch_geometric.data import Data 
 
 
-class base_Layers(nn.Module):
+class BaseLayers(nn.Module):
     def __init__(self, num_nodes: int, num_relations: int, hidden_l: int, num_labels: int) -> None:
-        super(base_Layers, self).__init__()
+        super(BaseLayers, self).__init__()
+        #in_channels => embedding size
         self.rgcn1 = RGCNConv(in_channels=num_nodes, out_channels=hidden_l, num_relations=num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
@@ -23,9 +24,9 @@ class base_Layers(nn.Module):
         return x
 
 
-class emb_layers(nn.Module):
+class Emb_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, emb_dim: int) -> None:
-        super(emb_layers, self).__init__()
+        super(Emb_Layers, self).__init__()
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
@@ -48,9 +49,9 @@ class emb_layers(nn.Module):
         self.rgcn2.root = torch.nn.Parameter(root_2)
 
 
-class emb_att_Layers(nn.Module):
+class Emb_ATT_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, emb_dim: int) -> None:
-        super(emb_att_Layers, self).__init__()
+        super(Emb_ATT_Layers, self).__init__()
         self.att = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=3)
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
@@ -75,11 +76,11 @@ class emb_att_Layers(nn.Module):
         self.rgcn2.root = torch.nn.Parameter(root_2)
 
 
-class emb_mlp_Layers(nn.Module):
+class Emb_MLP_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, emb_dim: int):
         in_f = 3*emb_dim
         out_f = round((in_f/2)*3 + num_labels)
-        super(emb_mlp_Layers, self).__init__()
+        super(Emb_MLP_Layers, self).__init__()
         self.lin1 = nn.Linear(in_features= in_f, out_features=out_f)
         self.lin2 = nn.Linear(in_features=out_f, out_features=emb_dim)
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
