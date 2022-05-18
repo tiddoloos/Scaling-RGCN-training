@@ -1,15 +1,15 @@
 import argparse
 
 from copy import deepcopy
+from turtle import clear
 from typing import Callable, Dict
 
-from graphdata.graphData import Dataset
+from graphdata.dataset import Dataset
 from helpers.processResults import plot_and_save, print_max_result
 from helpers import timing
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.modelTrainer import Trainer
-
 
 
 def initialize_expiremts(args: Dict[str, str], experiments: Dict[str, Dict[str, Callable]]) -> None:
@@ -39,7 +39,7 @@ def initialize_expiremts(args: Dict[str, str], experiments: Dict[str, Dict[str, 
             results_acc, results_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
             results_exp_acc.update(results_acc)
             results_exp_loss.update(results_loss)
-            timing.log(f'{exp} done')
+            timing.log(f'{exp} experiment done')
     
     else:
         exp = args['exp']
@@ -48,7 +48,7 @@ def initialize_expiremts(args: Dict[str, str], experiments: Dict[str, Dict[str, 
         results_acc, results_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
         results_exp_acc.update(results_acc)
         results_exp_loss.update(results_loss)
-        timing.log(f'{exp} done')
+        timing.log(f'{exp} experiment done')
 
         exp = 'baseline'
         exp_settings = experiments[exp]
@@ -56,7 +56,7 @@ def initialize_expiremts(args: Dict[str, str], experiments: Dict[str, Dict[str, 
         results_baseline_acc, results_baseline_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
         results_exp_acc.update(results_baseline_acc)
         results_exp_loss.update(results_baseline_loss)
-        timing.log(f'{exp} done')
+        timing.log(f'{exp} experiment done')
 
     print_max_result(results_exp_acc)
     plot_and_save('Accuracy', args['dataset'], results_exp_acc, epochs, args['exp'])

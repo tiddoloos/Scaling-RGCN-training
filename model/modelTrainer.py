@@ -1,12 +1,11 @@
-from traceback import print_list
 import torch
 
-from torch import embedding, nn
+from torch import nn
 from torch import Tensor
 from torch_geometric.data import Data
 from typing import List, Tuple, Callable
 
-from graphdata.graphData import Dataset, Graph
+from graphdata.dataset import Dataset, Graph
 
 
 class Trainer:
