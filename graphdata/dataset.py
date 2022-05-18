@@ -7,24 +7,9 @@ from os.path import isfile, join
 from torch_geometric.data import Data
 from sklearn.model_selection import train_test_split
 
-from graphdata.graphUtils import process_rdf_graph
-from graphdata.createMapping import main_createMappings, encode_node_labels
-
-
-class Graph:
-    def __init__(self, node_to_enum: dict,
-                num_nodes: int, nodes, relations_dict: dict, orgNode2sumNode_dict: dict, 
-                sumNode2orgNode_dict: dict, org2type_dict: dict, org2type: dict, sum2type: dict) -> None:
-        self.node_to_enum = node_to_enum
-        self.num_nodes = num_nodes
-        self.nodes = nodes
-        self.relations = relations_dict
-        self.orgNode2sumNode_dict = orgNode2sumNode_dict
-        self.sumNode2orgNode_dict = sumNode2orgNode_dict
-        self.org2type_dict = org2type_dict
-        self.org2type = org2type
-        self.sum2type = sum2type
-        self.training_data = None
+from graphdata.graphUtils import make_rdf_graph, process_rdf_graph
+from graphdata.graphConfig import get_graph_data, encode_node_labels
+from graphdata.graph import Graph
 
 class Dataset:
     def __init__(self, name: str) -> None:
@@ -64,28 +49,22 @@ class Dataset:
         return sorted(sum_files), sorted(map_files)
 
     def init_dataset(self, emb_dim: int) -> None:
+        rdf_org_graph = make_rdf_graph(self.org_path)
         sum_files, map_files = self.get_file_names()
 
         # init summary graph data
         for i in range(len(sum_files)):
             sum_path = f'{self.sum_path}/{sum_files[i]}'
             map_path = f'{self.map_path}/{map_files[i]}'
-            sum2type, org2type, self.enum_classes, self.num_classes, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict = main_createMappings(self.org_path, map_path)
-            edge_index, edge_type, node_to_enum, num_nodes, sorted_nodes, relations_dict = process_rdf_graph(sum_path)
-            
-            sGraph = Graph(node_to_enum, num_nodes, sorted_nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type, sum2type)
-            sGraph.training_data = Data(edge_index = edge_index)
-            sGraph.training_data.edge_type = edge_type
-            sGraph.training_data.embedding = nn.Embedding(sGraph.num_nodes, emb_dim)
+            rdf_sum_graph = make_rdf_graph(sum_path)
+            rdf_map_graph = make_rdf_graph(map_path)
+            self.enum_classes, self.num_classes, sGraph = get_graph_data(rdf_org_graph, rdf_sum_graph, rdf_map_graph, emb_dim=emb_dim)
             self.sumGraphs.append(sGraph)
 
+        # self.enum_classes, self.num_classes = enum_classes, num_classes
         # init original graph data
-        org_edge_index, org_edge_type, org_node_to_enum, org_num_nodes, org_sorted_nodes, org_relations_dict = process_rdf_graph(self.org_path)
-        self.orgGraph = Graph(org_node_to_enum, org_num_nodes, org_sorted_nodes, org_relations_dict, None, None, None, None, None)
-        self.orgGraph.training_data = Data(edge_index = org_edge_index)
-        self.orgGraph.training_data.edge_type = org_edge_type
-        self.orgGraph.training_data.embedding = nn.Embedding(self.orgGraph.num_nodes, emb_dim)
-
+        self.orgGraph = get_graph_data(rdf_org_graph, None, None, emb_dim=emb_dim, org_only=True)
+    
         print("ORIGINAL GRAPH STATISTICS")
         print(f"num Nodes = {self.orgGraph.num_nodes}")
         print(f"num Relations = {len(self.orgGraph.relations.keys())}")
@@ -96,7 +75,7 @@ class Dataset:
         X_train, X_test, y_train, y_test = train_test_split(g_idx, g_labels,  test_size=0.2, random_state=1) 
         X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, random_state=1)
 
-        self.orgGraph.training_data.x_train = torch.tensor(X_train, dtype = torch.long)
+        self.orgGraph.x_train = torch.tensor(X_train, dtype = torch.long)
         self.orgGraph.training_data.x_test = torch.tensor(X_test) 
         self.orgGraph.training_data.x_val = torch.tensor(X_val, dtype = torch.long)
         self.orgGraph.training_data.y_val = torch.tensor(y_val, dtype = torch.long)

@@ -2,18 +2,18 @@ import rdflib
 import torch
 
 from collections import Counter
-from rdflib import Graph
+from rdflib import Graph as rdfGraph
 from rdflib.term import URIRef
 
 
 def make_rdf_graph(file_path: str) -> rdflib.Graph:
     format = file_path.split('.')[-1]
-    g = Graph()
+    g = rdfGraph()
     with open(file_path, 'rb') as data:
         g.parse(data, format = format)  
     return g
 
-def get_relations(graph, edge):
+def get_relations(graph: rdfGraph, edge: URIRef):
     # remove all type edges??-> rdflib.term.URIRef('http://swrc.ontoware.org/ontology#type')?
     relations = list(set(graph.predicates()))
     # remove type edge
@@ -23,10 +23,8 @@ def get_relations(graph, edge):
 def freq(rel: str, freq_: Counter):
         return freq_[rel] if rel in freq_ else 0
 
-def process_rdf_graph(graph_path: str):
+def process_rdf_graph(graph: rdfGraph):
     edge = URIRef('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
-    
-    graph = make_rdf_graph(graph_path)
     
     rels = get_relations(graph, edge)
     freq_ = Counter(rels)
