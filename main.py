@@ -48,17 +48,17 @@ def initialize_expiremts(args: Dict[str, str], experiments: Dict[str, Dict[str, 
         results_exp_acc, results_exp_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
         timing.log('experiment done')
 
-    results_baseline_acc = defaultdict(list)
-    results_baseline_loss = defaultdict(list)
+    # results_baseline_acc = defaultdict(list)
+    # results_baseline_loss = defaultdict(list)
 
-    baseline_data = deepcopy(data)
-    trainer = Trainer(data, hidden_l, epochs, embedding_dimension, lr, weight_d)
-    baselineModel = BaseLayers(embedding_dimension, len(data.orgGraph.relations.keys()), hidden_l, data.num_classes)
-    results_baseline_acc['baseline Accuracy'], results_baseline_loss['baseline Loss'] = trainer.train(baselineModel, baseline_data.orgGraph, sum_graph=False)
-    timing.log('experiment done')
+    # baseline_data = deepcopy(data)
+    # trainer = Trainer(data, hidden_l, epochs, embedding_dimension, lr, weight_d)
+    # baselineModel = BaseLayers(embedding_dimension, len(data.orgGraph.relations.keys()), hidden_l, data.num_classes)
+    # results_baseline_acc['baseline Accuracy'], results_baseline_loss['baseline Loss'] = trainer.train(baselineModel, baseline_data.orgGraph, sum_graph=False)
+    # timing.log('experiment done')
 
-    results_acc = {**results_exp_acc, **results_baseline_acc}
-    results_loss = {**results_exp_loss, **results_baseline_loss}
+    # results_acc = {**results_exp_acc, **results_baseline_acc}
+    # results_loss = {**results_exp_loss, **results_baseline_loss}
 
     print_max_result(results_acc)
     plot_and_save('Accuracy', args['dataset'], results_acc, epochs, args['exp'])
@@ -74,7 +74,7 @@ experiments = {
 'sum': {'sum_layers': Emb_Layers, 'org_layers': Emb_Layers, 'embedding_trick': sum_embeddings, 'transfer': True},
 'mlp': {'sum_layers': Emb_Layers, 'org_layers': Emb_MLP_Layers, 'embedding_trick': concat_embeddings, 'transfer': True},
 'attention': {'sum_layers': Emb_Layers, 'org_layers': Emb_ATT_Layers, 'embedding_trick': stack_embeddings, 'transfer': True},
-'embedding': {'sum_layers': None, 'org_layers': Emb_Layers, 'embedding_trick': None, 'transfer': False}
+'baseline': {'sum_layers': None, 'org_layers': Emb_Layers, 'embedding_trick': None, 'transfer': False}
 }
 
 
