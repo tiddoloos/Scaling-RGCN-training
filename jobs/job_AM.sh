@@ -1,7 +1,6 @@
 #!/bin/bash
-#SBATCH --partition=gpu_shared
+#SBATCH --partition=gpu_titanrtx_shared 
 #SBATCH --gres=gpu:1
-#SBATCH --mem=250G
 #SBATCH --job-name=AM_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
