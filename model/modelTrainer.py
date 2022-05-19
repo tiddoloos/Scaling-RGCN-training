@@ -84,7 +84,7 @@ class Trainer:
             print('Training on Summary Graphs...')
             sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.emb_dim)
             for count, sum_graph in enumerate(self.data.sumGraphs):
-                _, results_loss[f'Sum Loss {count}'] = self.train(sumModel, sum_graph)
+                _, _ = self.train(sumModel, sum_graph)
 
         orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.emb_dim)
     
