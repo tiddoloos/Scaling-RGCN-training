@@ -4,9 +4,9 @@ from collections import defaultdict
 from typing import Dict, List
 
 from helpers.processResults import plot_results, save_to_json
+from main import initialize_expirements
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
-from main import initialize_expirements
 
 
 

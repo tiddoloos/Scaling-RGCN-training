@@ -1,12 +1,10 @@
-import torch
-
 from copy import deepcopy
 from typing import Tuple, List
 from os import listdir
 from os.path import isfile, join
 
 from graphdata.graphProcessing import make_rdf_graph, nodes2type_mapping
-from graphdata.graph import Graph, get_graph_data, make_graph_trainig_data
+from graphdata.graph import get_graph_data, make_graph_trainig_data
 
 class Dataset:
     def __init__(self, name: str) -> None:
