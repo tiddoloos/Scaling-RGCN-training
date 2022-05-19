@@ -18,7 +18,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
     original graph. Also a baseline experiment is carried out.
     """
 
-    hidden_l = 16
+    hidden_l = 32
     lr = 0.01
     weight_d = 0.0005
 

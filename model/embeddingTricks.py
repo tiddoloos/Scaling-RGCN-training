@@ -3,7 +3,7 @@ import torch
 from torch import nn, Tensor
 from typing import List
 
-from graphdata.dataset import Graph
+from graphdata.graph import Graph
 
 def init_embedding(graph: Graph, emb_dim: int):
     graph.training_data.embedding = nn.Embedding(graph.num_nodes, emb_dim)

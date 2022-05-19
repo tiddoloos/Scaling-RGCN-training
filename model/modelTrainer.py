@@ -5,8 +5,8 @@ from torch import Tensor
 from torch_geometric.data import Data
 from typing import List, Tuple, Callable
 
-from graphdata.dataset import Dataset, Graph
-
+from graphdata.graph import Graph
+from graphdata.dataset import Dataset
 
 class Trainer:
     device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
