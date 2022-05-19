@@ -57,7 +57,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
     print_max_result(results_exp_acc)
 
     save_to_json('Accuracy', args['dataset'], args['exp'], results_exp_acc)
-    save_to_json('loss', args['dataset'], args['exp'], results_exp_loss)
+    save_to_json('Loss', args['dataset'], args['exp'], results_exp_loss)
 
 
     if plot:

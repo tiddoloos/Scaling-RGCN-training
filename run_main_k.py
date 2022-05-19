@@ -4,7 +4,7 @@ import itertools
 from collections import defaultdict
 from typing import Dict, List
 
-from helpers.processResults import plot_results
+from helpers.processResults import plot_results, save_to_json
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from main import initialize_expirements
@@ -35,6 +35,9 @@ def run_k_times(args: Dict[str, str], experiments):
     av_acc_results = get_av_results_dict(k, acc_dicts_list)
     av_loss_results = get_av_results_dict(k, loss_dicts_list)
 
+    save_to_json('avg_Accuracy', args['dataset'], args['exp'], av_acc_results)
+    save_to_json('avg_Loss', args['dataset'], args['exp'], av_loss_results)
+
     plot_results('Average Accuracy', args['dataset'], args['exp'], args['epochs'], av_acc_results)
     plot_results('Average Loss', args['dataset'], args['exp'], args['epochs'], av_loss_results)
     
@@ -54,5 +57,5 @@ parser.add_argument('-emb', type=int, default=63, help='indicate number of train
 parser.add_argument('-k', type=int, default=3, help='indicate experiment iterations')
 args = vars(parser.parse_args())
 
-results_path = './results/'
-run_k_times(args, experiments)
+if __name__=='__main__':
+    run_k_times(args, experiments)
