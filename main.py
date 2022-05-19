@@ -4,7 +4,7 @@ from copy import deepcopy
 from typing import Callable, Dict
 
 from graphdata.dataset import Dataset
-from helpers.processResults import plot_results, save_to_json, print_max_result
+from helpers.processResults import plot_results, save_to_json, print_max_acc
 from helpers import timing
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
@@ -54,7 +54,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
         results_exp_loss.update(results_baseline_loss)
         timing.log(f'{exp} experiment done')
 
-    print_max_result(results_exp_acc)
+    print_max_acc(results_exp_acc)
 
     if not k_run:
         save_to_json('Accuracy', args['dataset'], args['exp'], results_exp_acc)

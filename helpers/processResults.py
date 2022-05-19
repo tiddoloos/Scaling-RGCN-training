@@ -6,7 +6,7 @@ from datetime import datetime
 from typing import Dict, List
 from torch import nn
 
-def print_max_result(results_dict: Dict[str, List[float]]) -> None:
+def print_max_acc(results_dict: Dict[str, List[float]]) -> None:
         for exp, results in results_dict.items():
                 exp_strip = exp.replace(' Accuracy', '')
                 max_acc = max(results)
