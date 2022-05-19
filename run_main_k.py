@@ -9,18 +9,20 @@ from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embed
 from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from main import initialize_expirements
 
-"""use this file to run experiments in main.py multiple times en get an average result for accuracy and loss"""
+"""use this file to run experiments in main.py multiple times and get an average result for accuracy and loss"""
 
 def add_data(list1: List[int], list2: List[int]):
-    temp_list= list(itertools.zip_longest(list1, list2, fillvalue = 0))
+    temp_list= list(itertools.zip(list1, list2))
     return [x+y for x,y in temp_list]
 
 def get_av_results_dict(k: int, dicts_list: List[Dict[str, int]]):
     av_results_dict = defaultdict(list)
-    for key, int_list in dicts_list[0].items():
-        for dict in dicts_list[1:]:
-            av_results_dict[key] = add_data(int_list, dict[key])
-        av_results_dict[key][:] = [x / k for x in av_results_dict[key]]
+
+    for key in dicts_list[0].keys():
+        new_lst = [0 for i in range(0, len(dicts_list[0][key]))]
+        for dict in dicts_list:
+            new_lst = add_data(dict[key], new_lst)
+        av_results_dict[key] = [x / k for x in new_lst]
     return av_results_dict
     
 def run_k_times(args: Dict[str, str], experiments):
@@ -38,8 +40,8 @@ def run_k_times(args: Dict[str, str], experiments):
     save_to_json('avg_Accuracy', args['dataset'], args['exp'], av_acc_results)
     save_to_json('avg_Loss', args['dataset'], args['exp'], av_loss_results)
 
-    plot_results('Average Accuracy', args['dataset'], args['exp'], args['epochs'], av_acc_results)
-    plot_results('Average Loss', args['dataset'], args['exp'], args['epochs'], av_loss_results)
+    plot_results('Avg Accuracy', args['dataset'], args['exp'], args['epochs'], av_acc_results)
+    plot_results('Avg Average Loss', args['dataset'], args['exp'], args['epochs'], av_loss_results)
     
 
 experiments = {
