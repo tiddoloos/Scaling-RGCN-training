@@ -1,5 +1,4 @@
 import argparse
-import itertools
 
 from collections import defaultdict
 from typing import Dict, List
@@ -14,7 +13,7 @@ from main import initialize_expirements
 """use this file to run experiments in main.py multiple times and get an average result for accuracy and loss"""
 
 def add_data(list1: List[int], list2: List[int]):
-    temp_list= list(itertools.zip(list1, list2))
+    temp_list = list(zip(list1, list2))
     return [x+y for x,y in temp_list]
 
 def get_av_results_dict(k: int, dicts_list: List[Dict[str, int]]):
