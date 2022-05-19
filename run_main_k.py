@@ -9,6 +9,8 @@ from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embed
 from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from main import initialize_expirements
 
+
+
 """use this file to run experiments in main.py multiple times and get an average result for accuracy and loss"""
 
 def add_data(list1: List[int], list2: List[int]):
@@ -57,7 +59,6 @@ parser.add_argument('-exp', type=str, choices=['sum', 'mlp', 'attention', 'embed
 parser.add_argument('-epochs', type=int, default=51, help='indicate number of training epochs')
 parser.add_argument('-emb', type=int, default=63, help='indicate number of training epochs')
 parser.add_argument('-k', type=int, default=3, help='indicate experiment iterations')
-
 args = vars(parser.parse_args())
 
 if __name__=='__main__':

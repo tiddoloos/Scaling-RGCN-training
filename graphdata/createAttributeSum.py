@@ -27,7 +27,7 @@ def backward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'backw') -> str:
     node_id = 'sumnode:' + value
     return node_id, sum_type
 
-def forward_backward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'forw_back') -> str:
+def forward_backward(node: rdflib.term, graph: rdflib.Graph, sum_type: str ='forw_back') -> str:
     sorted_preds = sorted(list(graph.predicates(subject=node)))
     incoming_hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
     sorted_outgoing_preds = sorted(list(graph.predicates(object=node)))
@@ -73,6 +73,7 @@ path = f'./{dataset}/{dataset}_complete.nt'
 sum_path = f'./{dataset}/attr/sum/{dataset}_sum_'
 map_path = f'./{dataset}/attr/map/{dataset}_map_'
 format = path.split('.')[-1]
+
 create_sum_map(pathlib.Path(path), pathlib.Path(sum_path), pathlib.Path(map_path), format, forward_backward)
 create_sum_map(pathlib.Path(path), pathlib.Path(sum_path), pathlib.Path(map_path), format, forward)
 create_sum_map(pathlib.Path(path), pathlib.Path(sum_path), pathlib.Path(map_path), format, backward)
