@@ -55,6 +55,7 @@ parser.add_argument('-exp', type=str, choices=['sum', 'mlp', 'attention', 'embed
 parser.add_argument('-epochs', type=int, default=51, help='indicate number of training epochs')
 parser.add_argument('-emb', type=int, default=63, help='indicate number of training epochs')
 parser.add_argument('-k', type=int, default=3, help='indicate experiment iterations')
+
 args = vars(parser.parse_args())
 
 if __name__=='__main__':

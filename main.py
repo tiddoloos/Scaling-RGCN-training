@@ -56,11 +56,9 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
 
     print_max_result(results_exp_acc)
 
-    save_to_json('Accuracy', args['dataset'], args['exp'], results_exp_acc)
-    save_to_json('Loss', args['dataset'], args['exp'], results_exp_loss)
-
-
-    if plot:
+    if not k_run:
+        save_to_json('Accuracy', args['dataset'], args['exp'], results_exp_acc)
+        save_to_json('Loss', args['dataset'], args['exp'], results_exp_loss)
         plot_results('Accuracy', args['dataset'], args['exp'], args['epochs'], results_exp_acc)
         plot_results('loss', args['dataset'], args['exp'], args['epochs'], results_exp_loss)
 
@@ -72,6 +70,7 @@ parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM', 'TEST'
 parser.add_argument('-exp', type=str, choices=['sum', 'mlp', 'attention', 'embedding'], help='select experiment')
 parser.add_argument('-epochs', type=int, default=51, help='indicate number of training epochs')
 parser.add_argument('-emb', type=int, default=63, help='indicate number of training epochs')
+parser.add_argument('-k', type=int, default=3, help='indicate experiment iterations')
 args = vars(parser.parse_args())
 
 experiments = {
