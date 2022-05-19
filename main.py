@@ -1,18 +1,17 @@
 import argparse
 
 from copy import deepcopy
-from turtle import clear
 from typing import Callable, Dict
 
 from graphdata.dataset import Dataset
-from helpers.processResults import plot_and_save, print_max_result
+from helpers.processResults import plot_results, save_to_json, print_max_result
 from helpers import timing
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.modelTrainer import Trainer
 
 
-def initialize_expiremts(args: Dict[str, str], experiments: Dict[str, Dict[str, Callable]]) -> None:
+def initialize_expirements(args: Dict[str, str], experiments: Dict[str, Dict[str, Callable]], plot=True) -> None:
     """This functions executes experiments to scale graph training with RGCN. 
     After training on summary graphs, the weights of and node embeddings of 
     the summary model will be transferd to a new model for training on the 
@@ -59,8 +58,14 @@ def initialize_expiremts(args: Dict[str, str], experiments: Dict[str, Dict[str, 
         timing.log(f'{exp} experiment done')
 
     print_max_result(results_exp_acc)
-    plot_and_save('Accuracy', args['dataset'], results_exp_acc, epochs, args['exp'])
-    plot_and_save('Loss', args['dataset'], results_exp_loss, epochs, args['exp'])
+
+    save_to_json('Accuracy', args['dataset'], args['exp'], results_exp_acc)
+    save_to_json('Accuracy', args['dataset'], args['exp'], results_exp_loss)
+
+
+    if plot:
+        plot_results('Accuracy', args['dataset'], args['exp'], epochs, results_exp_acc)
+        plot_results('Accuracy', args['dataset'], args['exp'], epochs, results_exp_loss)
 
 
 parser = argparse.ArgumentParser(description='experiment arguments')
@@ -77,4 +82,4 @@ experiments = {
 
 
 if __name__=='__main__':
-    initialize_expiremts(args, experiments)
+    initialize_expirements(args, experiments)

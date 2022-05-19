@@ -1,12 +1,16 @@
-# python -m cProfile -s time my_app.py <args>
 
-import cProfile
-import pstats
-import io
-
-from main import initialize_expirements
-from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
+from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
+from main import initialize_expirements
+
+"""use this file to run experiments in main.py multiple times en get an average result for accuracy and loss"""
+
+def run_k_times(k, args, experiments):
+    for i in k:
+        initialize_expirements(args, experiments)
+    return
+
+
 
 experiments = {
 'sum': {'sum_layers': Emb_Layers, 'org_layers': Emb_Layers, 'embedding_trick': sum_embeddings, 'transfer': True},
@@ -15,17 +19,6 @@ experiments = {
 'baseline': {'sum_layers': None, 'org_layers': Emb_Layers, 'embedding_trick': None, 'transfer': False}
 }
 
+k=3
 args = {'dataset': 'AIFB', 'exp': None}
 
-pr = cProfile.Profile()
-pr.enable()
-
-my_result = initialize_expirements(args, experiments)
-
-pr.disable()
-s = io.StringIO()
-ps = pstats.Stats(pr, stream=s).sort_stats('tottime')
-ps.print_stats()
-
-with open('performance/cProfile_out.txt', 'w+') as f:
-    f.write(s.getvalue())
