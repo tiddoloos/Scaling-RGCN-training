@@ -1,6 +1,5 @@
 #!/bin/bash
-#SBATCH --partition=normal
-#SBATCH --constraint=silver_4110
+#SBATCH --partition=gpu_shared
 #SBATCH --job-name=AIFB_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -17,7 +16,7 @@ mkdir ./results
 scp -r $HOME/graphdata ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/run_main_k.py -dataset AIFB -k 1
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB -k 5
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
