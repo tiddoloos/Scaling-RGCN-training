@@ -10,6 +10,7 @@ from graphdata.dataset import Dataset
 
 class Trainer:
     device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
+    print(device)
     def __init__(self, data: Dataset, hidden_l: int, epochs: int, emb_dim: int, lr: float, weight_d: float):
         self.data = data
         self.hidden_l = hidden_l
