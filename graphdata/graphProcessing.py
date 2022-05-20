@@ -1,13 +1,9 @@
 import rdflib
 import torch
 
-from collections import Counter
+from collections import Counter, defaultdict
 from rdflib import Graph as rdfGraph
 from rdflib.term import URIRef
-
-
-from collections import defaultdict
-from rdflib import Graph as rdfGraph
 from typing import List, Dict, Tuple
 
 
