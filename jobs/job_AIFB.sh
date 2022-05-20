@@ -1,5 +1,6 @@
 #!/bin/bash
 #SBATCH --partition=gpu_shared
+#SBATCH --gres=gpu:1
 #SBATCH --job-name=AIFB_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
