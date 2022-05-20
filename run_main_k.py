@@ -37,14 +37,14 @@ def run_k_times(args: Dict[str, str], experiments):
 
     av_acc_results = get_av_results_dict(k, acc_dicts_list)
     av_loss_results = get_av_results_dict(k, loss_dicts_list)
-
+  
     print_max_acc(av_acc_results)
 
     save_to_json('avg_Accuracy', args['dataset'], args['exp'], av_acc_results)
     save_to_json('avg_Loss', args['dataset'], args['exp'], av_loss_results)
 
     plot_results('Avg Accuracy', args['dataset'], args['exp'], args['epochs'], av_acc_results)
-    plot_results('Avg Average Loss', args['dataset'], args['exp'], args['epochs'], av_loss_results)
+    plot_results('Avg Loss', args['dataset'], args['exp'], args['epochs'], av_loss_results)
     
 
 experiments = {

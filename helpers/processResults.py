@@ -32,10 +32,10 @@ def plot_results(metric: str, dataset: str, exp: str, epochs: int,  results_dict
         plt.xlim(xmin=0)
         plt.yticks(np.arange(0, 1.1, 0.1))
         plt.ylim(ymin=0)
-        plt.show()
         dt = datetime.now()
         str_date = dt.strftime('%d%B%Y-%H%M%S')
         plt.savefig(f'./results/{dataset}_{metric}_{exp}_{str_date}.png', format='png')
+        plt.show()
 
 def save_to_json(metric: str, dataset: str, exp: str, results_dict: Dict[str, List[int]]) -> None:
         dt = datetime.now()
