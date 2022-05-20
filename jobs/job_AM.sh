@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --partition=gpu_titanrtx_shared 
-#SBATCH --gres=gpu:1
+#SBATCH --partition=normal
+#SBATCH --constraint=silver_4110
 #SBATCH --job-name=AM_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -17,7 +17,7 @@ mkdir ./results
 scp -r $HOME/graphdata ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/run_main_k.py -dataset AM -k 5
+python /home/loost/RGCN_MscThesis_TiddoLoos/run_main_k.py -dataset AM -k 1
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
