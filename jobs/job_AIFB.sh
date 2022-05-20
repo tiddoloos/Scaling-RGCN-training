@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --partition=normal
+#SBATCH --partition=shared
 #SBATCH --constraint=silver_4110
-#SBATCH --job-name=AM_run
+#SBATCH --job-name=AIFB_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
