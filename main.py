@@ -70,8 +70,8 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
     save_to_json('avg_Accuracy', args['dataset'], args['exp'], k, av_acc_results)
     save_to_json('avg_Loss', args['dataset'], args['exp'], k, av_loss_results)
 
-    plot_results('Avg accuracy', args['dataset'], args['exp'], k, args['epochs'], av_acc_results)
-    plot_results('Avg loss', args['dataset'], args['exp'], k, args['epochs'], av_loss_results)
+    plot_results('Avg accuracy', args['dataset'], args['exp'], args['epochs'], k, av_acc_results)
+    plot_results('Avg loss', args['dataset'], args['exp'], args['epochs'], k, av_loss_results)
 
 
 parser = argparse.ArgumentParser(description='experiment arguments')
