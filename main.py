@@ -17,7 +17,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
     the summary model will be transferd to a new model for training on the 
     original graph. Also a baseline experiment is carried out.
     """
-    hidden_l = 32
+    hidden_l = 16
     lr = 0.01
     weight_d = 0.0005
 
