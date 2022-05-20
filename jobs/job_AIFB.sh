@@ -1,6 +1,5 @@
 #!/bin/bash
 #SBATCH --partition=shared
-#SBATCH --constraint=silver_4110
 #SBATCH --job-name=AIFB_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
