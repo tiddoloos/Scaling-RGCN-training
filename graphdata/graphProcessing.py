@@ -19,7 +19,6 @@ def make_rdf_graph(file_path: str) -> rdflib.Graph:
     return g
 
 def get_relations(graph: rdfGraph, edge: URIRef):
-    # remove all type edges??-> rdflib.term.URIRef('http://swrc.ontoware.org/ontology#type')?
     relations = list(set(graph.predicates()))
     # remove type edge
     relations.remove(edge)
@@ -30,10 +29,8 @@ def freq(rel: str, freq_: Counter):
 
 def process_rdf_graph(graph: rdfGraph):
     edge = URIRef('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
-    
     rels = get_relations(graph, edge)
     freq_ = Counter(rels)
-
     relations = sorted(set(rels), key=lambda rel: -freq(rel, freq_))
 
     subjects = set(graph.subjects())

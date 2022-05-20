@@ -3,7 +3,7 @@ import argparse
 from collections import defaultdict
 from typing import Dict, List
 
-from helpers.processResults import plot_results, save_to_json
+from helpers.processResults import plot_results, save_to_json, print_max_acc
 from main import initialize_expirements
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
@@ -31,12 +31,14 @@ def run_k_times(args: Dict[str, str], experiments):
     acc_dicts_list = []
     loss_dicts_list = []
     for i in range(k):
-        acc_dict, loss_dict = initialize_expirements(args, experiments, plot=False, k_run=True)
+        acc_dict, loss_dict = initialize_expirements(args, experiments, k_run=True)
         acc_dicts_list.append(acc_dict)
         loss_dicts_list.append(loss_dict)
 
     av_acc_results = get_av_results_dict(k, acc_dicts_list)
     av_loss_results = get_av_results_dict(k, loss_dicts_list)
+
+    print_max_acc(av_acc_results)
 
     save_to_json('avg_Accuracy', args['dataset'], args['exp'], av_acc_results)
     save_to_json('avg_Loss', args['dataset'], args['exp'], av_loss_results)

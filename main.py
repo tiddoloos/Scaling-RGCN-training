@@ -11,7 +11,7 @@ from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.modelTrainer import Trainer
 
 
-def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable]], plot=True, k_run=False) -> None:
+def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable]], k_run=False) -> None:
     """This functions executes experiments to scale graph training with RGCN. 
     After training on summary graphs, the weights of and node embeddings of 
     the summary model will be transferd to a new model for training on the 

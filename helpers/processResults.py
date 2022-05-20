@@ -35,7 +35,7 @@ def plot_results(metric: str, dataset: str, exp: str, epochs: int,  results_dict
         plt.show()
         dt = datetime.now()
         str_date = dt.strftime('%d%B%Y-%H%M%S')
-        plt.savefig(f'./results/{dataset}_{metric}_{exp}_{str_date}', format='png')
+        plt.savefig(f'./results/{dataset}_{metric}_{exp}_{str_date}.png', format='png')
 
 def save_to_json(metric: str, dataset: str, exp: str, results_dict: Dict[str, List[int]]) -> None:
         dt = datetime.now()
