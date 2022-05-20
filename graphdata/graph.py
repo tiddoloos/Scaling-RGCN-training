@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split
 
 from graphdata.graphProcessing import process_rdf_graph, get_node_mappings_dict, encode_node_labels
 
+
 @dataclass
 class Graph:
     node_to_enum: Dict[str, int]
@@ -46,15 +47,15 @@ def get_graph_data(org_graph: rdfGraph, sum_graph: rdfGraph, map_graph: rdfGraph
         return sGraph
 
 def remove_test_data(X_test: List[int], orgGraph: Graph, sumGraph: Graph, enum_classes: Dict[str, int], num_classes: int) -> None:
-        """This funtion updates the sum2type dict by removing the test data.
-        Avoids test set leakage because orignal node maps to a summary nodes which maps to a type (predicted class).
-        """ 
-        # make a copy to preserve orginal data in the data opject
-        org2type = deepcopy(sumGraph.org2type_dict)
-        for orgNode, value in orgGraph.node_to_enum.items():
-            if value in X_test:
-                org2type[orgNode].clear()
-        sumGraph.sum2type, _  =  encode_node_labels(sumGraph.sumNode2orgNode_dict, org2type, enum_classes, num_classes)
+    """This funtion updates the sum2type dict by removing the test data.
+    Avoids test set leakage because orignal node maps to a summary nodes which maps to a type (predicted class).
+    """ 
+    # make a copy to preserve orginal data in the data opject
+    org2type = deepcopy(sumGraph.org2type_dict)
+    for orgNode, value in orgGraph.node_to_enum.items():
+        if value in X_test:
+            org2type[orgNode].clear()
+    sumGraph.sum2type, _  =  encode_node_labels(sumGraph.sumNode2orgNode_dict, org2type, enum_classes, num_classes)
 
 def get_idx_labels(graph: Graph, node2type: Dict[str, List[float]]) -> Tuple[List[int], List[int]]:
     train_indices = list()

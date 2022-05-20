@@ -1,5 +1,5 @@
 import json
-import matplotlib.pyplot 
+import matplotlib.pyplot as plt
 import numpy as np
 
 from collections import defaultdict
@@ -7,21 +7,21 @@ from datetime import datetime
 from typing import Dict, List
 from torch import nn
 
+
 def print_max_acc(results_dict: Dict[str, List[float]]) -> None:
     for exp, results in results_dict.items():
-            exp_strip = exp.replace(' Accuracy', '')
-            max_acc = max(results)
-            epoch = int(results.index(max_acc)) - 1 
-            max_acc = max_acc*100
-            print(f'{exp_strip.upper()}: After epoch {epoch}, Max accuracy {round(max_acc, 2)}%')
+        exp_strip = exp.replace(' Accuracy', '')
+        max_acc = max(results)
+        epoch = int(results.index(max_acc)) - 1 
+        max_acc = max_acc*100
+        print(f'{exp_strip.upper()}: After epoch {epoch}, Max accuracy {round(max_acc, 2)}%')
 
 def plot_results(metric: str, dataset: str, exp: str, epochs: int, k: int,  results_dict: Dict[str, List[int]]):
-    plt = matplotlib.pyplot
     epoch_list = [i for i in range(epochs)]
     for key, result in results_dict.items():
-            y = result
-            x = epoch_list 
-            plt.plot(x, y, label = key)
+        y = result
+        x = epoch_list 
+        plt.plot(x, y, label = key)
 
     plt.title(f'{metric} on {dataset} dataset during training epochs')
     plt.xlabel('Epochs')

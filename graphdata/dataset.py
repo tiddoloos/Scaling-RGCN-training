@@ -6,6 +6,7 @@ from os.path import isfile, join
 from graphdata.graphProcessing import make_rdf_graph, nodes2type_mapping
 from graphdata.graph import get_graph_data, make_graph_trainig_data
 
+
 class Dataset:
     def __init__(self, name: str) -> None:
         self.org_path = f'./graphdata/{name}/{name}_complete.nt'

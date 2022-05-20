@@ -8,6 +8,7 @@ from typing import List, Tuple, Callable
 from graphdata.graph import Graph
 from graphdata.dataset import Dataset
 
+
 class Trainer:
     device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
     def __init__(self, data: Dataset, hidden_l: int, epochs: int, emb_dim: int, lr: float, weight_d: float):
