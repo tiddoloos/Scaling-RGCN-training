@@ -44,7 +44,7 @@ class Trainer:
         pred = torch.round(pred)
         acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val)
         return acc
-
+    
     def train(self, model: nn.Module, graph: Graph, sum_graph=True) -> Tuple[List, List]:
         model = model.to(self.device)
         training_data = graph.training_data.to(self.device)
