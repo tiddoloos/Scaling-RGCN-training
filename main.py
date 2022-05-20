@@ -54,9 +54,8 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
         results_exp_loss.update(results_baseline_loss)
         timing.log(f'{exp} experiment done')
 
-    print_max_acc(results_exp_acc)
-
     if not k_run:
+        print_max_acc(results_exp_acc)
         save_to_json('Accuracy', args['dataset'], args['exp'], results_exp_acc)
         save_to_json('Loss', args['dataset'], args['exp'], results_exp_loss)
         plot_results('Accuracy', args['dataset'], args['exp'], args['epochs'], results_exp_acc)
