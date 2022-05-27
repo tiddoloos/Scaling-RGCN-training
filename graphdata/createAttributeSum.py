@@ -48,7 +48,7 @@ def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib
     # create sum graph
     for s_, p_, o_ in g:
         if type(o_) == rdflib.term.Literal:
-            o_ = URIRef('http://example.org/string')
+            o_ = URIRef('http://example.org/literal')
         s_ = check_blank(s_)
         o_ = check_blank(o_)
         s, p, o = str(s_), str(p_), str(o_)
