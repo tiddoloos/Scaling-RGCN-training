@@ -1,21 +1,22 @@
 from copy import deepcopy
-from typing import Tuple, List
+from typing import Tuple, List, Dict
 from os import listdir
 from os.path import isfile, join
 
 from graphdata.graphProcessing import make_rdf_graph, nodes2type_mapping
-from graphdata.graph import get_graph_data, make_graph_trainig_data
+from graphdata.graph import get_graph_data, make_graph_trainig_data, Graph
 
 
 class Dataset:
     def __init__(self, name: str) -> None:
-        self.org_path = f'./graphdata/{name}/{name}_complete.nt'
-        self.sum_path = f'./graphdata/{name}/attr/sum/'
-        self.map_path = f'./graphdata/{name}/attr/map/'
-        self.sumGraphs = []
-        self.orgGraph = None
-        self.enum_classes = None
-        self.num_classes = None
+        self.org_path: str = f'./graphdata/{name}/{name}_complete.nt'
+        self.sum_path: str = f'./graphdata/{name}/attr/sum/'
+        self.map_path: str = f'./graphdata/{name}/attr/map/'
+        self.sumGraphs: list = []
+        self.orgGraph: Graph = None
+        self.enum_classes: Dict[str, int] = None
+        self.num_classes: int = None
+        self.num_sums: int = None
 
     def get_file_names(self) -> Tuple[List[str], List[str]]:
         sum_files = [f for f in listdir(self.sum_path) if not f.startswith('.') if isfile(join(self.sum_path, f))]
@@ -30,6 +31,7 @@ class Dataset:
         self.enum_classes, self.num_classes = enum_classes, len(classes)
 
         sum_files, map_files = self.get_file_names()
+        self.num_sums = len(sum_files)
 
         # init summary graph data
         for i in range(len(sum_files)):

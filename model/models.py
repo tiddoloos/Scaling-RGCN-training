@@ -8,7 +8,7 @@ from torch_geometric.data import Data
 
 
 class Emb_Layers(nn.Module):
-    def __init__(self, num_relations: int, hidden_l: int, num_labels: int, emb_dim: int) -> None:
+    def __init__(self, num_relations: int, hidden_l: int, num_labels: int, emb_dim: int, _) -> None:
         super(Emb_Layers, self).__init__()
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
@@ -33,9 +33,9 @@ class Emb_Layers(nn.Module):
 
 
 class Emb_ATT_Layers(nn.Module):
-    def __init__(self, num_relations: int, hidden_l: int, num_labels: int, emb_dim: int) -> None:
+    def __init__(self, num_relations: int, hidden_l: int, num_labels: int, emb_dim: int, num_sums: int) -> None:
         super(Emb_ATT_Layers, self).__init__()
-        self.att = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=3)
+        self.att = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=num_sums)
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
@@ -60,9 +60,9 @@ class Emb_ATT_Layers(nn.Module):
 
 
 class Emb_MLP_Layers(nn.Module):
-    def __init__(self, num_relations: int, hidden_l: int, num_labels: int, emb_dim: int):
-        in_f = 3*emb_dim
-        out_f = round((in_f/2)*3 + num_labels)
+    def __init__(self, num_relations: int, hidden_l: int, num_labels: int, emb_dim: int, num_sums: int):
+        in_f = num_sums *emb_dim
+        out_f = round((in_f/2)*num_sums + num_labels)
         super(Emb_MLP_Layers, self).__init__()
         self.lin1 = nn.Linear(in_features= in_f, out_features=out_f)
         self.lin2 = nn.Linear(in_features=out_f, out_features=emb_dim)

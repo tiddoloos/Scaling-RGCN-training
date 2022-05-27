@@ -75,7 +75,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
 
 
 parser = argparse.ArgumentParser(description='experiment arguments')
-parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM', 'TEST'], help='inidcate dataset name', default='AIFB')
+parser.add_argument('-dataset', type=str, choices=['AIFB', 'AIFB1', 'MUTAG', 'AM', 'TEST'], help='inidcate dataset name', default='AIFB')
 parser.add_argument('-exp', type=str, choices=['sum', 'mlp', 'attention', 'embedding'], help='select experiment')
 parser.add_argument('-epochs', type=int, default=51, help='indicate number of training epochs')
 parser.add_argument('-emb', type=int, default=63, help='indicate number of training epochs')
