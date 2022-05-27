@@ -13,21 +13,21 @@ def check_blank(node: rdflib.term):
         node = URIRef('http://example.org/'+ str(node))
     return node
 
-def forward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'forw') -> str:
+def forward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'out') -> str:
     sorted_preds = sorted(list(graph.predicates(subject=node)))
     hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
     value = hash.hexdigest()
     node_id = 'sumnode:' + value
     return node_id, sum_type
 
-def backward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'backw') -> str:
+def backward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'in') -> str:
     sorted_preds = sorted(list(graph.predicates(object=node)))
     incoming_hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
     value = incoming_hash.hexdigest()
     node_id = 'sumnode:' + value
     return node_id, sum_type
 
-def forward_backward(node: rdflib.term, graph: rdflib.Graph, sum_type: str ='forw_back') -> str:
+def forward_backward(node: rdflib.term, graph: rdflib.Graph, sum_type: str ='in_out') -> str:
     sorted_preds = sorted(list(graph.predicates(subject=node)))
     incoming_hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
     sorted_outgoing_preds = sorted(list(graph.predicates(object=node)))
