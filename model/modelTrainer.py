@@ -82,11 +82,11 @@ class Trainer:
 
         if transfer == True:
             print('Training on Summary Graphs...')
-            sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.emb_dim, self.data.num_sums)
+            sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.emb_dim, len(self.data.sumGraphs))
             for count, sum_graph in enumerate(self.data.sumGraphs):
                 _, _ = self.train(sumModel, sum_graph)
 
-        orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.emb_dim, self.data.num_sums)
+        orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.emb_dim, len(self.data.sumGraphs))
     
         if embedding_trick != None:
             embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)

@@ -16,7 +16,6 @@ class Dataset:
         self.orgGraph: Graph = None
         self.enum_classes: Dict[str, int] = None
         self.num_classes: int = None
-        self.num_sums: int = None
 
     def get_file_names(self) -> Tuple[List[str], List[str]]:
         sum_files = [f for f in listdir(self.sum_path) if not f.startswith('.') if isfile(join(self.sum_path, f))]
@@ -31,7 +30,6 @@ class Dataset:
         self.enum_classes, self.num_classes = enum_classes, len(classes)
 
         sum_files, map_files = self.get_file_names()
-        self.num_sums = len(sum_files)
 
         # init summary graph data
         for i in range(len(sum_files)):
