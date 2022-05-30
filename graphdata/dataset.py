@@ -32,7 +32,7 @@ class Dataset:
         sum_files, map_files = self.get_file_names()
 
         # init summary graph data
-        for i in range(len(sum_files)):
+        for i, _ in enumerate(sum_files):
             sum_path = f'{self.sum_path}/{sum_files[i]}'
             map_path = f'{self.map_path}/{map_files[i]}'
             rdf_sum_graph = make_rdf_graph(sum_path)
