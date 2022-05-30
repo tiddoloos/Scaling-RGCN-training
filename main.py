@@ -65,10 +65,10 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
     av_acc_results = get_av_results_dict(k, acc_dicts_list)
     av_loss_results = get_av_results_dict(k, loss_dicts_list)
   
-    print_max_acc(av_acc_results)
+    print_max_acc('max_accuracy', args['dataset'], args['exp'], k, av_acc_results)
 
-    save_to_json('avg_Accuracy', args['dataset'], args['exp'], k, av_acc_results)
-    save_to_json('avg_Loss', args['dataset'], args['exp'], k, av_loss_results)
+    save_to_json('avg_accuracy', args['dataset'], args['exp'], k, av_acc_results)
+    save_to_json('avg_loss', args['dataset'], args['exp'], k, av_loss_results)
 
     plot_results('Avg accuracy', args['dataset'], args['exp'], args['epochs'], k, av_acc_results)
     plot_results('Avg loss', args['dataset'], args['exp'], args['epochs'], k, av_loss_results)
