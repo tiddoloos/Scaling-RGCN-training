@@ -18,7 +18,6 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
     original graph. Also a baseline experiment is carried out.
     """
     hidden_l = 16
-    lr = 0.01
     weight_d = 0.0005
 
     acc_dicts_list = []
@@ -36,7 +35,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
         
         if args['exp'] == None:
             for exp, exp_settings in experiments.items():
-                trainer = Trainer(deepcopy(data), hidden_l, args['epochs'], args['emb'], lr, weight_d)
+                trainer = Trainer(deepcopy(data), hidden_l, args['epochs'], args['emb'], args['lr'], weight_d)
                 results_acc, results_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
                 results_exp_acc.update(results_acc)
                 results_exp_loss.update(results_loss)
@@ -45,7 +44,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
         else:
             exp = args['exp']
             exp_settings = experiments[exp]
-            trainer = Trainer(deepcopy(data), hidden_l, args['epochs'], args['emb'], lr, weight_d)
+            trainer = Trainer(deepcopy(data), hidden_l, args['epochs'], args['emb'], args['lr'], weight_d)
             results_acc, results_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
             results_exp_acc.update(results_acc)
             results_exp_loss.update(results_loss)
@@ -53,7 +52,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
 
             exp = 'baseline'
             exp_settings = experiments[exp]
-            trainer = Trainer(deepcopy(data), hidden_l, args['epochs'], args['emb'], lr, weight_d)
+            trainer = Trainer(deepcopy(data), hidden_l, args['epochs'], args['emb'], args['lr'], weight_d)
             results_baseline_acc, results_baseline_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
             results_exp_acc.update(results_baseline_acc)
             results_exp_loss.update(results_baseline_loss)
@@ -80,6 +79,7 @@ parser.add_argument('-exp', type=str, choices=['summation', 'mlp', 'attention', 
 parser.add_argument('-epochs', type=int, default=51, help='indicate number of training epochs')
 parser.add_argument('-emb', type=int, default=63, help='indicate number of training epochs')
 parser.add_argument('-k', type=int, default=1, help='indicate experiment iterations')
+parser.add_argument('-lr', type=float, default=0.01, help='learning rate')
 args = vars(parser.parse_args())
 
 experiments = {
