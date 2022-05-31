@@ -10,15 +10,14 @@ from torch import nn
 
 def print_max_acc(metric: str, dataset: str, exp: str, k: int, results_dict: Dict[str, List[int]]) -> None:
     max_results = defaultdict(dict)
-    for exp, results in results_dict.items():
-        exp_strip = exp.replace(' Accuracy', '')
+    for experiment, results in results_dict.items():
+        exp_strip = experiment.replace(' Accuracy', '')
         max_acc = max(results)
         epoch = int(results.index(max_acc)) - 1 
         max_acc = max_acc*100
         print(f'{exp_strip.upper()}: After epoch {epoch}, Max accuracy {round(max_acc, 2)}%')
-        max_results[exp] = {'epoch': epoch, 'acc': max_acc}
+        max_results[experiment] = {'epoch': epoch, 'acc': max_acc}
     
-    print(max_results)
     dt = datetime.now()
     str_date = dt.strftime('%d%B%Y-%H%M%S')
     with open(f'./results/{dataset}_{metric}_k={k}_{exp}_{str_date}.json', 'w') as write_file:
