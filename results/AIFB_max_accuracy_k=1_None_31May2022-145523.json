@@ -1,0 +1,18 @@
+{
+    "summation Accuracy": {
+        "epoch": 3,
+        "acc": 94.33465003967285
+    },
+    "mlp Accuracy": {
+        "epoch": 8,
+        "acc": 93.0171251296997
+    },
+    "attention Accuracy": {
+        "epoch": 2,
+        "acc": 95.652174949646
+    },
+    "baseline Accuracy": {
+        "epoch": 9,
+        "acc": 86.29776239395142
+    }
+}
