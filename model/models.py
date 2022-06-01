@@ -64,7 +64,7 @@ class Emb_MLP_Layers(nn.Module):
         in_f = num_sums * emb_dim
         out_f = round((in_f/2) * 3 + num_labels)
         super(Emb_MLP_Layers, self).__init__()
-        self.lin1 = nn.Linear(in_features= in_f, out_features=out_f)
+        self.lin1 = nn.Linear(in_features=in_f, out_features=out_f)
         self.lin2 = nn.Linear(in_features=out_f, out_features=emb_dim)
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
@@ -91,4 +91,3 @@ class Emb_MLP_Layers(nn.Module):
         self.rgcn2.weight = torch.nn.Parameter(weight_2)
         self.rgcn2.bias = torch.nn.Parameter(bias_2)
         self.rgcn2.root = torch.nn.Parameter(root_2)
-
