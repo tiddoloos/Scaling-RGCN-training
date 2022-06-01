@@ -8,7 +8,7 @@ from typing import Dict, List
 from torch import nn
 
 
-def print_max_acc(metric: str, dataset: str, exp: str, k: int, results_dict: Dict[str, List[int]]) -> None:
+def print_max_acc(metric: str, dataset: str, exp: str, emb: int, lr: float, k: int, results_dict: Dict[str, List[int]]) -> None:
     max_results = defaultdict(dict)
     for experiment, results in results_dict.items():
         exp_strip = experiment.replace(' Accuracy', '')
@@ -18,6 +18,7 @@ def print_max_acc(metric: str, dataset: str, exp: str, k: int, results_dict: Dic
         print(f'{exp_strip.upper()}: After epoch {epoch}, Max accuracy {round(max_acc, 2)}%')
         max_results[experiment] = {'epoch': epoch, 'acc': max_acc}
     
+    max_results['emb'], max_results['lr'] = emb, lr
     dt = datetime.now()
     str_date = dt.strftime('%d%B%Y-%H%M%S')
     with open(f'./results/{dataset}_{metric}_k={k}_{exp}_{str_date}.json', 'w') as write_file:

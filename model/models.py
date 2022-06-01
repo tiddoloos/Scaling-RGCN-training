@@ -68,6 +68,8 @@ class Emb_MLP_Layers(nn.Module):
         self.lin2 = nn.Linear(in_features=out_f, out_features=emb_dim)
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
+        nn.init.kaiming_uniform_(self.lin1.weight, mode='fan_in')
+        nn.init.kaiming_uniform_(self.lin2.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 

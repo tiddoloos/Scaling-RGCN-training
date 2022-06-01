@@ -64,9 +64,9 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
     av_acc_results = get_av_results_dict(k, acc_dicts_list)
     av_loss_results = get_av_results_dict(k, loss_dicts_list)
   
-    print_max_acc('max_accuracy', args['dataset'], args['exp'], k, av_acc_results)
+    print_max_acc('max_acc', args['dataset'], args['exp'], args['emb'], args['lr'], k, av_acc_results)
 
-    save_to_json('avg_accuracy', args['dataset'], args['exp'], k, av_acc_results)
+    save_to_json('avg_acc', args['dataset'], args['exp'], k, av_acc_results)
     save_to_json('avg_loss', args['dataset'], args['exp'], k, av_loss_results)
 
     plot_results('Avg accuracy', args['dataset'], args['exp'], args['epochs'], k, av_acc_results)
@@ -77,7 +77,7 @@ parser = argparse.ArgumentParser(description='experiment arguments')
 parser.add_argument('-dataset', type=str, choices=['AIFB', 'AIFB1', 'MUTAG', 'AM', 'TEST'], help='inidcate dataset name', default='AIFB')
 parser.add_argument('-exp', type=str, choices=['summation', 'mlp', 'attention', 'baseline'], help='select experiment')
 parser.add_argument('-epochs', type=int, default=51, help='indicate number of training epochs')
-parser.add_argument('-emb', type=int, default=63, help='indicate number of training epochs')
+parser.add_argument('-emb', type=int, default=99, help='indicate number of training epochs')
 parser.add_argument('-k', type=int, default=1, help='indicate experiment iterations')
 parser.add_argument('-lr', type=float, default=0.01, help='learning rate')
 args = vars(parser.parse_args())
