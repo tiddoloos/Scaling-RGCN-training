@@ -61,8 +61,8 @@ class Emb_ATT_Layers(nn.Module):
 
 class Emb_MLP_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, emb_dim: int, num_sums: int):
-        in_f = num_sums *emb_dim
-        out_f = round((in_f/2)*num_sums + num_labels)
+        in_f = num_sums * emb_dim
+        out_f = round((in_f/2) * 3 + num_labels)
         super(Emb_MLP_Layers, self).__init__()
         self.lin1 = nn.Linear(in_features= in_f, out_features=out_f)
         self.lin2 = nn.Linear(in_features=out_f, out_features=emb_dim)
