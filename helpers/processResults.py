@@ -33,7 +33,7 @@ def plot_results(metric: str, dataset: str, exp: str, epochs: int, k: int,  resu
 
     plt.title(f'{metric} on {dataset} dataset during training epochs')
     plt.xlabel('Epochs')
-    plt.ylabel('Accuracy/Loss')
+    plt.ylabel(f'{metric}')
     plt.grid(color='b', linestyle='-', linewidth=0.1)
     plt.margins(x=0)
     plt.legend(loc='best')

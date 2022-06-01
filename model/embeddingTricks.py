@@ -39,7 +39,7 @@ def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
     # summing of embeddings
     tensors = get_tensor_list(graph, sum_graphs, emb_dim)
     summed_embedding = sum(tensors) 
-    graph.training_data.embedding=nn.Embedding.from_pretrained(summed_embedding, freeze=True)
+    graph.training_data.embedding=nn.Embedding.from_pretrained(summed_embedding, freeze=False)
 
 
 # def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
