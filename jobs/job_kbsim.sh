@@ -13,8 +13,9 @@ module load 2021
 
 cd $TMPDIR
 scp -r ~/scala_setup/fluid-spark .
+cd $TMPDIR/fluid-spark
 
-singularity run --pwd $PWD --writable-tmpfs --bind ./orientdb/databases:/orientdb/databases,./orientdb/backup:/orientdb/backup,./orientdb/config/orientdb-server-config.xml:/orientdb/config/orientdb-server-config.xml  ./fluid-spark/myorientdb.sif
+singularity run --pwd $PWD --writable-tmpfs --bind ./orientdb/databases:/orientdb/databases,./orientdb/backup:/orientdb/backup,./orientdb/config/orientdb-server-config.xml:/orientdb/config/orientdb-server-config.xml  ./myorientdb.sif
 
 #Run Program
 sbt "runMain Main resources/configs/tests/manual-test-1.conf"
