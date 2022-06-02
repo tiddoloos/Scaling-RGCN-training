@@ -83,7 +83,7 @@ class Trainer:
         if embedding_trick != None:
             print('Training on Summary Graphs...')
             sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.emb_dim, len(self.data.sumGraphs))
-            for count, sum_graph in enumerate(self.data.sumGraphs):
+            for _, sum_graph in enumerate(self.data.sumGraphs):
                 _, _ = self.train(sumModel, sum_graph)
 
         orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.emb_dim, len(self.data.sumGraphs))
