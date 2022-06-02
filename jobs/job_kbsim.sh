@@ -13,6 +13,7 @@ module load 2021
 
 cd $TMPDIR
 cp ~/scala_setup/fluid-spark .
+cd ./scala_setup/fluid-spark
 
 singularity run --pwd $PWD --writable-tmpfs --bind ./orientdb/databases:/orientdb/databases,./orientdb/backup:/orientdb/backup,./orientdb/config/orientdb-server-config.xml:/orientdb/config/orientdb-server-config.xml  ./fluid-spark/myorientdb.sif
 
