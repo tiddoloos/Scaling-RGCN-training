@@ -76,8 +76,9 @@ class Emb_MLP_Layers(nn.Module):
     def forward(self, training_data: Data):
         x = torch.tanh(self.lin1(training_data.embedding.weight))
         x = self.lin2(x)
-        embedding = nn.Embedding.from_pretrained(x, freeze=True)
-        x = self.rgcn1(embedding.weight, training_data.edge_index, training_data.edge_type)
+        # embedding = nn.Embedding.from_pretrained(x, freeze=True)
+        # x = self.rgcn1(embedding.weight, training_data.edge_index, training_data.edge_type)
+        x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
         x = torch.sigmoid(x)

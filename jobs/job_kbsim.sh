@@ -1,10 +1,10 @@
 #!/bin/bash
+#SBATCH --partition=normal
+#SBATCH --constraint=gold_6130
 #SBATCH --job-name=kbisim_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
-#SBATCH --gpus=1
-#SBATCH --partition=gpu_shared
 #SBATCH -t 100:00:00
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=t.j.loos@student.vu.nl
