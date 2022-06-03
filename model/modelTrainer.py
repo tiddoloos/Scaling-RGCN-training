@@ -53,8 +53,9 @@ class Trainer:
 
         accuracies = []
         losses = []
+        epochs = self.epochs
 
-        for epoch in range(self.epochs):
+        for epoch in range(epochs):
             if not sum_graph:
                 model.eval()
                 acc = self.evaluate(model, training_data)
