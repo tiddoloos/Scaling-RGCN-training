@@ -17,7 +17,7 @@ mkdir ./results
 scp -r $HOME/graphdata ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -k 1 -exp summation -hl 10
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i 1 -exp summation -hl 10
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
