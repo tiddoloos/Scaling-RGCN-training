@@ -17,14 +17,14 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
     the summary model will be transferd to a new model for training on the 
     original graph. Also a baseline experiment is carried out.
     """
-    hidden_l = 16
+
     weight_d = 0.0005
 
     acc_dicts_list = []
     loss_dicts_list = []
 
-    k = args['k']
-    for j in range(k):
+    iter = args['i']
+    for j in range(args['i']):
 
         # initialzie the data and use deepcopy to keep original data unchanged.
         data = Dataset(args['dataset'])
@@ -35,7 +35,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
         
         if args['exp'] == None:
             for exp, exp_settings in experiments.items():
-                trainer = Trainer(deepcopy(data), hidden_l, args['epochs'], args['emb'], args['lr'], weight_d)
+                trainer = Trainer(deepcopy(data), args['hl'], args['epochs'], args['emb'], args['lr'], weight_d)
                 results_acc, results_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
                 results_exp_acc.update(results_acc)
                 results_exp_loss.update(results_loss)
@@ -44,7 +44,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
         else:
             exp = args['exp']
             exp_settings = experiments[exp]
-            trainer = Trainer(deepcopy(data), hidden_l, args['epochs'], args['emb'], args['lr'], weight_d)
+            trainer = Trainer(deepcopy(data), args['hl'], args['epochs'], args['emb'], args['lr'], weight_d)
             results_acc, results_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
             results_exp_acc.update(results_acc)
             results_exp_loss.update(results_loss)
@@ -52,7 +52,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
 
             exp = 'baseline'
             exp_settings = experiments[exp]
-            trainer = Trainer(deepcopy(data), hidden_l, args['epochs'], args['emb'], args['lr'], weight_d)
+            trainer = Trainer(deepcopy(data), args['hl'], args['epochs'], args['emb'], args['lr'], weight_d)
             results_baseline_acc, results_baseline_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
             results_exp_acc.update(results_baseline_acc)
             results_exp_loss.update(results_baseline_loss)
@@ -61,16 +61,16 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
         acc_dicts_list.append(results_exp_acc)
         loss_dicts_list.append(results_exp_loss)
 
-    av_acc_results = get_av_results_dict(k, acc_dicts_list)
-    av_loss_results = get_av_results_dict(k, loss_dicts_list)
+    av_acc_results = get_av_results_dict(iter, acc_dicts_list)
+    av_loss_results = get_av_results_dict(iter, loss_dicts_list)
   
-    print_max_acc('max_acc', args['dataset'], args['exp'], args['emb'], args['lr'], k, av_acc_results)
+    print_max_acc('max_acc', args['dataset'], args['exp'], args['emb'], args['lr'], iter, av_acc_results)
 
-    save_to_json('avg_acc', args['dataset'], args['exp'], k, av_acc_results)
-    save_to_json('avg_loss', args['dataset'], args['exp'], k, av_loss_results)
+    save_to_json('avg_acc', args['dataset'], args['exp'], iter, av_acc_results)
+    save_to_json('avg_loss', args['dataset'], args['exp'], iter, av_loss_results)
 
-    plot_results('Accuracy', args['dataset'], args['exp'], args['epochs'], k, av_acc_results)
-    plot_results('Loss', args['dataset'], args['exp'], args['epochs'], k, av_loss_results)
+    plot_results('Accuracy', args['dataset'], args['exp'], args['epochs'], iter, av_acc_results)
+    plot_results('Loss', args['dataset'], args['exp'], args['epochs'], iter, av_loss_results)
 
 
 parser = argparse.ArgumentParser(description='experiment arguments')
@@ -78,8 +78,9 @@ parser.add_argument('-dataset', type=str, choices=['AIFB', 'AIFB1', 'MUTAG', 'AM
 parser.add_argument('-exp', type=str, choices=['summation', 'mlp', 'attention', 'baseline'], help='select experiment')
 parser.add_argument('-epochs', type=int, default=51, help='indicate number of training epochs')
 parser.add_argument('-emb', type=int, default=63, help='indicate number of training epochs')
-parser.add_argument('-k', type=int, default=1, help='indicate experiment iterations')
+parser.add_argument('-i', type=int, default=1, help='indicate experiment iterations')
 parser.add_argument('-lr', type=float, default=0.01, help='learning rate')
+parser.add_argument('-hl', type=int, default=16, help='hidden layer size')
 args = vars(parser.parse_args())
 
 experiments = {
