@@ -8,6 +8,11 @@ from rdflib import URIRef
 from typing import Callable, Dict
 
 
+"""create attribute summaries with this script.
+Run this file from the graphdata folder.
+"""
+
+
 def check_blank(node: rdflib.term):
     if type(node) == rdflib.term.BNode:
         node = URIRef('http://example.org/'+ str(node))
