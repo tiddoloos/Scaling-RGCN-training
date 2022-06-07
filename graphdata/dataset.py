@@ -23,7 +23,7 @@ class Dataset:
         assert len(sum_files) == len(map_files), f'for every summary file there needs to be a map file.{sum_files} and {map_files}'
         return sorted(sum_files), sorted(map_files)
 
-    def init_dataset(self, emb_dim: int) -> None:
+    def init_dataset(self) -> None:
         rdf_org_graph = make_rdf_graph(self.org_path)
         classes, org2type_dict = nodes2type_mapping(rdf_org_graph)
         enum_classes = {lab: i for i, lab in enumerate(classes)}
@@ -37,10 +37,10 @@ class Dataset:
             map_path = f'{self.map_path}/{map_files[i]}'
             rdf_sum_graph = make_rdf_graph(sum_path)
             rdf_map_graph = make_rdf_graph(map_path)
-            sGraph = get_graph_data(rdf_org_graph, rdf_sum_graph, rdf_map_graph, emb_dim, deepcopy(org2type_dict), self.enum_classes, self.num_classes, org=False)
+            sGraph = get_graph_data(rdf_org_graph, rdf_sum_graph, rdf_map_graph, deepcopy(org2type_dict), self.enum_classes, self.num_classes, org=False)
             self.sumGraphs.append(sGraph)
 
         # init original graph data
-        self.orgGraph = get_graph_data(rdf_org_graph, rdf_sum_graph, rdf_map_graph, emb_dim, deepcopy(org2type_dict), self.enum_classes, self.num_classes, org=True)
+        self.orgGraph = get_graph_data(rdf_org_graph, rdf_sum_graph, rdf_map_graph, deepcopy(org2type_dict), self.enum_classes, self.num_classes, org=True)
         
         make_graph_trainig_data(self.orgGraph, self.sumGraphs, self.enum_classes, self.num_classes)

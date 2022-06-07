@@ -4,7 +4,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import List, Dict, Tuple
 from torch_geometric.data import Data
-from torch import nn
+from torch import Tensor
 from rdflib import Graph as rdfGraph
 from sklearn.model_selection import train_test_split
 
@@ -23,27 +23,26 @@ class Graph:
     org2type: Dict[str, List[str]]
     sum2type: Dict[str, List[str]]
     training_data: Data
+    embedding: Tensor
 
 
-def get_graph_data(org_graph: rdfGraph, sum_graph: rdfGraph, map_graph: rdfGraph,
-                    emb_dim: int, org2type_dict: Dict[str, str], enum_classes: Dict[str, int], num_classes: int, org=False) ->  Graph:
+def get_graph_data(org_graph: rdfGraph, sum_graph: rdfGraph, map_graph: rdfGraph, org2type_dict: Dict[str, str],
+                    enum_classes: Dict[str, int], num_classes: int, org=False) ->  Graph:
 
     if org:
         edge_index, edge_type, node_to_enum, num_nodes, sorted_nodes, relations_dict  = process_rdf_graph(org_graph)
-        oGraph = Graph(node_to_enum, num_nodes, sorted_nodes, relations_dict, None, None, None, None, None, None)
+        oGraph = Graph(node_to_enum, num_nodes, sorted_nodes, relations_dict, None, None, None, None, None, None, None)
         oGraph.training_data = Data(edge_index = edge_index)
         oGraph.training_data.edge_type = edge_type
-        oGraph.training_data.embedding = nn.Embedding(num_nodes, emb_dim)
         return oGraph
 
     else:
         edge_index, edge_type, node_to_enum, num_nodes, sorted_nodes, relations_dict = process_rdf_graph(sum_graph)
         orgNode2sumNode_dict, sumNode2orgNode_dict = get_node_mappings_dict(map_graph)
         sum2type_enc, org2type_enc  = encode_node_labels(sumNode2orgNode_dict, org2type_dict, enum_classes, num_classes)
-        sGraph = Graph(node_to_enum, num_nodes, sorted_nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type_enc, sum2type_enc, None)
+        sGraph = Graph(node_to_enum, num_nodes, sorted_nodes, relations_dict, orgNode2sumNode_dict, sumNode2orgNode_dict, org2type_dict, org2type_enc, sum2type_enc, None, None)
         sGraph.training_data = Data(edge_index = edge_index)
         sGraph.training_data.edge_type = edge_type
-        sGraph.training_data.embedding = nn.Embedding(num_nodes, emb_dim)
         return sGraph
 
 def remove_test_data(X_test: List[int], orgGraph: Graph, sumGraph: Graph, enum_classes: Dict[str, int], num_classes: int) -> None:

@@ -22,4 +22,3 @@ sbt "runMain Main resources/configs/tests/manual-test-1.conf"
 
 #stop image
 # singularity instance stop $TMPDIR/myorientdb.img
-

@@ -13,7 +13,7 @@ from model.modelTrainer import Trainer
 
 def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable]]) -> None:
     """This functions executes experiments to scale graph training with RGCN. 
-    After training on summary graphs, the weights of and node embeddings of 
+    After training on summary graphs, the weights and node embeddings of 
     the summary model will be transferd to a new model for training on the 
     original graph. Also a baseline experiment is carried out.
     """
@@ -28,7 +28,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
 
         # initialzie the data and use deepcopy to keep original data unchanged.
         data = Dataset(args['dataset'])
-        data.init_dataset(args['emb'])
+        data.init_dataset()
 
         results_exp_acc = dict()
         results_exp_loss = dict()
