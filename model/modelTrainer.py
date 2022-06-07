@@ -93,7 +93,7 @@ class Trainer:
 
         if embedding_trick != None:
             embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
-            orgModel.load_embedding(self.data.orgGraph.training_data.embedding.clone())
+            orgModel.load_embedding(self.data.orgGraph.training_data.embedding)
 
         if transfer == True:
             self.transfer_weights(sumModel, orgModel)
