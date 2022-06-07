@@ -100,5 +100,10 @@ class Trainer:
 
         print('Training on Orginal Graph...')
         results_acc[f'{exp} Accuracy'], results_loss[f'{exp} Loss'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
-
+        
+        # Test set
+        # pred = orgModel(self.data.orgGraph.training_data)
+        # pred = torch.round(pred)
+        # acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
+        # print('ACCURACY ON TEST SET = ',  acc)
         return results_acc, results_loss

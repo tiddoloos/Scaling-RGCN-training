@@ -8,7 +8,7 @@ from typing import Dict, List
 from torch import nn
 
 
-def print_max_acc(metric: str, dataset: str, exp: str, emb: int, lr: float, k: int, results_dict: Dict[str, List[int]]) -> None:
+def print_max_acc(metric: str, dataset: str, exp: str, emb: int, lr: float, i: int, results_dict: Dict[str, List[int]]) -> None:
     max_results = defaultdict(dict)
     for experiment, results in results_dict.items():
         exp_strip = experiment.replace(' Accuracy', '')
@@ -18,14 +18,14 @@ def print_max_acc(metric: str, dataset: str, exp: str, emb: int, lr: float, k: i
         print(f'{exp_strip.upper()}: After epoch {epoch}, Max accuracy {round(max_acc, 2)}%')
         max_results[experiment] = {'epoch': epoch, 'acc': max_acc}
     
-    max_results['emb'], max_results['lr'], max_results['k'] = emb, lr, k
+    max_results['emb'], max_results['lr'], max_results['k'] = emb, lr, i
     dt = datetime.now()
     str_date = dt.strftime('%d%B%Y-%H%M%S')
-    with open(f'./results/{dataset}_{metric}_k={k}_{exp}_{str_date}.json', 'w') as write_file:
+    with open(f'./results/{dataset}_{metric}_i={i}_{exp}_{str_date}.json', 'w') as write_file:
             json.dump(max_results, write_file, indent=4)
 
-def plot_results(metric: str, dataset: str, exp: str, epochs: int, k: int,  results_dict: Dict[str, List[int]]):
-    epoch_list = [i for i in range(epochs)]
+def plot_results(metric: str, dataset: str, exp: str, epochs: int, i: int,  results_dict: Dict[str, List[int]]):
+    epoch_list = [j for j in range(epochs)]
     for key, result in results_dict.items():
         y = result
         x = epoch_list 
@@ -43,13 +43,13 @@ def plot_results(metric: str, dataset: str, exp: str, epochs: int, k: int,  resu
     plt.ylim(ymin=0)
     dt = datetime.now()
     str_date = dt.strftime('%d%B%Y-%H%M%S')
-    plt.savefig(f'./results/{dataset}_{metric}_k={k}_{exp}_{str_date}.pdf', format='pdf')
+    plt.savefig(f'./results/{dataset}_{metric}_i={i}_{exp}_{str_date}.pdf', format='pdf')
     plt.show()
 
-def save_to_json(metric: str, dataset: str, exp: str, k: int, results_dict: Dict[str, List[int]]) -> None:
+def save_to_json(metric: str, dataset: str, exp: str, i: int, results_dict: Dict[str, List[int]]) -> None:
     dt = datetime.now()
     str_date = dt.strftime('%d%B%Y-%H%M%S')
-    with open(f'./results/{dataset}_{metric}_k={k}_{exp}_{str_date}.json', 'w') as write_file:
+    with open(f'./results/{dataset}_{metric}_i={i}_{exp}_{str_date}.json', 'w') as write_file:
             json.dump(results_dict, write_file, indent=4)
 
 def print_trainable_parameters(model: nn.Module, exp: str) -> int:
