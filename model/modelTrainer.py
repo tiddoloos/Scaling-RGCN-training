@@ -87,13 +87,13 @@ class Trainer:
             for _, sum_graph in enumerate(self.data.sumGraphs):
                 sumModel.reset_embedding(sum_graph.num_nodes, self.emb_dim)
                 _, _ = self.train(sumModel, sum_graph)
-                sum_graph.training_data.embedding = sumModel.embedding.weight.clone()
+                sum_graph.training_data.embedding = sumModel.embedding.weight.detach()
 
         orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, len(self.data.sumGraphs))
 
         if embedding_trick != None:
             embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
-            orgModel.load_embedding(self.data.orgGraph.training_data.embedding.detach())
+            orgModel.load_embedding(self.data.orgGraph.training_data.embedding.clone())
 
         if transfer == True:
             self.transfer_weights(sumModel, orgModel)
