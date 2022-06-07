@@ -15,7 +15,7 @@ experiments = {
 'baseline': {'sum_layers': None, 'org_layers': Emb_Layers, 'embedding_trick': None, 'transfer': False}
 }
 
-args = {'dataset': 'AIFB', 'exp': None}
+args = {'dataset': 'AIFB', 'exp': None, 'i': 1, 'hl': 16, 'epochs': 51, 'emb': 63, 'lr': 0.01}
 
 pr = cProfile.Profile()
 pr.enable()
