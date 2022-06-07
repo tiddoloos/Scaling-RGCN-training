@@ -45,7 +45,7 @@ def get_graph_data(org_graph: rdfGraph, sum_graph: rdfGraph, map_graph: rdfGraph
         sGraph.training_data.edge_type = edge_type
         return sGraph
 
-def remove_test_data(X_test: List[int], orgGraph: Graph, sumGraph: Graph, enum_classes: Dict[str, int], num_classes: int) -> None:
+def remove_eval_data(X_test: List[int], orgGraph: Graph, sumGraph: Graph, enum_classes: Dict[str, int], num_classes: int) -> None:
     """This funtion updates the sum2type dict by removing the test data.
     Avoids test set leakage because orignal node maps to a summary nodes which maps to a type (predicted class).
     """ 
@@ -81,9 +81,11 @@ def make_graph_trainig_data(orgGraph: Graph, sumGraphs: List[Graph], enum_classe
     print(f"num Nodes = {orgGraph.num_nodes}")
     print(f"num Relations = {len(orgGraph.relations.keys())}")
     print(f"num Classes = {num_classes}")
+    
+    to_remove = X_test + X_val
 
     for sumGraph in sumGraphs:
-        remove_test_data(X_test, orgGraph, sumGraph, enum_classes, num_classes)
+        remove_eval_data(to_remove, orgGraph, sumGraph, enum_classes, num_classes)
 
         sg_idx, sg_labels = get_idx_labels(sumGraph, sumGraph.sum2type)
         sumGraph.training_data.x_train = torch.tensor(sg_idx, dtype = torch.long)
