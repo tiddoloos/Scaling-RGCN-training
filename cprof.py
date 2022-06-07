@@ -5,7 +5,7 @@ import pstats
 import io
 
 from main import initialize_expirements
-from model.models import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
+from model.layers import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 
 experiments = {
