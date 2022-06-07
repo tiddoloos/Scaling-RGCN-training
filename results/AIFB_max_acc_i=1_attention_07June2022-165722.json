@@ -1,0 +1,13 @@
+{
+    "attention Accuracy": {
+        "epoch": -1,
+        "acc": 28.627967834472656
+    },
+    "baseline Accuracy": {
+        "epoch": -1,
+        "acc": 46.43799364566803
+    },
+    "emb": 63,
+    "lr": 0.01,
+    "k": 1
+}

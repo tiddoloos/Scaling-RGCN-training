@@ -50,7 +50,7 @@ class Emb_ATT_Layers(nn.Module):
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
     def forward(self, training_data: Data) -> Tensor:
-        attn_output, _ = self.att(self.embedding, self.embedding, self.embedding)
+        attn_output, _ = self.att(training_data.embedding.detach(), training_data.embedding.detach(), training_data.embedding.detach())
         x = self.rgcn1(attn_output[0], training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
@@ -59,9 +59,8 @@ class Emb_ATT_Layers(nn.Module):
     
     def load_embedding(self, embedding: Tensor, freeze: bool=False):
         self.embedding = embedding.requires_grad_(freeze).detach()
-        print(torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu'))
-        self.embedding.to(torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu'))
-        print(self.embedding.get_device())
+        # print(torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu'))
+        # print(self.embedding.get_device())
 
     def override_params(self, weight_1: Tensor, bias_1: Tensor, root_1: Tensor, weight_2: Tensor, bias_2: Tensor, root_2: Tensor) -> None:
         self.rgcn1.weight = torch.nn.Parameter(weight_1)
