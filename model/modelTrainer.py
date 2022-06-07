@@ -94,7 +94,6 @@ class Trainer:
 
         if embedding_trick != None:
             embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
-            # if embedding_trick != stack_embeddings:
             orgModel.load_embedding(self.data.orgGraph.training_data.embedding.clone())
 
         if transfer == True:
