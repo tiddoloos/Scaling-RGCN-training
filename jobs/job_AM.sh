@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --partition=gpu_shared
-#SBATCH --gres=gpu:1
+#SBATCH --partition=normal
+#SBATHC --constraint=gold_6130
 #SBATCH --job-name=AM_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
