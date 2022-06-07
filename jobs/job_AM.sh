@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --partition= gpu_titan  
+#SBATCH --partition= gpu_titanrtx
 #SBATHC --constraint=TitanRTX
 #SBATCH --job-name=AM_run
 #SBATCH --nodes=1
