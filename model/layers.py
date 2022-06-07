@@ -50,7 +50,7 @@ class Emb_ATT_Layers(nn.Module):
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
     def forward(self, training_data: Data) -> Tensor:
-        attn_output, _ = self.att(training_data.embedding, training_data.embedding, training_data.embedding)
+        attn_output, _ = self.att(self.embedding, self.embedding, self.embedding)
         x = self.rgcn1(attn_output[0], training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
