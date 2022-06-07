@@ -58,8 +58,10 @@ class Emb_ATT_Layers(nn.Module):
         return x
     
     def load_embedding(self, embedding: Tensor, freeze: bool=False):
-        self.embedding = embedding.requires_grad_(freeze)
+        self.embedding = embedding.requires_grad_(freeze).detach()
+        print(torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu'))
         self.embedding.to(torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu'))
+        print(self.embedding.get_device())
 
     def override_params(self, weight_1: Tensor, bias_1: Tensor, root_1: Tensor, weight_2: Tensor, bias_2: Tensor, root_2: Tensor) -> None:
         self.rgcn1.weight = torch.nn.Parameter(weight_1)
