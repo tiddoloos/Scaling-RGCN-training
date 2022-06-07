@@ -1,0 +1,14 @@
+{
+    "summation Accuracy": {
+        "epoch": 8,
+        "acc": 94.88801121711731
+    },
+    "baseline Accuracy": {
+        "epoch": 48,
+        "acc": 87.61528253555298
+    },
+    "emb": 63,
+    "lr": 0.01,
+    "i": 5,
+    "note":"mean in stead of sum"
+}
