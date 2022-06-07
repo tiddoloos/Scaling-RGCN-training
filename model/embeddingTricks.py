@@ -13,21 +13,20 @@ def get_tensor_list(graph: Graph, sum_graphs: list, emb_dim: int) -> List[Tensor
             if orgNode in sum_graph.orgNode2sumNode_dict.keys():
                 sumNode = sum_graph.orgNode2sumNode_dict[orgNode]
                 if sumNode in sum_graph.node_to_enum:
-                    embedding_tensor[idx] = sum_graph.embedding[sum_graph.node_to_enum[sumNode]].detach()
+                    embedding_tensor[idx] = sum_graph.training_data.embedding[sum_graph.node_to_enum[sumNode]].detach()
         tensors.append(embedding_tensor)
     return tensors
 
 def stack_embeddings(graph: Graph, sum_graphs: list, emb_dim: int) -> None:
     tensors = get_tensor_list(graph, sum_graphs, emb_dim)
     stacked_emb = torch.stack(tensors)
-    graph.embedding=stacked_emb.detach()
+    graph.training_data.embedding=stacked_emb.detach()
 
 def concat_embeddings(graph: Graph, sum_graphs: list, emb_dim: int) -> None:
-    #make concatted tensor of embeddings
-    #or use stack if dims get to high -> sqeenze in MLP
+    #make concatted tensor of embedding
     tensors = get_tensor_list(graph, sum_graphs, emb_dim)
     concat_emb = torch.concat(tensors, dim=-1)
-    graph.embedding=concat_emb.detach()
+    graph.training_data.embedding=concat_emb.detach()
 
 #embdding bag
 def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
@@ -35,8 +34,7 @@ def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
     tensors = get_tensor_list(graph, sum_graphs, emb_dim)
     summed_embedding = sum(tensors)
     mean_embedding = summed_embedding / len(sum_graphs)
-    graph.embedding=mean_embedding.detach()
-
+    graph.training_data.embedding=mean_embedding.detach()
 
 # def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
 #     # summing of the embeddings
