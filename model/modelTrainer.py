@@ -93,14 +93,13 @@ class Trainer:
 
         if embedding_trick != None:
             embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
-            orgModel.load_embedding(self.data.orgGraph.training_data.embedding)
+            orgModel.load_embedding(self.data.orgGraph.training_data.embedding.clone())
 
         if transfer == True:
             self.transfer_weights(sumModel, orgModel)
 
         print('Training on Orginal Graph...')
         results_acc[f'{exp} Accuracy'], results_loss[f'{exp} Loss'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
-        
         # Test set
         # pred = orgModel(self.data.orgGraph.training_data)
         # pred = torch.round(pred)
