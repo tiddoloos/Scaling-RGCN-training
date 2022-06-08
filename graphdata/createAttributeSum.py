@@ -8,8 +8,8 @@ from rdflib import URIRef
 from typing import Callable, Dict
 
 
-"""create attribute summaries with this script.
-Run this file from the graphdata folder.
+"""create attribute summaries.
+Run script form graphdata folder.
 """
 
 
@@ -71,7 +71,7 @@ def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib
     mapGraph.serialize(destination=f'{map_path}{sum_type}.nt', format='nt')
 
 parser = argparse.ArgumentParser(description='experiment arguments')
-parser.add_argument('-dataset', type=str, choices=['AIFB', 'MUTAG', 'AM', 'TEST'], help='inidcate dataset name')
+parser.add_argument('-dataset', type=str, choices=['AIFB', 'AM', 'BGS', 'MUTAG', 'TEST'], help='inidcate dataset name')
 dataset = vars(parser.parse_args())['dataset']
 
 path = f'./{dataset}/{dataset}_complete.nt'
