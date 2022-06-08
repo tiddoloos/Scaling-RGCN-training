@@ -10,14 +10,18 @@ from torch_geometric.data import Data
 class Emb_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, num_nodes: int, emb_dim: int, _) -> None:
         super(Emb_Layers, self).__init__()
+
         self.embedding = nn.Embedding(num_nodes, emb_dim)
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations, num_bases=None)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations, num_bases=None)
+
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
+        nn.init.kaiming_uniform_(self.embedding.weight, mode='fan_in')
 
     def forward(self, training_data: Data) -> Tensor:
-        x = self.rgcn1(self.embedding.weight, training_data.edge_index, training_data.edge_type)
+        x = torch.sigmoid(self.embedding.weight)
+        x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
         x = torch.sigmoid(x)
@@ -25,6 +29,7 @@ class Emb_Layers(nn.Module):
     
     def reset_embedding(self, num_nodes: int, emb_dim: int) -> None:
         self.embedding = nn.Embedding(num_nodes, emb_dim)
+        nn.init.kaiming_uniform_(self.embedding.weight, mode='fan_in')
     
     def load_embedding(self, embedding: Tensor, freeze: bool=True) -> None:
         self.embedding = nn.Embedding.from_pretrained(embedding, freeze=freeze)
@@ -50,8 +55,10 @@ class Emb_ATT_Layers(nn.Module):
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
     def forward(self, training_data: Data) -> Tensor:
+        # x = torch.sigmoid(self.embedding)
         attn_output, _ = self.att(self.embedding, self.embedding, self.embedding)
-        x = self.rgcn1(attn_output[0], training_data.edge_index, training_data.edge_type)
+        x = torch.sigmoid(attn_output[0])
+        x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
         x = torch.sigmoid(x)
@@ -86,8 +93,8 @@ class Emb_MLP_Layers(nn.Module):
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
     def forward(self, training_data: Data):
-        #try relu
-        x = torch.tanh(self.lin1(self.embedding.weight))
+        # try relu
+        x = torch.sigmoid(self.lin1(self.embedding.weight))
         x = torch.sigmoid(self.lin2(x))
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
