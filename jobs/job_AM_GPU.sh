@@ -1,6 +1,5 @@
 #!/bin/bash
-#SBATCH --partition=normal
-#SBATCH --constraint=silver_4110
+#SBATCH --partition=gpu_titanrtx
 #SBATCH --gres=gpu:1
 #SBATCH --job-name=AM_run
 #SBATCH --nodes=1
