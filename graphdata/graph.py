@@ -8,6 +8,7 @@ from torch import Tensor
 from rdflib import Graph as rdfGraph
 from sklearn.model_selection import train_test_split
 
+from helpers import timing
 from graphdata.graphProcessing import process_rdf_graph, get_node_mappings_dict, encode_node_labels
 
 
@@ -81,7 +82,7 @@ def make_graph_trainig_data(orgGraph: Graph, sumGraphs: List[Graph], enum_classe
     print(f"num Nodes = {orgGraph.num_nodes}")
     print(f"num Relations = {len(orgGraph.relations.keys())}")
     print(f"num Classes = {num_classes}")
-    
+    timing.log('ORGINAL GRPAH LOADED')
     to_remove = X_test + X_val
 
     for sumGraph in sumGraphs:
