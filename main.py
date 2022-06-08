@@ -42,13 +42,14 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
                 timing.log(f'{exp} experiment done')
         
         else:
-            exp = args['exp']
-            exp_settings = experiments[exp]
-            trainer = Trainer(deepcopy(data), args['hl'], args['epochs'], args['emb'], args['lr'], weight_d)
-            results_acc, results_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
-            results_exp_acc.update(results_acc)
-            results_exp_loss.update(results_loss)
-            timing.log(f'{exp} experiment done')
+            if args['exp'] != 'baseline':
+                exp = args['exp']
+                exp_settings = experiments[exp]
+                trainer = Trainer(deepcopy(data), args['hl'], args['epochs'], args['emb'], args['lr'], weight_d)
+                results_acc, results_loss = trainer.exp_runner(exp_settings['sum_layers'], exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
+                results_exp_acc.update(results_acc)
+                results_exp_loss.update(results_loss)
+                timing.log(f'{exp} experiment done')
 
             exp = 'baseline'
             exp_settings = experiments[exp]
