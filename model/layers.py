@@ -17,7 +17,7 @@ class Emb_Layers(nn.Module):
 
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
-        nn.init.kaiming_uniform_(self.embedding.weight, mode='fan_in')
+        # nn.init.kaiming_uniform_(self.embedding.weight, mode='fan_in')
 
     def forward(self, training_data: Data) -> Tensor:
         # x = torch.sigmoid(self.embedding.weight)
@@ -29,7 +29,7 @@ class Emb_Layers(nn.Module):
     
     def reset_embedding(self, num_nodes: int, emb_dim: int) -> None:
         self.embedding = nn.Embedding(num_nodes, emb_dim)
-        nn.init.kaiming_uniform_(self.embedding.weight, mode='fan_in')
+        # nn.init.kaiming_uniform_(self.embedding.weight, mode='fan_in')
     
     def load_embedding(self, embedding: Tensor, freeze: bool=True) -> None:
         self.embedding = nn.Embedding.from_pretrained(embedding, freeze=freeze)
