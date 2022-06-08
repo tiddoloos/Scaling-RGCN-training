@@ -88,7 +88,7 @@ class Trainer:
             for _, sum_graph in enumerate(self.data.sumGraphs):
                 sumModel.reset_embedding(sum_graph.num_nodes, self.emb_dim)
                 _, _ = self.train(sumModel, sum_graph)
-                sum_graph.training_data.embedding = sumModel.embedding.weight.detach()
+                sum_graph.training_data.embedding = sumModel.embedding.weight.clone() # or detach?
 
         orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, len(self.data.sumGraphs))
 
