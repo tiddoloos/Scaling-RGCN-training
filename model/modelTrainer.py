@@ -48,8 +48,7 @@ class Trainer:
     
     def train(self, model: nn.Module, graph: Graph, sum_graph=True) -> Tuple[List, List]:
         model = model.to(self.device)
-        # training_data = graph.training_data.to(self.device)
-        training_data = graph.training_data
+        training_data = graph.training_data.to(self.device)
         optimizer = torch.optim.Adam(model.parameters(), lr=self.lr, weight_decay=self.weight_d)
         loss_f = torch.nn.BCELoss().to(self.device)
 
