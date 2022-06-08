@@ -1,4 +1,5 @@
 import json
+from statistics import mean
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -6,19 +7,20 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Dict, List
 from torch import nn
+from scipy.stats import sem
 
 
 def print_max_acc(metric: str, dataset: str, exp: str, emb: int, lr: float, i: int, results_dict: Dict[str, List[int]]) -> None:
     max_results = defaultdict(dict)
     for experiment, results in results_dict.items():
         exp_strip = experiment.replace(' Accuracy', '')
-        max_acc = max(results)
-        epoch = int(results.index(max_acc)) - 1 
+        max_acc = max(results[0])
+        epoch = int(results[0].index(max_acc)) - 1 
         max_acc = max_acc*100
         print(f'{exp_strip.upper()}: After epoch {epoch}, Max accuracy {round(max_acc, 2)}%')
         max_results[experiment] = {'epoch': epoch, 'acc': max_acc}
     
-    max_results['emb'], max_results['lr'], max_results['k'] = emb, lr, i
+    max_results['emb'], max_results['lr'], max_results['i'] = emb, lr, i
     dt = datetime.now()
     str_date = dt.strftime('%d%B%Y-%H%M%S')
     with open(f'./results/{dataset}_{metric}_i={i}_{exp}_{str_date}.json', 'w') as write_file:
@@ -27,8 +29,11 @@ def print_max_acc(metric: str, dataset: str, exp: str, emb: int, lr: float, i: i
 def plot_results(metric: str, dataset: str, exp: str, epochs: int, i: int,  results_dict: Dict[str, List[int]]):
     epoch_list = [j for j in range(epochs)]
     for key, result in results_dict.items():
-        y = result
+        y = result[0]
+        y1 = result[1]
+        y2 = result[2]
         x = epoch_list 
+        plt.fill_between(x, y1, y2, interpolate=True, alpha=0.35)
         plt.plot(x, y, label = key)
 
     plt.title(f'{metric} on {dataset} dataset during training epochs')
@@ -61,11 +66,17 @@ def add_data(list1: List[int], list2: List[int]):
     temp_list = list(zip(list1, list2))
     return [x+y for x,y in temp_list]
 
-def get_av_results_dict(k: int, dicts_list: List[Dict[str, int]]):
+def get_av_results_dict(i: int, dicts_list: List[Dict[str, int]]) -> Dict[str, List[List]]:
     av_results_dict = defaultdict(list)
     for key in dicts_list[0].keys():
-        new_lst = [0 for i in range(0, len(dicts_list[0][key]))]
+        list_with_lists = [[] for i in range(len(dicts_list[0][key]))]
+        # new_lst = [0 for i in range(0, len(dicts_list[0][key]))]
         for dict in dicts_list:
-            new_lst = add_data(dict[key], new_lst)
-        av_results_dict[key] = [x / k for x in new_lst]
+            for i, flt in enumerate(dict[key]):
+                list_with_lists[i].append(flt)
+        array = np.array(list_with_lists)
+        av_results_dict[key].append(list(np.mean(array, axis=1)))
+        av_results_dict[key].append(list(np.mean(array, axis=1) - np.std(array, axis=1)))
+        av_results_dict[key].append(list(np.mean(array, axis=1) + np.std(array, axis=1)))
     return av_results_dict
+    

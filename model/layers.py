@@ -86,8 +86,9 @@ class Emb_MLP_Layers(nn.Module):
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
     def forward(self, training_data: Data):
-        x = torch.tanh(self.lin1(self.embedding.weight))
-        x = self.lin2(x)
+        #try relu
+        x = F.tanh(self.lin1(self.embedding.weight))
+        x = torch.sigmoid(self.lin2(x))
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)

@@ -63,7 +63,7 @@ def initialize_expirements(args: Dict, experiments: Dict[str, Dict[str, Callable
 
     av_acc_results = get_av_results_dict(iter, acc_dicts_list)
     av_loss_results = get_av_results_dict(iter, loss_dicts_list)
-  
+
     print_max_acc('max_acc', args['dataset'], args['exp'], args['emb'], args['lr'], iter, av_acc_results)
 
     save_to_json('avg_acc', args['dataset'], args['exp'], iter, av_acc_results)
