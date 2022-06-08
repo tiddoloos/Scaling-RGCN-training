@@ -11,8 +11,8 @@ class Emb_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, num_nodes: int, emb_dim: int, _) -> None:
         super(Emb_Layers, self).__init__()
         self.embedding = nn.Embedding(num_nodes, emb_dim)
-        self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
-        self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
+        self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations, num_bases=None)
+        self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations, num_bases=None)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
@@ -44,8 +44,8 @@ class Emb_ATT_Layers(nn.Module):
         super(Emb_ATT_Layers, self).__init__()
         self.embedding = None
         self.att = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=num_sums)
-        self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
-        self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
+        self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations, num_bases=None)
+        self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations, num_bases=None)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
@@ -78,8 +78,8 @@ class Emb_MLP_Layers(nn.Module):
         self.embedding = nn.Embedding(num_nodes, emb_dim)
         self.lin1 = nn.Linear(in_features=in_f, out_features=out_f)
         self.lin2 = nn.Linear(in_features=out_f, out_features=emb_dim)
-        self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations)
-        self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations)
+        self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations, num_bases=None)
+        self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations, num_bases=None)
         nn.init.kaiming_uniform_(self.lin1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.lin2.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
@@ -87,8 +87,8 @@ class Emb_MLP_Layers(nn.Module):
 
     def forward(self, training_data: Data):
         #try relu
-        x = torch.sigmoid(self.lin1(self.embedding.weight))
-        x = torch.tanh(self.lin2(x))
+        x = torch.tanh(self.lin1(self.embedding.weight))
+        x = torch.sigmoid(self.lin2(x))
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)

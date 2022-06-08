@@ -73,9 +73,12 @@ class Trainer:
                     print(f'Accuracy on validation set = {acc}')
             if epoch%10==0:
                 print(f'Epoch: {epoch}, Loss: {l:.4f}')
+        
+        # make space on GPU
         if self.device == 'cuda:0':
             print('...removing training data from GPU...')
             training_data.to('cuda')
+            model.to('cuda')
         return accuracies, losses
     
     def exp_runner(self, sum_layers: nn.Module, org_layers: nn.Module, embedding_trick: Callable, transfer: bool, exp: str):
