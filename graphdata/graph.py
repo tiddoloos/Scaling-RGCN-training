@@ -95,6 +95,6 @@ def make_graph_trainig_data(orgGraph: Graph, sumGraphs: List[Graph], enum_classe
         print("SUMMARY GRAPH STATISTICS")
         print(f"num Nodes = {sumGraph.num_nodes}")
         print(f"num Relations= {len(sumGraph.relations.keys())}")
-
+        timing.log('SUMGRPAH LOADED')
         # Assertion error: if more relations in summary graph than in original graph
         assert len(sumGraph.relations.keys()) ==  len(orgGraph.relations.keys()), 'number of relations in summary graph and original graph differ'
