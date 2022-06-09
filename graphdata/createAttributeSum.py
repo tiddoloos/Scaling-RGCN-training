@@ -7,6 +7,7 @@ import pathlib
 from rdflib import URIRef
 from typing import Callable, Dict
 
+import mmh3
 
 """create attribute summaries.
 Run script form graphdata folder.
@@ -20,24 +21,24 @@ def check_blank(node: rdflib.term):
 
 def forward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'out') -> str:
     sorted_preds = sorted(list(graph.predicates(subject=node)))
-    hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
-    value = hash.hexdigest()
+    outgoing_hash = mmh3.hash128(','.join(sorted_preds).encode('utf8'))
+    value = str(abs(outgoing_hash))
     node_id = 'sumnode:' + value
     return node_id, sum_type
 
 def backward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'in') -> str:
     sorted_preds = sorted(list(graph.predicates(object=node)))
-    incoming_hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
-    value = incoming_hash.hexdigest()
+    incoming_hash = mmh3.hash128(','.join(sorted_preds).encode('utf8'))
+    value = str(abs(incoming_hash))
     node_id = 'sumnode:' + value
     return node_id, sum_type
 
 def forward_backward(node: rdflib.term, graph: rdflib.Graph, sum_type: str ='in_out') -> str:
     sorted_preds = sorted(list(graph.predicates(subject=node)))
-    incoming_hash = hashlib.sha1(','.join(sorted_preds).encode('utf8'))
+    incoming_hash = mmh3.hash128(','.join(sorted_preds).encode('utf8'))
     sorted_outgoing_preds = sorted(list(graph.predicates(object=node)))
-    outgoing_hash = hashlib.sha1(','.join(sorted_outgoing_preds).encode('utf8'))
-    value = incoming_hash.hexdigest() + "-" + outgoing_hash.hexdigest()
+    outgoing_hash = mmh3.hash128(','.join(sorted_outgoing_preds).encode('utf8'))
+    value = str(abs(outgoing_hash)) + "-" + str(abs(incoming_hash))
     node_id = 'sumnode:' + value
     return node_id, sum_type
 
@@ -62,13 +63,13 @@ def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib
                 mapping[node_str], sum_type = id_creator(node, g)
         sum_triple = URIRef(mapping[s]), URIRef(p), URIRef(mapping[o])
         sumGraph.add(sum_triple)
-    sumGraph.serialize(destination=f'{sum_path}{sum_type}.nt', format='nt')
+    sumGraph.serialize(destination=f'{sum_path}{sum_type}.nt', format='nt', encoding='utf-8')
 
     # create mappping as graph
     for node, sumNode in mapping.items(): 
         map_triple = URIRef(sumNode), URIRef('http://issummaryof'), URIRef(node)
         mapGraph.add(map_triple)
-    mapGraph.serialize(destination=f'{map_path}{sum_type}.nt', format='nt')
+    mapGraph.serialize(destination=f'{map_path}{sum_type}.nt', format='nt', encoding='utf-8')
 
 parser = argparse.ArgumentParser(description='experiment arguments')
 parser.add_argument('-dataset', type=str, choices=['AIFB', 'AM', 'BGS', 'MUTAG', 'TEST'], help='inidcate dataset name')
