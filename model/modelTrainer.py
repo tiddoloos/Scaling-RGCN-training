@@ -1,5 +1,6 @@
 import torch
 
+from collections import defaultdict
 from torch import nn
 from torch import Tensor
 from torch_geometric.data import Data
@@ -13,23 +14,24 @@ from model.embeddingTricks import stack_embeddings
 class Trainer:
     device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
     def __init__(self, data: Dataset, hidden_l: int, epochs: int, emb_dim: int, lr: float, weight_d: float):
-        self.data = data
-        self.hidden_l = hidden_l
-        self.epochs = epochs
-        self.emb_dim = emb_dim
-        self.lr = lr
-        self.weight_d = weight_d
+        self.data: Dataset = data
+        self.hidden_l: int = hidden_l
+        self.epochs: int = epochs
+        self.emb_dim: int = emb_dim
+        self.lr: float = lr
+        self.weight_d: float = weight_d
+        self.sumModel: nn.Module = None
 
-    def transfer_weights(self, sumModel, orgModel) -> None:
+    def transfer_weights(self, orgModel) -> None:
         # rgcn1 
-        weight_sg_1 = sumModel.rgcn1.weight
-        bias_sg_1 = sumModel.rgcn1.bias
-        root_sg_1 = sumModel.rgcn1.root
+        weight_sg_1 = self.sumModel.rgcn1.weight.clone()
+        bias_sg_1 = self.sumModel.rgcn1.bias.clone()
+        root_sg_1 = self.sumModel.rgcn1.root.clone()
 
         # rgcn2
-        weight_sg_2 = sumModel.rgcn2.weight
-        bias_sg_2 = sumModel.rgcn2.bias
-        root_sg_2 = sumModel.rgcn2.root
+        weight_sg_2 = self.sumModel.rgcn2.weight.clone()
+        bias_sg_2 = self.sumModel.rgcn2.bias.clone()
+        root_sg_2 = self.sumModel.rgcn2.root.clone()
 
         # transfer
         orgModel.override_params(weight_sg_1, bias_sg_1, root_sg_1, weight_sg_2, bias_sg_2, root_sg_2)
@@ -80,34 +82,65 @@ class Trainer:
             training_data.to('cuda')
             model.to('cuda')
         return accuracies, losses
-    
-    def exp_runner(self, sum_layers: nn.Module, org_layers: nn.Module, embedding_trick: Callable, transfer: bool, exp: str):
-        print(3*'-', f'{exp.upper()} EXPERIMENT', 3*'-')
-        results_acc = dict()
-        results_loss = dict()
 
-        if embedding_trick != None:
-            print('Training on Summary Graphs...')
-            sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
-            for _, sumGraph in enumerate(self.data.sumGraphs):
-                sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
-                _, _ = self.train(sumModel, sumGraph)
-                sumGraph.training_data.embedding = sumModel.embedding.weight.clone() # or detach?
+    def train_summaries(self, sum_layers: nn.Module):
+        print('Training on Summary Graphs...')
+        self.sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
+        for _, sumGraph in enumerate(self.data.sumGraphs):
+            self.sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
+            _, _ = self.train(self.sumModel, sumGraph)
+            sumGraph.training_data.embedding = self.sumModel.embedding.weight.clone() # or detach?
+
+    def train_original(self, org_layers: nn.Module, embedding_trick: Callable, transfer: bool, exp: str) -> Tuple[List[float], List[float], float]:
+        print(3*'-', f'{exp.upper()} EXPERIMENT', 3*'-')
+        results_acc = defaultdict(list)
+        results_loss = defaultdict(list)
 
         orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, len(self.data.sumGraphs))
-
         if embedding_trick != None:
             embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
             orgModel.load_embedding(self.data.orgGraph.training_data.embedding.clone())
 
         if transfer == True:
-            self.transfer_weights(sumModel, orgModel)
-
+            self.transfer_weights(orgModel)
         print('Training on Orginal Graph...')
         results_acc[f'{exp} Accuracy'], results_loss[f'{exp} Loss'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
-        # Test set
-        # pred = orgModel(self.data.orgGraph.training_data)
-        # pred = torch.round(pred)
-        # acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
-        # print('ACCURACY ON TEST SET = ',  acc)
-        return results_acc, results_loss
+
+        # evaluatte on Test set
+        pred = orgModel(self.data.orgGraph.training_data)
+        pred = torch.round(pred)
+        test_acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
+        print('ACCURACY ON TEST SET = ',  test_acc)
+        return results_acc, results_loss, test_acc
+
+
+    # def exp_runner(self, sum_layers: nn.Module, org_layers: nn.Module, embedding_trick: Callable, transfer: bool, exp: str) -> Tuple[List[float]]:
+    #     print(3*'-', f'{exp.upper()} EXPERIMENT', 3*'-')
+    #     results_acc = dict()
+    #     results_loss = dict()
+
+    #     if embedding_trick != None:
+    #         print('Training on Summary Graphs...')
+    #         sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
+    #         for _, sumGraph in enumerate(self.data.sumGraphs):
+    #             sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
+    #             _, _ = self.train(sumModel, sumGraph)
+    #             sumGraph.training_data.embedding = sumModel.embedding.weight.clone() # or detach?
+
+    #     orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, len(self.data.sumGraphs))
+
+    #     if embedding_trick != None:
+    #         embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
+    #         orgModel.load_embedding(self.data.orgGraph.training_data.embedding.clone())
+
+    #     if transfer == True:
+    #         self.transfer_weights(sumModel, orgModel)
+
+    #     print('Training on Orginal Graph...')
+    #     results_acc[f'{exp} Accuracy'], results_loss[f'{exp} Loss'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
+    #     # Test set
+    #     # pred = orgModel(self.data.orgGraph.training_data)
+    #     # pred = torch.round(pred)
+    #     # acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
+    #     # print('ACCURACY ON TEST SET = ',  acc)
+    #     return results_acc, results_loss

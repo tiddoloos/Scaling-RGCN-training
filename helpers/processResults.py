@@ -10,21 +10,30 @@ from torch import nn
 from scipy.stats import sem
 
 
-def print_max_acc(metric: str, dataset: str, exp: str, emb: int, lr: float, i: int, results_dict: Dict[str, List[int]]) -> None:
-    max_results = defaultdict(dict)
+def create_run_report(metric: str, configs: dict, dataset: str, exp: str, i: int, 
+                        results_dict: Dict[str, List[float]],  
+                        test_results: Dict[str, List[float]]) -> None:
+    "wiht this function we save and print important statsitics of the experiment(s)"
+
+    results_collection = defaultdict(dict)
+    results_collection.update(configs)
     for experiment, results in results_dict.items():
         exp_strip = experiment.replace(' Accuracy', '')
         max_acc = max(results[0])
         epoch = int(results[0].index(max_acc)) - 1 
         max_acc = max_acc*100
         print(f'{exp_strip.upper()}: After epoch {epoch}, Max accuracy {round(max_acc, 2)}%')
-        max_results[experiment] = {'epoch': epoch, 'acc': max_acc}
+        results_collection[experiment] = {'epoch': epoch, 'acc': max_acc}
     
-    max_results['emb'], max_results['lr'], max_results['i'] = emb, lr, i
+    for experiment, results in test_results.items():
+        avg  = float(sum(results)/len(results))
+        std = float(np.std(np.array(results)))
+        results_collection[experiment] = {'mean': avg, 'std': std}
+
     dt = datetime.now()
     str_date = dt.strftime('%d%B%Y-%H%M%S')
     with open(f'./results/{dataset}_{metric}_i={i}_{exp}_{str_date}.json', 'w') as write_file:
-            json.dump(max_results, write_file, indent=4)
+            json.dump(results_collection, write_file, indent=4)
 
 def plot_results(metric: str, dataset: str, exp: str, epochs: int, i: int,  results_dict: Dict[str, List[int]]):
     epoch_list = [j for j in range(epochs)]
