@@ -50,7 +50,8 @@ def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib
     with open(path, 'rb') as data:
         g.parse(data, format = format)
     mapping: Dict[str, str] = dict()
-
+    print('START')
+    
     # create sum graph
     for s_, p_, o_ in g:
         if type(o_) == rdflib.term.Literal:

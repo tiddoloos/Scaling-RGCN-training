@@ -1,6 +1,6 @@
 import torch
 
-from torch import nn, Tensor
+from torch import Tensor
 from typing import List
 
 from graphdata.graph import Graph

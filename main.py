@@ -12,7 +12,7 @@ from model.layers import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.modelTrainer import Trainer
 
 
-def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]]) -> None:
+def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]], graph_pros_test = False) -> None:
     """This functions executes experiments to scale graph training with RGCN. 
     After training on summary graphs, the weights and node embeddings of 
     the summary model will be transferd to a new model for training on the 
@@ -31,6 +31,9 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
         # initialzie the data and use deepcopy to keep original data unchanged.
         data = Dataset(configs['dataset'])
         data.init_dataset()
+
+        if graph_pros_test:
+            return
 
         results_exp_acc = dict()
         results_exp_loss = dict()
