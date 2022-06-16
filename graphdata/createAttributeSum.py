@@ -66,13 +66,14 @@ def write_sum_map_files(property_hashes: Dict[str, int], lines: List[str], sum_p
         for o_node, s_node in mapping.items():
             m.write(f'<{s_node}> <isSummaryOf> {str(o_node)} .\n')
 
-parser = argparse.ArgumentParser(description='experiment arguments')
-parser.add_argument('-dataset', type=str, choices=['AIFB', 'AM', 'BGS', 'MUTAG', 'TEST'], help='inidcate dataset name')
-dataset = vars(parser.parse_args())['dataset']
-
-path = f'./{dataset}/{dataset}_complete.nt'
-sum_path = f'./{dataset}/attr/sum/{dataset}_sum_'
-map_path = f'./{dataset}/attr/map/{dataset}_map_'
 
 if __name__=='__main__':
+    parser = argparse.ArgumentParser(description='experiment arguments')
+    parser.add_argument('-dataset', type=str, choices=['AIFB', 'AM', 'BGS', 'MUTAG', 'TEST'], help='inidcate dataset name')
+    dataset = vars(parser.parse_args())['dataset']
+
+    path = f'./{dataset}/{dataset}_complete.nt'
+    sum_path = f'./{dataset}/attr/sum/{dataset}_sum_'
+    map_path = f'./{dataset}/attr/map/{dataset}_map_'
+
     create_sum_map(path, sum_path, map_path)
