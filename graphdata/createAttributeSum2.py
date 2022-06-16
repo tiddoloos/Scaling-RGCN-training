@@ -73,4 +73,6 @@ sum_path = f'./{dataset}/attr/sum/{dataset}_sum_'
 map_path = f'./{dataset}/attr/map/{dataset}_map_'
 format = path.split('.')[-1]
 
-create_sum_map(path, sum_path, map_path)
+
+if __name__=='__main__':
+    create_sum_map(path, sum_path, map_path)
