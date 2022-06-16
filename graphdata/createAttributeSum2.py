@@ -21,22 +21,21 @@ def create_sum_map(path: str, sum_path: str, map_path: str ) -> None:
                     incoming_properties[o].add(p)
 
         outgoing_properties_hashed = {}
-        for s, p in outgoing_properties.items():
-            property_hash = mmh3.hash128(','.join(sorted(list(p))).encode('utf8'))
-            outgoing_properties_hashed[s] = property_hash
+        for s1, p1 in outgoing_properties.items():
+            property_hash = mmh3.hash128(','.join(sorted(list(p1))).encode('utf8'))
+            outgoing_properties_hashed[s1] = property_hash
 
         incoming_properties_hashed = {}
-        for s, p in incoming_properties.items():
-            property_hash = mmh3.hash128(','.join(sorted(list(p))).encode('utf8'))
-            incoming_properties_hashed[s] = property_hash
+        for s2, p2 in incoming_properties.items():
+            property_hash = mmh3.hash128(','.join(sorted(list(p2))).encode('utf8'))
+            incoming_properties_hashed[s2] = property_hash
   
-
         incoming_and_outgoing_properties_hashed = {}
         for entity in set(incoming_properties.keys()).union(set(outgoing_properties.keys())):
             incoming = incoming_properties_hashed[entity] if entity in incoming_properties_hashed else 0
             outgoing = outgoing_properties_hashed[entity] if entity in outgoing_properties_hashed else 0
             combined_hash = incoming + outgoing
-            incoming_and_outgoing_properties_hashed[s] = combined_hash
+            incoming_and_outgoing_properties_hashed[entity] = combined_hash
 
         write_sum_map_files(outgoing_properties_hashed, lines, f'{sum_path}out.nt', f'{map_path}out.nt')
         write_sum_map_files(incoming_properties_hashed, lines, f'{sum_path}in.nt', f'{map_path}in.nt')
@@ -71,8 +70,6 @@ dataset = vars(parser.parse_args())['dataset']
 path = f'./{dataset}/{dataset}_complete.nt'
 sum_path = f'./{dataset}/attr/sum/{dataset}_sum_'
 map_path = f'./{dataset}/attr/map/{dataset}_map_'
-format = path.split('.')[-1]
-
 
 if __name__=='__main__':
     create_sum_map(path, sum_path, map_path)

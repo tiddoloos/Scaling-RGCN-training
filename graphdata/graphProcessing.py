@@ -23,10 +23,11 @@ def nodes2type_mapping(graph_triples: List[str]) -> Tuple[List, Dict[str, List]]
     classes = []
     for triple in graph_triples:
         triple_list = triple.split(" ", maxsplit=2)
-        s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
-        if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
-            node2types_dict[s].append(o)
-            classes.append(o)
+        if triple_list != ['']:
+            s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
+            if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
+                node2types_dict[s].append(o)
+                classes.append(o)
     classes = sorted(list(set(classes)))
     return classes, node2types_dict 
 
@@ -35,13 +36,13 @@ def get_node_mappings_dict(graph_triples: List[str]) -> Tuple[Dict[str, str], Di
     orgNode2sumNode_dict = defaultdict()
     for triple in graph_triples:
         triple_list = triple.split(" ", maxsplit=2)
-        s, _, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
-        sumNode2orgNode_dict[s].append(o)
-        orgNode2sumNode_dict[o] = s
+        if triple_list != ['']:
+            s, _, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
+            sumNode2orgNode_dict[s].append(o)
+            orgNode2sumNode_dict[o] = s
     sumNode2orgNode_dict = dict(sorted(sumNode2orgNode_dict.items()))
     orgNode2sumNode_dict = dict(sorted(orgNode2sumNode_dict.items()))
     return orgNode2sumNode_dict, sumNode2orgNode_dict
-
 
 def encode_org_node_labels(org2type_dict: defaultdict(list), labels_dict: dict, num_classes: int) -> Dict[str, List[float]]:
     org2type_enc = defaultdict()

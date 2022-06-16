@@ -1,6 +1,5 @@
 import torch
 
-from collections import Counter
 from typing import List, Dict
 from torch_geometric.data import Data
 from torch import Tensor
@@ -26,10 +25,11 @@ class Graph:
         objects = set()
         for triple in graph_triples:
             triple_list = triple.split(" ", maxsplit=2)
-            s, p, o = triple_list[0], triple_list[1], triple_list[2]
-            subjects.add(s)
-            predictes.add(p)
-            objects.add(o)
+            if triple_list != ['']:
+                s, p, o = triple_list[0], triple_list[1], triple_list[2]
+                subjects.add(s)
+                predictes.add(p)
+                objects.add(o)
 
         # remove type edge from predicates
         edge = '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>'
@@ -49,11 +49,12 @@ class Graph:
         edge_list = []
         for triple in graph_triples:
             triple_list = triple.split(" ", maxsplit=2)
-            s_, p_, o_ = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
-            if self.node_to_enum.get(s_) is not None and  self.relations.get(p_) is not None and self.node_to_enum.get(o_) is not None:
-                src, dst, rel = self.node_to_enum[s_], self.node_to_enum[o_], self.relations[p_]
-                edge_list.append([src, dst, 2 * rel])
-                edge_list.append([dst, src, 2 * rel + 1])
+            if triple_list != ['']:
+                s_, p_, o_ = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
+                if self.node_to_enum.get(s_) is not None and  self.relations.get(p_) is not None and self.node_to_enum.get(o_) is not None:
+                    src, dst, rel = self.node_to_enum[s_], self.node_to_enum[o_], self.relations[p_]
+                    edge_list.append([src, dst, 2 * rel])
+                    edge_list.append([dst, src, 2 * rel + 1])
         edge_list = sorted(edge_list, key=lambda x: (x[0], x[1], x[2]))
         edge = torch.tensor(edge_list, dtype=torch.long).t().contiguous()
         edge_index, edge_type = edge[:2], edge[2]

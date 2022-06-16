@@ -20,23 +20,23 @@ def check_blank(node: rdflib.term):
     return node
 
 def forward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'out') -> str:
-    sorted_preds = sorted(list(graph.predicates(subject=node)))
+    sorted_preds = sorted(list(set(graph.predicates(subject=node))))
     outgoing_hash = mmh3.hash128(','.join(sorted_preds).encode('utf8'))
     value = str(abs(outgoing_hash))
     node_id = 'sumnode:' + value
     return node_id, sum_type
 
 def backward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'in') -> str:
-    sorted_preds = sorted(list(graph.predicates(object=node)))
+    sorted_preds = sorted(list(set(graph.predicates(object=node))))
     incoming_hash = mmh3.hash128(','.join(sorted_preds).encode('utf8'))
     value = str(abs(incoming_hash))
     node_id = 'sumnode:' + value
     return node_id, sum_type
 
 def forward_backward(node: rdflib.term, graph: rdflib.Graph, sum_type: str ='in_out') -> str:
-    sorted_preds = sorted(list(graph.predicates(subject=node)))
+    sorted_preds = sorted(list(set(graph.predicates(subject=node))))
     incoming_hash = mmh3.hash128(','.join(sorted_preds).encode('utf8'))
-    sorted_outgoing_preds = sorted(list(graph.predicates(object=node)))
+    sorted_outgoing_preds = sorted(list(set(graph.predicates(object=node))))
     outgoing_hash = mmh3.hash128(','.join(sorted_outgoing_preds).encode('utf8'))
     value = str(abs(outgoing_hash)) + "-" + str(abs(incoming_hash))
     node_id = 'sumnode:' + value
