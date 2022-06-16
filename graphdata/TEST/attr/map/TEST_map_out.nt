@@ -1,13 +1,12 @@
-<sumnode:bc4ce39c7237423206bffa4da32b8ef45ebb0f16> <http://issummaryof> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id778instance> .
-<sumnode:3c197cb1f6842dc41aa48dc8b9032284bcf39a27> <http://issummaryof> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id170instance> .
-<sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709> <http://issummaryof> <http://example.org/string> .
-<sumnode:3c197cb1f6842dc41aa48dc8b9032284bcf39a27> <http://issummaryof> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id171instance> .
-<sumnode:3c197cb1f6842dc41aa48dc8b9032284bcf39a27> <http://issummaryof> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id172instance> .
-<sumnode:bc4ce39c7237423206bffa4da32b8ef45ebb0f16> <http://issummaryof> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id1068instance> .
-<sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709> <http://issummaryof> <http://swrc.ontoware.org/ontology#type> .
-<sumnode:8accd533f1bab7b2124e22999b95457fe24310d9> <http://issummaryof> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id779instance> .
-<sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709> <http://issummaryof> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id175instance> .
-<sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709> <http://issummaryof> <http://example.org/Nc7e10efc7f984580a7ca26528e3c74c9> .
-<sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709> <http://issummaryof> <http://swrc.ontoware.org/ontology#InCollection> .
-<sumnode:bc4ce39c7237423206bffa4da32b8ef45ebb0f16> <http://issummaryof> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id1067instance> .
-
+<66601471798836740805022011327225834224> <isSummaryOf> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id1067instance> .
+<158298950357499570978480215079865772379> <isSummaryOf> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id170instance> .
+<66601471798836740805022011327225834224> <isSummaryOf> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id778instance> .
+<0> <isSummaryOf> <http://swrc.ontoware.org/ontology#InCollection> .
+<66601471798836740805022011327225834224> <isSummaryOf> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id779instance> .
+<158298950357499570978480215079865772379> <isSummaryOf> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id171instance> .
+<66601471798836740805022011327225834224> <isSummaryOf> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id1068instance> .
+<0> <isSummaryOf> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id175instance> .
+<0> <isSummaryOf> "test string"^^<http://www.w3.org/2001/XMLSchema#string>  .
+<158298950357499570978480215079865772379> <isSummaryOf> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id172instance> .
+<70688075067720844723347083532547534432> <isSummaryOf> _:ub1bL312C18 .
+<0> <isSummaryOf> <http://swrc.ontoware.org/ontology#type> .

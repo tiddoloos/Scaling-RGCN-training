@@ -8841,4 +8841,3 @@
 <sumnode:e9ceca2f8bd6e5ba65485b1b9bb0fa78f45a4e21> <http://swrc.ontoware.org/ontology#isAbout> <sumnode:f8537b3f360ee0877aadade2503c62a5db3284dc> .
 <sumnode:8e451301f78a5455bf3a57d5b0b0f7b8cbb7e079> <http://swrc.ontoware.org/ontology#isWorkedOnBy> <sumnode:aff4a32e410977a95257fbf672507f5f285b1cdc> .
 <sumnode:89145fe7a0d0e79252267021198c24ec2909b955> <http://swrc.ontoware.org/ontology#author> <sumnode:07b62370f81c2227a569724dd432029a9b28baf6> .
-

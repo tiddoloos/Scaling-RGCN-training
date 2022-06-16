@@ -1,7 +1,6 @@
 import torch
 
 from collections import Counter
-from dataclasses import dataclass
 from typing import List, Dict
 from torch_geometric.data import Data
 from torch import Tensor
@@ -34,6 +33,7 @@ class Graph:
             return freq_[rel] if rel in freq_ else 0
 
     def init_graph(self, graph: rdfGraph):
+        # TODO: parse parse without rdflib
         edge = URIRef('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
         rels = self.get_relations(graph, edge)
         freq_ = Counter(rels)
@@ -59,7 +59,6 @@ class Graph:
             p_ = str(p).lower()
             if self.node_to_enum.get(s_) is not None and  self.relations.get(p_) is not None and self.node_to_enum.get(o_) is not None:
                 src, dst, rel = self.node_to_enum[s_], self.node_to_enum[o_], self.relations[p_]
-                # undirected
                 edge_list.append([src, dst, 2 * rel])
                 edge_list.append([dst, src, 2 * rel + 1])
         edge_list = sorted(edge_list, key=lambda x: (x[0], x[1], x[2]))

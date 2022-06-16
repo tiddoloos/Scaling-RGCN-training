@@ -50,7 +50,6 @@ def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib
     with open(path, 'rb') as data:
         g.parse(data, format = format)
     mapping: Dict[str, str] = dict()
-    print('START')
     
     # create sum graph
     for s_, p_, o_ in g:
@@ -62,6 +61,7 @@ def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib
         for node, node_str in [(s_, s), (o_, o)]:
             if node_str not in mapping:                
                 mapping[node_str], sum_type = id_creator(node, g)
+        
         sum_triple = URIRef(mapping[s]), URIRef(p), URIRef(mapping[o])
         sumGraph.add(sum_triple)
     sumGraph.serialize(destination=f'{sum_path}{sum_type}.nt', format='nt', encoding='utf-8')

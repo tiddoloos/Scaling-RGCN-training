@@ -1,7 +1,10 @@
-<sumnode:3c197cb1f6842dc41aa48dc8b9032284bcf39a27> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709> .
-<sumnode:8accd533f1bab7b2124e22999b95457fe24310d9> <http://swrc.ontoware.org/ontology#isAbout> <sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709> .
-<sumnode:8accd533f1bab7b2124e22999b95457fe24310d9> <http://swrc.ontoware.org/ontology#isAbout> <sumnode:3c197cb1f6842dc41aa48dc8b9032284bcf39a27> .
-<sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709> <http://www.w3.org/2002/07/owl#onProperty> <sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709> .
-<sumnode:bc4ce39c7237423206bffa4da32b8ef45ebb0f16> <http://swrc.ontoware.org/ontology#isAbout> <sumnode:da39a3ee5e6b4b0d3255bfef95601890afd80709> .
-<sumnode:bc4ce39c7237423206bffa4da32b8ef45ebb0f16> <http://swrc.ontoware.org/ontology#isAbout> <sumnode:3c197cb1f6842dc41aa48dc8b9032284bcf39a27> .
-
+<66601471798836740805022011327225834224> <http://swrc.ontoware.org/ontology#isAbout> <158298950357499570978480215079865772379> .
+<66601471798836740805022011327225834224> <http://swrc.ontoware.org/ontology#isAbout> <158298950357499570978480215079865772379> .
+<158298950357499570978480215079865772379> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <0> .
+<66601471798836740805022011327225834224> <http://swrc.ontoware.org/ontology#isAbout> <158298950357499570978480215079865772379> .
+<66601471798836740805022011327225834224> <http://swrc.ontoware.org/ontology#isAbout> <158298950357499570978480215079865772379> .
+<158298950357499570978480215079865772379> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <0> .
+<66601471798836740805022011327225834224> <http://swrc.ontoware.org/ontology#isAbout> <0> .
+<66601471798836740805022011327225834224> <http://swrc.ontoware.org/ontology#isAbout> <0> .
+<158298950357499570978480215079865772379> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <0> .
+<70688075067720844723347083532547534432> <http://www.w3.org/2002/07/owl#onProperty> <0> .
