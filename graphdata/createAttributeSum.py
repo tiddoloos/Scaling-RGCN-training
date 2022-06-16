@@ -56,7 +56,6 @@ def write_sum_map_files(property_hashes: Dict[str, int], lines: List[str], sum_p
                     obj = property_hashes['http://example.org/literal']
                 else:
                     obj = property_hashes[o] if o in property_keys else '0'
-                # print(obj)
                 sub = property_hashes[s] if s in property_keys else '0'
                 mapping[s] = sub
                 mapping[o] = obj

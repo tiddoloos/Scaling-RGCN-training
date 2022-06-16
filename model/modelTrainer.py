@@ -109,35 +109,3 @@ class Trainer:
         test_acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
         print('ACCURACY ON TEST SET = ',  test_acc)
         return results_acc, results_loss, test_acc
-
-
-    # def exp_runner(self, sum_layers: nn.Module, org_layers: nn.Module, embedding_trick: Callable, transfer: bool, exp: str) -> Tuple[List[float]]:
-    #     print(3*'-', f'{exp.upper()} EXPERIMENT', 3*'-')
-    #     results_acc = dict()
-    #     results_loss = dict()
-
-    #     if embedding_trick != None:
-    #         print('Training on Summary Graphs...')
-    #         sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
-    #         for _, sumGraph in enumerate(self.data.sumGraphs):
-    #             sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
-    #             _, _ = self.train(sumModel, sumGraph)
-    #             sumGraph.training_data.embedding = sumModel.embedding.weight.clone() # or detach?
-
-    #     orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, len(self.data.sumGraphs))
-
-    #     if embedding_trick != None:
-    #         embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
-    #         orgModel.load_embedding(self.data.orgGraph.training_data.embedding.clone())
-
-    #     if transfer == True:
-    #         self.transfer_weights(sumModel, orgModel)
-
-    #     print('Training on Orginal Graph...')
-    #     results_acc[f'{exp} Accuracy'], results_loss[f'{exp} Loss'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
-    #     # Test set
-    #     # pred = orgModel(self.data.orgGraph.training_data)
-    #     # pred = torch.round(pred)
-    #     # acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
-    #     # print('ACCURACY ON TEST SET = ',  acc)
-    #     return results_acc, results_loss
