@@ -1,0 +1,17 @@
+{
+    "dataset": "AIFB",
+    "exp": "baseline",
+    "epochs": 51,
+    "emb": 63,
+    "i": 1,
+    "lr": 0.01,
+    "hl": 16,
+    "baseline Accuracy": {
+        "epoch": 19,
+        "acc": 84.82933044433594
+    },
+    "Test set baseline": {
+        "mean": 0.8030112981796265,
+        "std": 0.0
+    }
+}

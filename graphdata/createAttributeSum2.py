@@ -53,25 +53,16 @@ def write_sum_map_files(property_hashes: Dict[str, int], lines: List[str], sum_p
             triple_list = triple_string.split(" ", maxsplit=2)
             if triple_list != ['']:
                 s, p, o = triple_list[0], triple_list[1], triple_list[2]
-                # numpy.base
-                sub, pred, obj = get_prop_hash(property_keys, property_hashes, s), p, get_prop_hash(property_keys, property_hashes, o)
+                sub = property_hashes[s] if s in property_keys else '0'
+                obj = property_hashes[o] if o in property_keys else '0'
                 mapping[s] = sub
                 mapping[o] = obj
-                f.write(f'<{sub}> {pred} <{obj}> .\n')
+                f.write(f'<{sub}> {p} <{obj}> .\n')
 
     #create map file
     with open(map_path, "w") as m:
         for o_node, s_node in mapping.items():
             m.write(f'<{s_node}> <isSummaryOf> {str(o_node)} .\n')
-
-def get_prop_hash(property_keys, property_hashes, ent):
-    if ent in property_keys:
-        return str(property_hashes[ent])
-    else:
-        # ask
-        return str(0)
-
-
 
 parser = argparse.ArgumentParser(description='experiment arguments')
 parser.add_argument('-dataset', type=str, choices=['AIFB', 'AM', 'BGS', 'MUTAG', 'TEST'], help='inidcate dataset name')
