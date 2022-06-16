@@ -37,9 +37,9 @@ def create_sum_map(path: str, sum_path: str, map_path: str ) -> None:
             combined_hash = incoming + outgoing
             incoming_and_outgoing_properties_hashed[entity] = combined_hash
 
-        write_sum_map_files(outgoing_properties_hashed, lines, f'{sum_path}out.nt', f'{map_path}out.nt')
+        # write_sum_map_files(outgoing_properties_hashed, lines, f'{sum_path}out.nt', f'{map_path}out.nt')
         write_sum_map_files(incoming_properties_hashed, lines, f'{sum_path}in.nt', f'{map_path}in.nt')
-        write_sum_map_files(incoming_and_outgoing_properties_hashed, lines, f'{sum_path}in_out.nt', f'{map_path}in_out.nt')
+        # write_sum_map_files(incoming_and_outgoing_properties_hashed, lines, f'{sum_path}in_out.nt', f'{map_path}in_out.nt')
 
 def write_sum_map_files(property_hashes: Dict[str, int], lines: List[str], sum_path: str, map_path: str) -> None:
 
@@ -52,8 +52,11 @@ def write_sum_map_files(property_hashes: Dict[str, int], lines: List[str], sum_p
             triple_list = triple_string.split(" ", maxsplit=2)
             if triple_list != ['']:
                 s, p, o = triple_list[0], triple_list[1], triple_list[2]
+                if o.startswith("\""):
+                    obj = property_hashes['http://example.org/literal']
+                else:
+                    obj = property_hashes[o] if o in property_keys else '0'
                 sub = property_hashes[s] if s in property_keys else '0'
-                obj = property_hashes[o] if o in property_keys else '0'
                 mapping[s] = sub
                 mapping[o] = obj
                 f.write(f'<{sub}> {p} <{obj}> .\n')
