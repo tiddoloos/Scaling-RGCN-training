@@ -31,7 +31,6 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
     for j in range(configs['i']):
 
         # create summaries
-
         timing.log('Creating graph summaries...')
         create_sum_map(path, sum_path, map_path)
 
