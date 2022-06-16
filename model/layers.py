@@ -17,7 +17,8 @@ class Emb_Layers(nn.Module):
 
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
-        nn.init.kaiming_uniform_(self.embedding.weight, mode='fan_in')
+        # this results in worse performance 
+        # nn.init.kaiming_uniform_(self.embedding.weight, mode='fan_in')
 
     def forward(self, training_data: Data) -> Tensor:
         # x = torch.sigmoid(self.embedding.weight)

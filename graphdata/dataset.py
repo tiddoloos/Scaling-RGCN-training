@@ -51,6 +51,7 @@ class Dataset:
         self.orgGraph.training_data.y_test = torch.tensor(y_test)
 
         print("ORIGINAL GRAPH STATISTICS")
+        print(f"file name = {self.orgGraph.name}")
         print(f"num Nodes = {self.orgGraph.num_nodes}")
         print(f"num Relations = {len(self.orgGraph.relations.keys())}")
         print(f"num Classes = {self.num_classes}")
@@ -68,6 +69,7 @@ class Dataset:
             sumGraph.training_data.y_train = torch.tensor(sg_labels)
             
             print("SUMMARY GRAPH STATISTICS")
+            print(f"file name = {sumGraph.name}")
             print(f"num Nodes = {sumGraph.num_nodes}")
             print(f"num Relations= {len(sumGraph.relations.keys())}")
             timing.log('SUMGRPAH LOADED')
@@ -86,7 +88,8 @@ class Dataset:
         enum_classes = {lab: i for i, lab in enumerate(classes)}
         self.enum_classes, self.num_classes = enum_classes, len(classes)
 
-        self.orgGraph = Graph(deepcopy(org2type_dict))
+        file_name = self.org_path.split('/')[-1]
+        self.orgGraph = Graph(file_name, deepcopy(org2type_dict))
         self.orgGraph.init_graph(org_graph_triples)
 
         # init summary graph data
@@ -96,7 +99,8 @@ class Dataset:
             map_path = f'{self.map_path}/{map_files[i]}'
             sum_graph_triples = parse_graph_nt(sum_path)
             map_graph_triples = parse_graph_nt(map_path)
-            sGraph = Graph(deepcopy(org2type_dict))
+            file_name = sum_path.split('/')[-1]
+            sGraph = Graph(file_name, deepcopy(org2type_dict))
             sGraph.init_graph(sum_graph_triples)
             sGraph.orgNode2sumNode_dict, sGraph.sumNode2orgNode_dict = get_node_mappings_dict(map_graph_triples)
             self.sumGraphs.append(sGraph)

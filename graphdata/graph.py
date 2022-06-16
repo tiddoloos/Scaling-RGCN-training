@@ -6,7 +6,8 @@ from torch import Tensor
 
 
 class Graph:
-    def __init__(self, org2type_dict) -> None:
+    def __init__(self, name: str, org2type_dict: Dict[str, List[str]]) -> None:
+        self.name = name
         self.nodes: List[str] = None
         self.node_to_enum: Dict[str, int] = None
         self.num_nodes: int = None

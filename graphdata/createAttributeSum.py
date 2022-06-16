@@ -1,76 +1,72 @@
 import argparse
-import hashlib
-import rdflib
-import rdflib.term
-import pathlib
-
-from rdflib import URIRef
-from typing import Callable, Dict
-
+from collections import defaultdict
+from typing import Dict, List
 import mmh3
+import hashlib
 
-"""create attribute summaries.
-Run script form graphdata folder.
-"""
+def create_sum_map(path: str, sum_path: str, map_path: str ) -> None:
+    outgoing_properties = defaultdict(set)
+    incoming_properties = defaultdict(set)
+
+    with open(path, 'r') as file:
+        lines = file.read().replace(' .', '').splitlines()
+        for triple_string in lines:
+            triple_list = triple_string.split(" ", maxsplit=2)
+            if triple_list != ['']:
+                s, p, o = triple_list[0], triple_list[1], triple_list[2]
+                outgoing_properties[s].add(p)
+                if o.startswith("\""):
+                    incoming_properties['http://example.org/literal'].add(p)
+                else:
+                    incoming_properties[o].add(p)
+
+        outgoing_properties_hashed = {}
+        for s1, p1 in outgoing_properties.items():
+            property_hash1 = mmh3.hash128(','.join(sorted(list(p1))).encode('utf8'))
+            outgoing_properties_hashed[s1] = property_hash1
+
+        incoming_properties_hashed = {}
+        for s2, p2 in incoming_properties.items():
+            property_hash2 = mmh3.hash128(','.join(sorted(list(p2))).encode('utf8'))
+            incoming_properties_hashed[s2] = property_hash2
+  
+        incoming_and_outgoing_properties_hashed = {}
+        for entity in set(incoming_properties.keys()).union(set(outgoing_properties.keys())):
+            incoming = incoming_properties_hashed[entity] if entity in incoming_properties_hashed else 0
+            outgoing = outgoing_properties_hashed[entity] if entity in outgoing_properties_hashed else 0
+            combined_hash = incoming + outgoing
+            incoming_and_outgoing_properties_hashed[entity] = combined_hash
 
 
-def check_blank(node: rdflib.term):
-    if type(node) == rdflib.term.BNode:
-        node = URIRef('http://example.org/'+ str(node))
-    return node
+        write_sum_map_files(outgoing_properties_hashed, lines, f'{sum_path}out.nt', f'{map_path}out.nt')
+        write_sum_map_files(incoming_properties_hashed, lines, f'{sum_path}in.nt', f'{map_path}in.nt')
+        write_sum_map_files(incoming_and_outgoing_properties_hashed, lines, f'{sum_path}in_out.nt', f'{map_path}in_out.nt')
 
-def forward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'out') -> str:
-    sorted_preds = sorted(list(set(graph.predicates(subject=node))))
-    outgoing_hash = mmh3.hash128(','.join(sorted_preds).encode('utf8'))
-    value = str(abs(outgoing_hash))
-    node_id = 'sumnode:' + value
-    return node_id, sum_type
+def write_sum_map_files(property_hashes: Dict[str, int], lines: List[str], sum_path: str, map_path: str) -> None:
 
-def backward(node: rdflib.term, graph: rdflib.Graph, sum_type = 'in') -> str:
-    sorted_preds = sorted(list(set(graph.predicates(object=node))))
-    incoming_hash = mmh3.hash128(','.join(sorted_preds).encode('utf8'))
-    value = str(abs(incoming_hash))
-    node_id = 'sumnode:' + value
-    return node_id, sum_type
+    property_keys = property_hashes.keys()
+    mapping: Dict[int, str] = dict()
 
-def forward_backward(node: rdflib.term, graph: rdflib.Graph, sum_type: str ='in_out') -> str:
-    sorted_preds = sorted(list(set(graph.predicates(subject=node))))
-    incoming_hash = mmh3.hash128(','.join(sorted_preds).encode('utf8'))
-    sorted_outgoing_preds = sorted(list(set(graph.predicates(object=node))))
-    outgoing_hash = mmh3.hash128(','.join(sorted_outgoing_preds).encode('utf8'))
-    value = str(abs(outgoing_hash)) + "-" + str(abs(incoming_hash))
-    node_id = 'sumnode:' + value
-    return node_id, sum_type
+    #create sum file
+    with open(sum_path, "w") as f:
+        for triple_string in lines:
+            triple_list = triple_string.split(" ", maxsplit=2)
+            if triple_list != ['']:
+                s, p, o = triple_list[0], triple_list[1], triple_list[2]
+                if o.startswith("\"") and 'http://example.org/literal' in property_keys:
+                    obj = property_hashes['http://example.org/literal']
+                else:
+                    obj = property_hashes[o] if o in property_keys else '0'
+                # print(obj)
+                sub = property_hashes[s] if s in property_keys else '0'
+                mapping[s] = sub
+                mapping[o] = obj
+                f.write(f'<{sub}> {p} <{obj}> .\n')
 
-def create_sum_map(path: pathlib.Path, sum_path: pathlib.Path, map_path: pathlib.Path, format: str, id_creator: Callable[[URIRef, rdflib.Graph], str]) -> None:
-    g = rdflib.Graph()
-    sumGraph = rdflib.Graph()
-    mapGraph = rdflib.Graph()
-
-    with open(path, 'rb') as data:
-        g.parse(data, format = format)
-    mapping: Dict[str, str] = dict()
-    
-    # create sum graph
-    for s_, p_, o_ in g:
-        if type(o_) == rdflib.term.Literal:
-            o_ = URIRef('http://example.org/literal')
-        s_ = check_blank(s_)
-        o_ = check_blank(o_)
-        s, p, o = str(s_), str(p_), str(o_)
-        for node, node_str in [(s_, s), (o_, o)]:
-            if node_str not in mapping:                
-                mapping[node_str], sum_type = id_creator(node, g)
-        
-        sum_triple = URIRef(mapping[s]), URIRef(p), URIRef(mapping[o])
-        sumGraph.add(sum_triple)
-    sumGraph.serialize(destination=f'{sum_path}{sum_type}.nt', format='nt', encoding='utf-8')
-
-    # create mappping as graph
-    for node, sumNode in mapping.items(): 
-        map_triple = URIRef(sumNode), URIRef('http://issummaryof'), URIRef(node)
-        mapGraph.add(map_triple)
-    mapGraph.serialize(destination=f'{map_path}{sum_type}.nt', format='nt', encoding='utf-8')
+    #create map file
+    with open(map_path, "w") as m:
+        for o_node, s_node in mapping.items():
+            m.write(f'<{s_node}> <isSummaryOf> {str(o_node)} .\n')
 
 parser = argparse.ArgumentParser(description='experiment arguments')
 parser.add_argument('-dataset', type=str, choices=['AIFB', 'AM', 'BGS', 'MUTAG', 'TEST'], help='inidcate dataset name')
@@ -79,8 +75,6 @@ dataset = vars(parser.parse_args())['dataset']
 path = f'./{dataset}/{dataset}_complete.nt'
 sum_path = f'./{dataset}/attr/sum/{dataset}_sum_'
 map_path = f'./{dataset}/attr/map/{dataset}_map_'
-format = path.split('.')[-1]
 
-create_sum_map(pathlib.Path(path), pathlib.Path(sum_path), pathlib.Path(map_path), format, forward_backward)
-create_sum_map(pathlib.Path(path), pathlib.Path(sum_path), pathlib.Path(map_path), format, forward)
-create_sum_map(pathlib.Path(path), pathlib.Path(sum_path), pathlib.Path(map_path), format, backward)
+if __name__=='__main__':
+    create_sum_map(path, sum_path, map_path)

@@ -1,141 +1,141 @@
-         2298377 function calls (2249496 primitive calls) in 1.345 seconds
+         2298383 function calls (2249502 primitive calls) in 1.295 seconds
 
    Ordered by: internal time
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        4    0.249    0.062    0.749    0.187 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graph.py:22(init_graph)
-        1    0.151    0.151    0.266    0.266 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:23(remove_eval_data)
-       17    0.133    0.008    0.253    0.015 {built-in method builtins.sorted}
-   199352    0.120    0.000    0.120    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graph.py:58(<lambda>)
-   290369    0.119    0.000    0.119    0.000 {method 'split' of 'str' objects}
-     1130    0.094    0.000    0.094    0.000 {method 'index' of 'list' objects}
-   548540    0.056    0.000    0.056    0.000 {method 'lower' of 'str' objects}
+        4    0.251    0.063    0.724    0.181 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graph.py:22(init_graph)
+        1    0.126    0.126    0.236    0.236 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:23(remove_eval_data)
+       17    0.121    0.007    0.232    0.014 {built-in method builtins.sorted}
+   290369    0.114    0.000    0.114    0.000 {method 'split' of 'str' objects}
+   199352    0.110    0.000    0.110    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graph.py:58(<lambda>)
+     1130    0.089    0.000    0.089    0.000 {method 'index' of 'list' objects}
+   548541    0.058    0.000    0.058    0.000 {method 'lower' of 'str' objects}
    433255    0.050    0.000    0.050    0.000 {method 'get' of 'dict' objects}
-     3650    0.041    0.000    0.041    0.000 {built-in method builtins.sum}
         7    0.041    0.006    0.041    0.006 {method 'replace' of 'str' objects}
-  48870/5    0.039    0.000    0.089    0.018 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/copy.py:128(deepcopy)
-   348516    0.036    0.000    0.036    0.000 {method 'add' of 'set' objects}
-        1    0.027    0.027    0.046    0.046 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graphProcessing.py:20(nodes2type_mapping)
+     3651    0.040    0.000    0.040    0.000 {built-in method builtins.sum}
+  48870/5    0.038    0.000    0.088    0.018 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/copy.py:128(deepcopy)
+   348516    0.035    0.000    0.035    0.000 {method 'add' of 'set' objects}
+        1    0.028    0.028    0.048    0.048 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graphProcessing.py:20(nodes2type_mapping)
+        7    0.027    0.004    0.027    0.004 {method 'splitlines' of 'str' objects}
         3    0.026    0.009    0.054    0.018 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graphProcessing.py:34(get_node_mappings_dict)
-        7    0.025    0.004    0.025    0.004 {method 'splitlines' of 'str' objects}
-       16    0.024    0.001    0.024    0.001 {built-in method tensor}
+       16    0.021    0.001    0.021    0.001 {built-in method tensor}
    274178    0.020    0.000    0.020    0.000 {method 'append' of 'list' objects}
-    14120    0.017    0.000    0.042    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/copy.py:200(_deepcopy_list)
-        1    0.013    0.013    1.343    1.343 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:83(init_dataset)
-        7    0.009    0.001    0.017    0.002 {method 'read' of '_io.TextIOWrapper' objects}
+    14120    0.017    0.000    0.041    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/copy.py:200(_deepcopy_list)
+        1    0.012    0.012    1.292    1.292 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:83(init_dataset)
+        7    0.012    0.002    0.020    0.003 {method 'read' of '_io.TextIOWrapper' objects}
         7    0.008    0.001    0.008    0.001 {built-in method _codecs.utf_8_decode}
-        5    0.007    0.001    0.089    0.018 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/copy.py:258(_reconstruct)
+        5    0.007    0.001    0.088    0.018 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/copy.py:258(_reconstruct)
     77125    0.007    0.000    0.007    0.000 {built-in method builtins.id}
         3    0.006    0.002    0.008    0.003 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graphProcessing.py:57(encode_sum_node_labels)
-    14125    0.006    0.000    0.008    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/copy.py:242(_keep_alive)
-        4    0.003    0.001    0.045    0.011 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:30(get_idx_labels)
+    14125    0.005    0.000    0.008    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/copy.py:242(_keep_alive)
         4    0.003    0.001    0.005    0.001 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graph.py:47(<dictcomp>)
+        4    0.003    0.001    0.044    0.011 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:30(get_idx_labels)
+        1    0.003    0.003    1.295    1.295 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/main.py:15(initialize_expirements)
     34745    0.003    0.000    0.003    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/copy.py:182(_deepcopy_atomic)
-        1    0.002    0.002    1.345    1.345 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/main.py:15(initialize_expirements)
         4    0.002    0.001    0.002    0.001 {method 'contiguous' of 'torch._C._TensorBase' objects}
      2824    0.002    0.000    0.002    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graphProcessing.py:50(<listcomp>)
         1    0.002    0.002    0.003    0.003 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graphProcessing.py:47(encode_org_node_labels)
         8    0.001    0.000    0.001    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/__init__.py:234(<listcomp>)
-      826    0.001    0.000    0.001    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graphProcessing.py:68(<listcomp>)
+      827    0.001    0.000    0.001    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graphProcessing.py:68(<listcomp>)
         4    0.001    0.000    0.001    0.000 {method 'union' of 'set' objects}
-      826    0.001    0.000    0.001    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graphProcessing.py:60(<listcomp>)
+      827    0.001    0.000    0.001    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graphProcessing.py:60(<listcomp>)
         7    0.000    0.000    0.000    0.000 {built-in method io.open}
+        7    0.000    0.000    0.088    0.013 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graphProcessing.py:15(parse_graph_nt)
+        2    0.000    0.000    0.000    0.000 {function SeedSequence.generate_state at 0x7fa00dc08d30}
      1130    0.000    0.000    0.000    0.000 {method 'clear' of 'list' objects}
-        2    0.000    0.000    0.000    0.000 {function SeedSequence.generate_state at 0x7f9608408d30}
-        7    0.000    0.000    0.083    0.012 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graphProcessing.py:15(parse_graph_nt)
         2    0.000    0.000    0.001    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/validation.py:1043(check_random_state)
         2    0.000    0.000    0.000    0.000 {method 'permutation' of 'numpy.random.mtrand.RandomState' objects}
-        1    0.000    0.000    0.328    0.328 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:39(make_trainig_data)
-     1149    0.000    0.000    0.000    0.000 {method 'keys' of 'dict' objects}
+        1    0.000    0.000    0.298    0.298 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:39(make_trainig_data)
        29    0.000    0.000    0.000    0.000 {built-in method builtins.print}
+     1149    0.000    0.000    0.000    0.000 {method 'keys' of 'dict' objects}
+        4    0.000    0.000    0.000    0.000 {method 't' of 'torch._C._TensorBase' objects}
         2    0.000    0.000    0.000    0.000 {built-in method posix.listdir}
+     1691    0.000    0.000    0.000    0.000 {built-in method builtins.len}
      1130    0.000    0.000    0.000    0.000 {method 'values' of 'dict' objects}
-     1689    0.000    0.000    0.000    0.000 {built-in method builtins.len}
         4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/lib/arraysetops.py:320(_unique1d)
         4    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graph.py:45(<dictcomp>)
-        4    0.000    0.000    0.000    0.000 {method 't' of 'torch._C._TensorBase' objects}
-       10    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/validation.py:254(_num_samples)
        28    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/torch_geometric/data/storage.py:55(__setattr__)
-        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/torch_geometric/data/data.py:335(__init__)
-        6    0.000    0.000    0.000    0.000 {built-in method posix.stat}
-        2    0.000    0.000    0.002    0.001 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/model_selection/_split.py:2321(train_test_split)
-        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/torch_geometric/data/storage.py:30(__init__)
-        8    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/__init__.py:237(_determine_key_type)
-     12/4    0.000    0.000    0.000    0.000 {built-in method _abc._abc_subclasscheck}
         7    0.000    0.000    0.008    0.001 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/codecs.py:319(decode)
+       20    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/torch_geometric/data/data.py:364(__setattr__)
+        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/torch_geometric/data/data.py:335(__init__)
+        2    0.000    0.000    0.002    0.001 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/model_selection/_split.py:2321(train_test_split)
+        8    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/__init__.py:237(_determine_key_type)
+        6    0.000    0.000    0.000    0.000 {built-in method posix.stat}
+        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/torch_geometric/data/storage.py:30(__init__)
+     12/4    0.000    0.000    0.000    0.000 {built-in method _abc._abc_subclasscheck}
+       10    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/validation.py:254(_num_samples)
         2    0.000    0.000    0.000    0.000 {built-in method posix.urandom}
+        4    0.000    0.000    0.000    0.000 {built-in method time.localtime}
        71    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
         4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/model_selection/_split.py:2026(_validate_shuffle_split)
-        4    0.000    0.000    0.000    0.000 {built-in method time.localtime}
-        7    0.000    0.000    0.000    0.000 {built-in method _locale.nl_langinfo}
-        7    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/_bootlocale.py:33(getpreferredencoding)
         4    0.000    0.000    0.000    0.000 {built-in method time.strftime}
+        7    0.000    0.000    0.000    0.000 {built-in method _locale.nl_langinfo}
         6    0.000    0.000    0.000    0.000 {built-in method numpy.core._multiarray_umath.implement_array_function}
-        4    0.000    0.000    0.000    0.000 {method 'sort' of 'numpy.ndarray' objects}
-        6    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/posixpath.py:71(join)
+        7    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/_bootlocale.py:33(getpreferredencoding)
         8    0.000    0.000    0.001    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/__init__.py:307(_safe_indexing)
-        8    0.000    0.000    0.000    0.000 {built-in method numpy.asanyarray}
         8    0.000    0.000    0.001    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/__init__.py:225(_list_indexing)
-        4    0.000    0.000    0.001    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/model_selection/_split.py:1706(_iter_indices)
-       68    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
-        8    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/core/numeric.py:1859(isscalar)
-       10    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/validation.py:338(_make_indexable)
-       20    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/torch_geometric/data/data.py:364(__setattr__)
-        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/core/_ufunc_config.py:32(seterr)
-        4    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graph.py:9(__init__)
-        1    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:78(<listcomp>)
-       24    0.000    0.000    0.000    0.000 {built-in method builtins.setattr}
-        2    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/contextlib.py:72(inner)
-        1    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:77(get_file_names)
-        4    0.000    0.000    0.001    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/model_selection/_split.py:1569(split)
-       12    0.000    0.000    0.000    0.000 {built-in method _abc._abc_instancecheck}
         4    0.000    0.000    0.000    0.000 {method 'flatten' of 'numpy.ndarray' objects}
-        7    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/codecs.py:309(__init__)
-        8    0.000    0.000    0.000    0.000 {built-in method numpy.asarray}
-        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/lib/arraysetops.py:138(unique)
-       20    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/torch_geometric/data/storage.py:72(__setitem__)
+        4    0.000    0.000    0.000    0.000 {method 'sort' of 'numpy.ndarray' objects}
+        4    0.000    0.000    0.001    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/model_selection/_split.py:1706(_iter_indices)
+       10    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/validation.py:338(_make_indexable)
+        4    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/graph.py:9(__init__)
+        8    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/core/numeric.py:1859(isscalar)
+        8    0.000    0.000    0.000    0.000 {built-in method numpy.asanyarray}
+        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/core/_ufunc_config.py:32(seterr)
+       68    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
+        6    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/posixpath.py:71(join)
+       24    0.000    0.000    0.000    0.000 {built-in method builtins.setattr}
+        4    0.000    0.000    0.001    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/model_selection/_split.py:1569(split)
+        2    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/contextlib.py:72(inner)
         5    0.000    0.000    0.000    0.000 {method '__reduce_ex__' of 'object' objects}
+       20    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/torch_geometric/data/storage.py:72(__setitem__)
+       12    0.000    0.000    0.000    0.000 {built-in method _abc._abc_instancecheck}
+        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/lib/arraysetops.py:138(unique)
+        7    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/codecs.py:309(__init__)
         4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/core/_ufunc_config.py:131(geterr)
+        8    0.000    0.000    0.000    0.000 {built-in method numpy.asarray}
         4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/validation.py:318(check_consistent_length)
-        6    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/genericpath.py:27(isfile)
         4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/validation.py:358(indexable)
-        2    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/random.py:721(getrandbits)
-        4    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/helpers/timing.py:13(log)
         6    0.000    0.000    0.001    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/model_selection/_split.py:2444(<genexpr>)
+        1    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:78(<listcomp>)
+        4    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/helpers/timing.py:13(log)
+        1    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:77(get_file_names)
         4    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/helpers/timing.py:7(secondsToStr)
-       12    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/abc.py:96(__instancecheck__)
+        2    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/random.py:721(getrandbits)
+        6    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/genericpath.py:27(isfile)
         4    0.000    0.000    0.000    0.000 <__array_function__ internals>:177(unique)
+       12    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/abc.py:96(__instancecheck__)
+       25    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/validation.py:377(<listcomp>)
+       10    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/copy.py:263(<genexpr>)
         4    0.000    0.000    0.000    0.000 {built-in method numpy.empty}
         2    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/model_selection/_split.py:1695(__init__)
      12/4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/abc.py:100(__subclasscheck__)
-       14    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
-        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/validation.py:377(<listcomp>)
         2    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/core/_ufunc_config.py:429(__enter__)
-        1    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:79(<listcomp>)
        10    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/scipy/sparse/_base.py:1291(isspmatrix)
-       10    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/copy.py:263(<genexpr>)
-       10    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
-        4    0.000    0.000    0.000    0.000 {built-in method numpy.seterrobj}
-       25    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
         4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/utils/validation.py:329(<listcomp>)
+       10    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+        1    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:14(__init__)
+        4    0.000    0.000    0.000    0.000 {built-in method numpy.seterrobj}
         7    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/codecs.py:260(__init__)
-        1    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:86(<dictcomp>)
-        2    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/model_selection/_split.py:1560(__init__)
+       14    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:79(<listcomp>)
         2    0.000    0.000    0.000    0.000 <__array_function__ internals>:177(concatenate)
+        2    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/sklearn/model_selection/_split.py:1560(__init__)
+        1    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:86(<dictcomp>)
+        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/lib/arraysetops.py:125(_unpack_tuple)
         8    0.000    0.000    0.000    0.000 {built-in method numpy.geterrobj}
         2    0.000    0.000    0.000    0.000 {built-in method math.ceil}
-        6    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/posixpath.py:41(_get_sep)
-        1    0.000    0.000    0.000    0.000 /Users/tiddo/Documents/Msc Artificial Intelligence/Thesis_RGCN/Scaling-RGCN-training/graphdata/dataset.py:14(__init__)
         2    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/core/_ufunc_config.py:434(__exit__)
-        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/lib/arraysetops.py:125(_unpack_tuple)
+        6    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/posixpath.py:41(_get_sep)
         5    0.000    0.000    0.000    0.000 {built-in method builtins.issubclass}
+        4    0.000    0.000    0.000    0.000 {method 'remove' of 'set' objects}
         2    0.000    0.000    0.001    0.000 {built-in method builtins.next}
         6    0.000    0.000    0.000    0.000 {method 'endswith' of 'str' objects}
-        4    0.000    0.000    0.000    0.000 {method 'remove' of 'set' objects}
         2    0.000    0.000    0.000    0.000 {built-in method from_bytes}
+        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/lib/arraysetops.py:133(_unique_dispatcher)
         6    0.000    0.000    0.000    0.000 {built-in method _stat.S_ISREG}
         6    0.000    0.000    0.000    0.000 {built-in method posix.fspath}
-        4    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/lib/arraysetops.py:133(_unique_dispatcher)
         1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
         2    0.000    0.000    0.000    0.000 {built-in method from_iterable}
         2    0.000    0.000    0.000    0.000 /Users/tiddo/opt/anaconda3/envs/scaling_rgcn/lib/python3.8/site-packages/numpy/core/multiarray.py:148(concatenate)
