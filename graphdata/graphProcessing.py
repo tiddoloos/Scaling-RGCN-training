@@ -12,27 +12,32 @@ def make_rdf_graph(file_path: str) -> rdflib.Graph:
         g.parse(data, format = format)  
     return g
 
-def nodes2type_mapping(graph: rdfGraph) -> Tuple[List, Dict[str, List]]:
-    rel = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+def parse_graph_nt(path: str) -> List[str]:
+    with open(path, 'r') as file:
+        lines = file.read().replace(' .', '').splitlines()
+    return lines
+
+def nodes2type_mapping(graph_triples: List[str]) -> Tuple[List, Dict[str, List]]:
+    rel = '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>'
     node2types_dict = defaultdict(list)
     classes = []
-    for s, p, o in graph:
-        if str(p).lower() == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
-            s_ = str(s).lower()
-            type_ = str(o).lower()
-            node2types_dict[s_].append(type_)
-            classes.append(type_)
+    for triple in graph_triples:
+        triple_list = triple.split(" ", maxsplit=2)
+        s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
+        if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
+            node2types_dict[s].append(o)
+            classes.append(o)
     classes = sorted(list(set(classes)))
     return classes, node2types_dict 
 
-def get_node_mappings_dict(graph: rdfGraph) -> Tuple[Dict[str, str], Dict[str, List]]:
+def get_node_mappings_dict(graph_triples: List[str]) -> Tuple[Dict[str, str], Dict[str, List]]:
     sumNode2orgNode_dict = defaultdict(list)
     orgNode2sumNode_dict = defaultdict()
-    for s, _, o in graph:
-        s_ = str(s).lower() 
-        o_ = str(o).lower()
-        sumNode2orgNode_dict[s_].append(o_)
-        orgNode2sumNode_dict[o_] = s_
+    for triple in graph_triples:
+        triple_list = triple.split(" ", maxsplit=2)
+        s, _, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
+        sumNode2orgNode_dict[s].append(o)
+        orgNode2sumNode_dict[o] = s
     sumNode2orgNode_dict = dict(sorted(sumNode2orgNode_dict.items()))
     orgNode2sumNode_dict = dict(sorted(orgNode2sumNode_dict.items()))
     return orgNode2sumNode_dict, sumNode2orgNode_dict

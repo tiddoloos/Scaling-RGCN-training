@@ -4,9 +4,6 @@ from collections import Counter
 from typing import List, Dict
 from torch_geometric.data import Data
 from torch import Tensor
-from rdflib import Graph as rdfGraph
-from rdflib.term import URIRef
-
 
 
 class Graph:
@@ -22,41 +19,37 @@ class Graph:
         self.sum2type: Dict[str, List[str]] = None
         self.training_data: Data = None
         self.embedding: Tensor = None
+
+    def init_graph(self, graph_triples: List[str]):
+        subjects = set()
+        predictes = set()
+        objects = set()
+        for triple in graph_triples:
+            triple_list = triple.split(" ", maxsplit=2)
+            s, p, o = triple_list[0], triple_list[1], triple_list[2]
+            subjects.add(s)
+            predictes.add(p)
+            objects.add(o)
+
+        # remove type edge from predicates
+        edge = '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>'
+        predictes.remove(edge)
     
-    def get_relations(self, graph: rdfGraph, edge: URIRef):
-        # remove type edge
-        relations = list(set(graph.predicates()))
-        relations.remove(edge)
-        return relations
-
-    def freq(self, rel: str, freq_: Counter):
-            return freq_[rel] if rel in freq_ else 0
-
-    def init_graph(self, graph: rdfGraph):
-        # TODO: parse parse without rdflib
-        edge = URIRef('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
-        rels = self.get_relations(graph, edge)
-        freq_ = Counter(rels)
-        relations = sorted(set(rels), key=lambda rel: - self.freq(rel, freq_))
-
-        subjects = set(graph.subjects())
-        objects = set(graph.objects())
+        # subjects = set(graph_triples.subjects())
+        # objects = set(graph_triples.objects())
         nodes = list(subjects.union(objects))
         self.nodes = sorted(nodes)
         self.num_nodes = len(nodes)
 
         # relation to integer idx
-        self.relations = {str(rel).lower(): i for i, rel in enumerate(list(relations))}
+        self.relations = {str(rel).lower(): i for i, rel in enumerate(list(predictes))}
         # node to integer idx
         self.node_to_enum = {str(node).lower(): i for i, node in enumerate(self.nodes)}
     
         edge_list = []
-        count = 0
-        for s, p, o in graph:
-            count += 1
-            s_ = str(s).lower()
-            o_ = str(o).lower()
-            p_ = str(p).lower()
+        for triple in graph_triples:
+            triple_list = triple.split(" ", maxsplit=2)
+            s_, p_, o_ = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
             if self.node_to_enum.get(s_) is not None and  self.relations.get(p_) is not None and self.node_to_enum.get(o_) is not None:
                 src, dst, rel = self.node_to_enum[s_], self.node_to_enum[o_], self.relations[p_]
                 edge_list.append([src, dst, 2 * rel])

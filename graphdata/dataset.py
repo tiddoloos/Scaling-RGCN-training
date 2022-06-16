@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 import torch
 
 from helpers import timing
-from graphdata.graphProcessing import make_rdf_graph, nodes2type_mapping, get_node_mappings_dict, encode_org_node_labels, encode_sum_node_labels
+from graphdata.graphProcessing import parse_graph_nt, nodes2type_mapping, get_node_mappings_dict, encode_org_node_labels, encode_sum_node_labels
 from graphdata.graph import Graph
 
 
@@ -81,24 +81,24 @@ class Dataset:
         return sorted(sum_files), sorted(map_files)
 
     def init_dataset(self) -> None:
-        rdf_org_graph = make_rdf_graph(self.org_path)
-        classes, org2type_dict = nodes2type_mapping(rdf_org_graph)
+        org_graph_triples = parse_graph_nt(self.org_path)
+        classes, org2type_dict = nodes2type_mapping(org_graph_triples)
         enum_classes = {lab: i for i, lab in enumerate(classes)}
         self.enum_classes, self.num_classes = enum_classes, len(classes)
 
         self.orgGraph = Graph(deepcopy(org2type_dict))
-        self.orgGraph.init_graph(rdf_org_graph)
+        self.orgGraph.init_graph(org_graph_triples)
 
         # init summary graph data
         sum_files, map_files = self.get_file_names()
         for i, _ in enumerate(sum_files):
             sum_path = f'{self.sum_path}/{sum_files[i]}'
             map_path = f'{self.map_path}/{map_files[i]}'
-            rdf_sum_graph = make_rdf_graph(sum_path)
-            rdf_map_graph = make_rdf_graph(map_path)
+            sum_graph_triples = parse_graph_nt(sum_path)
+            map_graph_triples = parse_graph_nt(map_path)
             sGraph = Graph(deepcopy(org2type_dict))
-            sGraph.init_graph(rdf_sum_graph)
-            sGraph.orgNode2sumNode_dict, sGraph.sumNode2orgNode_dict = get_node_mappings_dict(rdf_map_graph)
+            sGraph.init_graph(sum_graph_triples)
+            sGraph.orgNode2sumNode_dict, sGraph.sumNode2orgNode_dict = get_node_mappings_dict(map_graph_triples)
             self.sumGraphs.append(sGraph)
 
         self.make_trainig_data()
