@@ -37,7 +37,6 @@ def create_sum_map(path: str, sum_path: str, map_path: str ) -> None:
             combined_hash = incoming + outgoing
             incoming_and_outgoing_properties_hashed[entity] = combined_hash
 
-
         write_sum_map_files(outgoing_properties_hashed, lines, f'{sum_path}out.nt', f'{map_path}out.nt')
         write_sum_map_files(incoming_properties_hashed, lines, f'{sum_path}in.nt', f'{map_path}in.nt')
         write_sum_map_files(incoming_and_outgoing_properties_hashed, lines, f'{sum_path}in_out.nt', f'{map_path}in_out.nt')
