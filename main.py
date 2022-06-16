@@ -5,6 +5,7 @@ from copy import deepcopy
 from typing import Callable, Dict
 
 from graphdata.dataset import Dataset
+from graphdata.createAttributeSum import create_sum_map
 from helpers.processResults import plot_results, save_to_json, create_run_report, get_av_results_dict
 from helpers import timing
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
@@ -12,7 +13,8 @@ from model.layers import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.modelTrainer import Trainer
 
 
-def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]], graph_pros_test = False) -> None:
+
+def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]], path: str, sum_path: str, map_path: str, graph_pros_test: bool = False) -> None:
     """This functions executes experiments to scale graph training with RGCN. 
     After training on summary graphs, the weights and node embeddings of 
     the summary model will be transferd to a new model for training on the 
@@ -28,7 +30,13 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
     iter = configs['i']
     for j in range(configs['i']):
 
+        # create summaries
+
+        timing.log('Creating graph summaries...')
+        create_sum_map(path, sum_path, map_path)
+
         # initialzie the data and use deepcopy to keep original data unchanged.
+        timing.log('Making Graph data...')
         data = Dataset(configs['dataset'])
         data.init_dataset()
 
@@ -38,10 +46,12 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
         results_exp_acc = dict()
         results_exp_loss = dict()
 
+
         if configs['exp'] == None:
             trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d)
             trainer.train_summaries(methods['baseline']['org_layers'])
             for exp, exp_settings in methods['experiments'].items():
+                timing.log(f'Start {exp} Experiment')
                 results_acc, results_loss, test_acc = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
                 results_exp_acc.update(results_acc)
                 results_exp_loss.update(results_loss)
@@ -53,21 +63,29 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
                 exp = configs['exp']
                 exp_settings = methods['experiments'][exp]
                 trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d)
+
+                timing.log('Training on summary Graphs')
                 trainer.train_summaries(methods['baseline']['org_layers'])
+
+                timing.log(f'Start {exp} Experiment')
                 results_acc, results_loss, test_acc  = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
+                timing.log(f'{exp} experiment done')
+
                 results_exp_acc.update(results_acc)
                 results_exp_loss.update(results_loss)
                 test_acc_collect[f'Test set {exp}'].append(test_acc)
-                timing.log(f'{exp} experiment done')
 
         exp = 'baseline'
         exp_settings = methods[exp]
         trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d)
+
+        timing.log(f'Start {exp} Experiment')
         results_baseline_acc, results_baseline_loss, test_acc = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
+        timing.log(f'{exp} experiment done')
+
         results_exp_acc.update(results_baseline_acc)
         results_exp_loss.update(results_baseline_loss)
         test_acc_collect[f'Test set {exp}'].append(test_acc)
-        timing.log(f'{exp} experiment done')
 
         acc_dicts_list.append(results_exp_acc)
         loss_dicts_list.append(results_exp_loss)
@@ -101,6 +119,10 @@ methods = {'baseline': {
                 'mlp': {'org_layers': Emb_MLP_Layers, 'embedding_trick': concat_embeddings, 'transfer': True},
                 'attention': {'org_layers': Emb_ATT_Layers, 'embedding_trick': stack_embeddings, 'transfer': True}}}
 
+dataset = configs['dataset']
+path = f'graphdata/{dataset}/{dataset}_complete.nt'
+sum_path = f'graphdata/{dataset}/attr/sum/{dataset}_sum_'
+map_path = f'graphdata/{dataset}/attr/map/{dataset}_map_'
 
 if __name__=='__main__':
-    initialize_expirements(configs, methods)
+    initialize_expirements(configs, methods, path, sum_path, map_path)

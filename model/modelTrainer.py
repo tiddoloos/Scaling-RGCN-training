@@ -78,13 +78,11 @@ class Trainer:
         
         # make space on GPU
         if self.device == 'cuda:0':
-            print('...removing training data from GPU...')
             training_data.to('cuda')
             model.to('cuda')
         return accuracies, losses
 
     def train_summaries(self, sum_layers: nn.Module):
-        print('Training on Summary Graphs...')
         self.sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
         for _, sumGraph in enumerate(self.data.sumGraphs):
             self.sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
@@ -92,7 +90,6 @@ class Trainer:
             sumGraph.training_data.embedding = self.sumModel.embedding.weight.clone() # or detach?
 
     def train_original(self, org_layers: nn.Module, embedding_trick: Callable, transfer: bool, exp: str) -> Tuple[List[float], List[float], float]:
-        print(3*'-', f'{exp.upper()} EXPERIMENT', 3*'-')
         results_acc = defaultdict(list)
         results_loss = defaultdict(list)
 
