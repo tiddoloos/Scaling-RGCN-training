@@ -10,7 +10,6 @@ def get_tensor_list(graph: Graph, sum_graphs: list, emb_dim: int) -> List[Tensor
     It creates for each summary graph a new emebdding with the size of the orginal graph embedding (shape: num_nodes, emb_dim).
     For each node in the original graph it checks if the node is mapped to a summary node and if so it it copies the embedding
     of the summary node to the new constructed emdedding (on idx). The resulting tensors are returned in a list.
-    
     Return:
         List[Tensor]
     '''
