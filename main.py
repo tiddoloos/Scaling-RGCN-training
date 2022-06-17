@@ -35,7 +35,7 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
             timing.log('Creating graph summaries...')
             create_sum_map(path, sum_path, map_path)
 
-        # initialzie the data and use deepcopy to keep original data unchanged.
+        # initialzie the data and use deepcopy when using data to keep original data unchanged.
         timing.log('...Making Graph data...')
         data = Dataset(configs['dataset'], configs['sum'])
         data.init_dataset()
@@ -102,28 +102,30 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
     plot_results(f'{configs["sum"]}_Loss', configs['dataset'], configs['exp'], configs['epochs'], iter, av_loss_results)
 
 
-parser = argparse.ArgumentParser(description='experiment arguments')
-parser.add_argument('-dataset', type=str, choices=['AIFB', 'AIFB1', 'BGS', 'MUTAG', 'AM', 'AM1', 'TEST'], help='inidcate dataset name', default='AIFB')
-parser.add_argument('-sum', type=str, choices=['attr', 'bisim'], default='attr', help='summarization technique')
-parser.add_argument('-exp', type=str, choices=['summation', 'mlp', 'attention', 'baseline'], help='select experiment')
-parser.add_argument('-epochs', type=int, default=51, help='indicate number of training epochs')
-parser.add_argument('-emb', type=int, default=63, help='Node embediding dimension')
-parser.add_argument('-i', type=int, default=1, help='experiment iterations')
-parser.add_argument('-lr', type=float, default=0.01, help='learning rate')
-parser.add_argument('-hl', type=int, default=16, help='hidden layer size')
-configs = vars(parser.parse_args())
 
-methods = {'baseline': {
-                'org_layers': Emb_Layers, 'embedding_trick': None, 'transfer': False},
-           'experiments': {
-                'summation': {'org_layers': Emb_Layers, 'embedding_trick': sum_embeddings, 'transfer': True},
-                'mlp': {'org_layers': Emb_MLP_Layers, 'embedding_trick': concat_embeddings, 'transfer': True},
-                'attention': {'org_layers': Emb_ATT_Layers, 'embedding_trick': stack_embeddings, 'transfer': True}}}
-
-dataset = configs['dataset']
-path = f'graphdata/{dataset}/{dataset}_complete.nt'
-sum_path = f'graphdata/{dataset}/attr/sum/{dataset}_sum_'
-map_path = f'graphdata/{dataset}/attr/map/{dataset}_map_'
 
 if __name__=='__main__':
+    parser = argparse.ArgumentParser(description='experiment arguments')
+    parser.add_argument('-dataset', type=str, choices=['AIFB', 'AIFB1', 'BGS', 'MUTAG', 'AM', 'AM1', 'TEST'], help='inidcate dataset name', default='AIFB')
+    parser.add_argument('-sum', type=str, choices=['attr', 'bisim', 'mix'], default='attr', help='summarization technique')
+    parser.add_argument('-exp', type=str, choices=['summation', 'mlp', 'attention', 'baseline'], help='select experiment')
+    parser.add_argument('-epochs', type=int, default=51, help='indicate number of training epochs')
+    parser.add_argument('-emb', type=int, default=63, help='Node embediding dimension')
+    parser.add_argument('-i', type=int, default=1, help='experiment iterations')
+    parser.add_argument('-lr', type=float, default=0.01, help='learning rate')
+    parser.add_argument('-hl', type=int, default=16, help='hidden layer size')
+    configs = vars(parser.parse_args())
+
+    methods = {'baseline': {
+                    'org_layers': Emb_Layers, 'embedding_trick': None, 'transfer': False},
+            'experiments': {
+                    'summation': {'org_layers': Emb_Layers, 'embedding_trick': sum_embeddings, 'transfer': True},
+                    'mlp': {'org_layers': Emb_MLP_Layers, 'embedding_trick': concat_embeddings, 'transfer': True},
+                    'attention': {'org_layers': Emb_ATT_Layers, 'embedding_trick': stack_embeddings, 'transfer': True}}}
+
+    dataset = configs['dataset']
+    path = f'graphdata/{dataset}/{dataset}_complete.nt'
+    sum_path = f'graphdata/{dataset}/attr/sum/{dataset}_sum_'
+    map_path = f'graphdata/{dataset}/attr/map/{dataset}_map_'
+
     initialize_expirements(configs, methods, path, sum_path, map_path)
