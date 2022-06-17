@@ -2,11 +2,20 @@ import argparse
 import csv
 
 from collections import defaultdict
-from os import listdir, walk
-from os.path import isfile, join
+from email.policy import default
+from os import listdir
 from typing import Dict, List
 
-def csv_to_mapping(path: str, key_idx, value_idx) -> Dict[str, List[str]]:
+
+"""Run this file from 'graphdata/' .
+This file creates a mapping of the (k)bisimualition output created with the 
+BiSimulation pipeline of Till Blume: https://github.com/t-blume/fluid-spark.
+For each folder in <dataset>/bisim/bisimOutput, triples like 'sumNode isSummaryOf orgNode'
+are stored in a .nt file in <dataset>/bisim/map/ .
+"""
+
+
+def csv_to_mapping(path: str, key_idx: int, value_idx: int) -> Dict[str, List[str]]:
     mapping: Dict[str, str] = defaultdict(list)
 
     with open(path, 'rt') as f:
@@ -16,7 +25,7 @@ def csv_to_mapping(path: str, key_idx, value_idx) -> Dict[str, List[str]]:
             mapping[line[key_idx]].append(line[value_idx])
     return mapping
 
-def write_to_nt(orgHash_to_orgNode, sumNode_to_orgHash, map_path, k):
+def write_to_nt(orgHash_to_orgNode: defaultdict(list), sumNode_to_orgHash: defaultdict(list), map_path: str, k: str) -> None:
     with open(f'{map_path}{k}.nt', 'w') as m:
             for sumNode, orgHashes in sumNode_to_orgHash.items():
                 for orgHash in orgHashes:
@@ -24,7 +33,7 @@ def write_to_nt(orgHash_to_orgNode, sumNode_to_orgHash, map_path, k):
                     for node in nodes:
                         m.write(f'<{sumNode}> <isSummaryOf> <{node}> .\n')
 
-def create_bisim_map_nt(path: str, map_path: str):
+def create_bisim_map_nt(path: str, map_path: str) -> None:
     dirs = sorted([x for x in listdir(path) if not x.startswith('.')])
     for dir in dirs:
         files = sorted([s for s in listdir(f'{path}/{dir}/') if not s.startswith('.')])
@@ -46,4 +55,3 @@ if __name__=='__main__':
     map_path = f'./{dataset}/bisim/map/AIFB_bisim_map_'
 
     create_bisim_map_nt(path, map_path)
-

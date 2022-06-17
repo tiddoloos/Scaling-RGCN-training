@@ -31,11 +31,12 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
     for j in range(configs['i']):
 
         # create summaries
-        timing.log('Creating graph summaries...')
-        create_sum_map(path, sum_path, map_path)
+        if configs['sum'] == 'attr':
+            timing.log('Creating graph summaries...')
+            create_sum_map(path, sum_path, map_path)
 
         # initialzie the data and use deepcopy to keep original data unchanged.
-        timing.log('Making Graph data...')
+        timing.log('...Making Graph data...')
         data = Dataset(configs['dataset'], configs['sum'])
         data.init_dataset()
 
@@ -92,13 +93,13 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
     av_acc_results = get_av_results_dict(iter, acc_dicts_list)
     av_loss_results = get_av_results_dict(iter, loss_dicts_list)
 
-    create_run_report('report', configs, configs['dataset'], configs['exp'], iter, av_acc_results, test_acc_collect)
+    create_run_report(f'{configs["sum"]}_report', configs, configs['dataset'], configs['exp'], iter, av_acc_results, test_acc_collect)
 
-    save_to_json('avg_acc', configs['dataset'], configs['exp'], iter, av_acc_results)
-    save_to_json('avg_loss', configs['dataset'], configs['exp'], iter, av_loss_results)
+    save_to_json(f'{configs["sum"]}_avg_acc', configs['dataset'], configs['exp'], iter, av_acc_results)
+    save_to_json(f'{configs["sum"]}_avg_loss', configs['dataset'], configs['exp'], iter, av_loss_results)
     
-    plot_results('Accuracy', configs['dataset'], configs['exp'], configs['epochs'], iter, av_acc_results)
-    plot_results('Loss', configs['dataset'], configs['exp'], configs['epochs'], iter, av_loss_results)
+    plot_results(f'{configs["sum"]}_Accuracy', configs['dataset'], configs['exp'], configs['epochs'], iter, av_acc_results)
+    plot_results(f'{configs["sum"]}_Loss', configs['dataset'], configs['exp'], configs['epochs'], iter, av_loss_results)
 
 
 parser = argparse.ArgumentParser(description='experiment arguments')
