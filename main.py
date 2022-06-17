@@ -21,8 +21,6 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
     original graph. Also a baseline experiment is carried out.
     """
 
-    weight_d = 0.00005
-
     acc_dicts_list = []
     loss_dicts_list = []
     test_acc_collect = defaultdict(list)
@@ -48,7 +46,7 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
 
 
         if configs['exp'] == None:
-            trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d)
+            trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d=0.00005)
             trainer.train_summaries(methods['baseline']['org_layers'])
             for exp, exp_settings in methods['experiments'].items():
                 timing.log(f'Start {exp} Experiment')
@@ -62,7 +60,7 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
             if configs['exp'] != 'baseline':
                 exp = configs['exp']
                 exp_settings = methods['experiments'][exp]
-                trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d)
+                trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d=0.00005)
 
                 timing.log('Training on summary Graphs')
                 trainer.train_summaries(methods['baseline']['org_layers'])
@@ -77,7 +75,7 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
 
         exp = 'baseline'
         exp_settings = methods[exp]
-        trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d)
+        trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d=0.00005)
 
         timing.log(f'Start {exp} Experiment')
         results_baseline_acc, results_baseline_loss, test_acc = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
@@ -90,6 +88,8 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
         acc_dicts_list.append(results_exp_acc)
         loss_dicts_list.append(results_exp_loss)
 
+
+    # porocessing results
     av_acc_results = get_av_results_dict(iter, acc_dicts_list)
     av_loss_results = get_av_results_dict(iter, loss_dicts_list)
 
