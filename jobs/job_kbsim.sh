@@ -17,3 +17,6 @@ cd $TMPDIR/fluid_spark_t
 
 #Run Program
 sbt "runMain BisimTestPipeline"
+
+scp ./exports/* $HOME 
+scp ./results/* $HOME
