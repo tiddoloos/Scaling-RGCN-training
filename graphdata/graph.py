@@ -22,28 +22,28 @@ class Graph:
 
     def init_graph(self, graph_triples: List[str]):
         subjects = set()
-        predictes = set()
+        predicates = set()
         objects = set()
         for triple in graph_triples:
             triple_list = triple.split(" ", maxsplit=2)
             if triple_list != ['']:
                 s, p, o = triple_list[0], triple_list[1], triple_list[2]
                 subjects.add(s)
-                predictes.add(p)
+                predicates.add(p)
                 objects.add(o)
 
-        # remove type edge from predicates
-        edge = '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>'
-        predictes.remove(edge)
-    
-        # subjects = set(graph_triples.subjects())
-        # objects = set(graph_triples.objects())
+        # remove type edges from predicates
+        edges = ['<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>', '<type>']
+        for edge in edges:
+            if edge in predicates:
+                predicates.remove(edge)
+
         nodes = list(subjects.union(objects))
         self.nodes = sorted(nodes)
         self.num_nodes = len(nodes)
 
         # relation to integer idx
-        self.relations = {str(rel).lower(): i for i, rel in enumerate(list(predictes))}
+        self.relations = {str(rel).lower(): i for i, rel in enumerate(list(predicates))}
         # node to integer idx
         self.node_to_enum = {str(node).lower(): i for i, node in enumerate(self.nodes)}
     

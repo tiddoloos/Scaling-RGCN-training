@@ -13,10 +13,7 @@ module load 2021
 
 cd $TMPDIR
 scp -r ~/scala_setup/fluid_spark_t .
-cd $TMPDIR/fluid_spark_t/src
-
-#Run Tets Program
-# sbt "runMain Main resources/configs/tests/manual-test-1.conf"
+cd $TMPDIR/fluid_spark_t
 
 #Run Program
 sbt "runMain BisimTestPipeline"

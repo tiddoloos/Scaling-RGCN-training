@@ -11,10 +11,10 @@ from graphdata.graph import Graph
 
 
 class Dataset:
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, sum: str) -> None:
         self.org_path: str = f'./graphdata/{name}/{name}_complete.nt'
-        self.sum_path: str = f'./graphdata/{name}/attr/sum/'
-        self.map_path: str = f'./graphdata/{name}/attr/map/'
+        self.sum_path: str = f'./graphdata/{name}/{sum}/sum/'
+        self.map_path: str = f'./graphdata/{name}/{sum}/map/'
         self.sumGraphs: list = []
         self.orgGraph: Graph = None
         self.enum_classes: Dict[str, int] = None

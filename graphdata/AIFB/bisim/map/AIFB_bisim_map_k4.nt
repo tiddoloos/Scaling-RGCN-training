@@ -5489,9 +5489,7 @@
 <-772969003> <isSummaryOf> <64^^http://www.w3.org/2001/xmlschema#string> .
 <-772969003> <isSummaryOf> <frontiers in artificial intelligence and applications^^http://www.w3.org/2001/xmlschema#string> .
 <-772969003> <isSummaryOf> <verification of workflow task structures: a petri-net-based approach^^http://www.w3.org/2001/xmlschema#string> .
-<-772969003> <isSummaryOf> <verleihsystem und 'softwaretankstelle\"^^http://www.w3.org/2001/xmlschema#string,928032222
-http://www.aifb.uni-karlsruhe.de/publikationen/viewpublikationowl/id768instance,1739748503
-tool evaluation"^^http://www.w3.org/2001/xmlschema#string> .
+<-772969003> <isSummaryOf> <verleihsystem und 'softwaretankstelle\"^^http://www.w3.org/2001/xmlschema#string,928032222http://www.aifb.uni-karlsruhe.de/publikationen/viewpublikationowl/id768instance,1739748503tool evaluation"^^http://www.w3.org/2001/xmlschema#string> .
 <-772969003> <isSummaryOf> <peter l\u00c3\u00b6ffler^^http://www.w3.org/2001/xmlschema#string> .
 <-772969003> <isSummaryOf> <using ontologies for defining tasks, problem-solving methods and their mapping^^http://www.w3.org/2001/xmlschema#string> .
 <-772969003> <isSummaryOf> <a heuristic approach towards an integrated view on portfolio return, market risk, credit risk and operational risk^^http://www.w3.org/2001/xmlschema#string> .
