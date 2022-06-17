@@ -1,5 +1,4 @@
 import json
-from statistics import mean
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -7,7 +6,6 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Dict, List
 from torch import nn
-from scipy.stats import sem
 
 
 def create_run_report(metric: str, configs: dict, dataset: str, exp: str, i: int, 
