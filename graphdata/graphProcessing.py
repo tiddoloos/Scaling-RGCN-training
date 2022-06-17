@@ -1,21 +1,11 @@
-import rdflib
-
 from collections import defaultdict
-from rdflib import Graph as rdfGraph
 from typing import List, Dict, Tuple
 
 
-def make_rdf_graph(file_path: str) -> rdflib.Graph:
-    format = file_path.split('.')[-1]
-    g = rdfGraph()
-    with open(file_path, 'rb') as data:
-        g.parse(data, format = format)  
-    return g
-
 def parse_graph_nt(path: str) -> List[str]:
     with open(path, 'r') as file:
-        lines = file.read().replace(' .', '').splitlines()
-    return lines
+        triples = file.read().replace(' .', '').splitlines()
+    return triples
 
 def nodes2type_mapping(graph_triples: List[str]) -> Tuple[List, Dict[str, List]]:
     rel = '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>'
@@ -54,7 +44,7 @@ def encode_org_node_labels(org2type_dict: defaultdict(list), labels_dict: dict, 
         org2type_enc[node] = g_labels
     return org2type_enc 
 
-def encode_sum_node_labels(sumNode2orgNode_dict: defaultdict(list), org2type_dict: defaultdict(list), labels_dict: dict, num_classes: int) -> Tuple[Dict[str, List]]:
+def encode_sum_node_labels(sumNode2orgNode_dict: defaultdict(list), org2type_dict: defaultdict(list), labels_dict: dict, num_classes: int) -> Dict[str, List]:
     sum2type_enc = defaultdict(list)
     for sumNode, orgNodes in sumNode2orgNode_dict.items():
         sg_labels = [0 for _ in range(num_classes)]
