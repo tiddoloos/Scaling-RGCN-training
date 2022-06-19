@@ -6,7 +6,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH -t 100:00:00
-#SBATCH --mail-type=,END
+#SBATCH --mail-type=ALL
 #SBATCH --mail-user=t.j.loos@student.vu.nl
 
 source /home/${USER}/.bashrc
