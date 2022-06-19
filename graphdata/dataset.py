@@ -11,10 +11,10 @@ from graphdata.graph import Graph
 
 
 class Dataset:
-    def __init__(self, name: str, sum: str) -> None:
-        self.org_path: str = f'./graphdata/{name}/{name}_complete.nt'
-        self.sum_path: str = f'./graphdata/{name}/{sum}/sum/'
-        self.map_path: str = f'./graphdata/{name}/{sum}/map/'
+    def __init__(self, org_path: str, sum_path: str, map_path: str) -> None:
+        self.org_path: str = org_path
+        self.sum_path: str = sum_path
+        self.map_path: str = map_path
         self.sumGraphs: list = []
         self.orgGraph: Graph = None
         self.enum_classes: Dict[str, int] = None
@@ -22,9 +22,14 @@ class Dataset:
 
     def remove_eval_data(self, X_eval, orgGraph):
         org2type_pruned = deepcopy(orgGraph.org2type_dict)
-        for idx in X_eval:
-            orgNode = list(orgGraph.node_to_enum.keys())[list(orgGraph.node_to_enum.values()).index(idx)]
-            org2type_pruned[orgNode].clear()
+        
+        # this method is faster (0.101 total time AIFB, was 0.139 with below method)
+        for orgNode, idx in orgGraph.node_to_enum.items():
+            if idx in X_eval:
+                org2type_pruned[orgNode].clear()
+        # for idx in X_eval:
+        #     orgNode = list(orgGraph.node_to_enum.keys())[list(orgGraph.node_to_enum.values()).index(idx)]
+        #     org2type_pruned[orgNode].clear()
         return org2type_pruned
 
     def get_idx_labels(self, graph: Graph, node2type) -> Tuple[List[int], List[int]]:
@@ -57,6 +62,7 @@ class Dataset:
         print(f"num Classes = {self.num_classes}")
         timing.log('ORGINAL GRPAH LOADED')
 
+        # romeve evaluation data from org2type. we use org2type to create labels for summary graph training
         to_remove = X_test + X_val
         org2type_pruned = self.remove_eval_data(to_remove, self.orgGraph)
 
@@ -73,7 +79,7 @@ class Dataset:
             print(f"num Nodes = {sumGraph.num_nodes}")
             print(f"num Relations= {len(sumGraph.relations.keys())}")
             timing.log('SUMGRPAH LOADED')
-            # Assertion error: if more relations in summary graph than in original graph
+            # Assertion: if more relations in summary graph than in original graph
             assert len(sumGraph.relations.keys()) ==  len(self.orgGraph.relations.keys()), 'number of relations in summary graph and original graph differ'
         
     def get_file_names(self) -> Tuple[List[str], List[str]]:

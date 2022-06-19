@@ -22,17 +22,19 @@ methods = {'baseline': {
 
 
 
-args = {'dataset': 'AIFB', 'exp': None, 'i': 1, 'hl': 16, 'epochs': 51, 'emb': 63, 'lr': 0.01}
-
+args = {'dataset': 'AIFB', 'sum': 'attr', 'exp': None, 'i': 1, 'hl': 16, 'epochs': 51, 'emb': 63, 'lr': 0.01}
+dataset = args['dataset']
+path = f'graphdata/{dataset}/{dataset}_complete.nt'
+sum_path = f'graphdata/{dataset}/attr/sum/{dataset}_sum_'
+map_path = f'graphdata/{dataset}/attr/map/{dataset}_map_'
 pr = cProfile.Profile()
 pr.enable()
 
-my_result = initialize_expirements(args, methods, graph_pros_test=True)
+my_result = initialize_expirements(args, methods, path, sum_path, map_path, graph_pros_test=True)
 
 pr.disable()
 s = io.StringIO()
 ps = pstats.Stats(pr, stream=s).sort_stats('tottime')
 ps.print_stats()
-
 with open('performance/cProfile_out.txt', 'w+') as f:
     f.write(s.getvalue())

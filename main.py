@@ -8,18 +8,22 @@ from graphdata.dataset import Dataset
 from graphdata.createAttributeSum import create_sum_map
 from helpers.processResults import plot_results, save_to_json, create_run_report, get_av_results_dict
 from helpers import timing
+from helpers.checks import do_checks
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 from model.layers import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.modelTrainer import Trainer
 
 
 
-def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]], path: str, sum_path: str, map_path: str, graph_pros_test: bool = False) -> None:
+def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]], org_path: str, sum_path: str, map_path: str, graph_pros_test: bool = False) -> None:
     """This functions executes experiments to scale graph training with RGCN. 
     After training on summary graphs, the weights and node embeddings of 
     the summary model will be transferd to a new model for training on the 
     original graph. Also a baseline experiment is carried out.
     """
+
+    # before running program, do some check and assert or adjust settings if needed
+    configs = do_checks(configs, sum_path, map_path)
 
     acc_dicts_list = []
     loss_dicts_list = []
@@ -31,11 +35,11 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
         # create summaries
         if configs['sum'] == 'attr':
             timing.log('Creating graph summaries...')
-            create_sum_map(path, sum_path, map_path)
+            create_sum_map(org_path, sum_path, map_path, dataset)
 
         # initialzie the data and use deepcopy when using data to keep original data unchanged.
         timing.log('...Making Graph data...')
-        data = Dataset(configs['dataset'], configs['sum'])
+        data = Dataset(org_path, sum_path, map_path)
         data.init_dataset()
 
         if graph_pros_test:
@@ -124,8 +128,9 @@ if __name__=='__main__':
                     'attention': {'org_layers': Emb_ATT_Layers, 'embedding_trick': stack_embeddings, 'transfer': True}}}
 
     dataset = configs['dataset']
+    sum = configs['sum']
     path = f'graphdata/{dataset}/{dataset}_complete.nt'
-    sum_path = f'graphdata/{dataset}/attr/sum/{dataset}_sum_'
-    map_path = f'graphdata/{dataset}/attr/map/{dataset}_map_'
+    sum_path = f'graphdata/{dataset}/{sum}/sum/'
+    map_path = f'graphdata/{dataset}/{sum}/map/'
 
     initialize_expirements(configs, methods, path, sum_path, map_path)
