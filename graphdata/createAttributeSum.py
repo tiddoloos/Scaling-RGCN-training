@@ -68,7 +68,7 @@ def write_sum_map_files(property_hashes: Dict[str, int], lines: List[str], sum_p
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description='experiment arguments')
-    parser.add_argument('-dataset', type=str, choices=['AIFB', 'AM', 'BGS', 'MUTAG', 'TEST'], help='inidcate dataset name')
+    parser.add_argument('-dataset', type=str, choices=['AIFB', 'AM', 'BGS', 'MUTAG', 'TEST2', 'TEST'], help='inidcate dataset name')
     dataset = vars(parser.parse_args())['dataset']
 
     path = f'./{dataset}/{dataset}_complete.nt'

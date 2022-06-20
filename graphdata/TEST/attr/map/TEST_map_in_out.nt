@@ -6,7 +6,7 @@
 <158298950357499570978480215079865772379> <isSummaryOf> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id171instance> .
 <66601471798836740805022011327225834224> <isSummaryOf> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id1068instance> .
 <66601471798836740805022011327225834224> <isSummaryOf> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id175instance> .
-<0> <isSummaryOf> "test string"^^<http://www.w3.org/2001/XMLSchema#string>  .
+<66601471798836740805022011327225834224> <isSummaryOf> "test string"^^<http://www.w3.org/2001/XMLSchema#string>  .
 <158298950357499570978480215079865772379> <isSummaryOf> <http://www.aifb.uni-karlsruhe.de/Publikationen/viewPublikationOWL/id172instance> .
 <70688075067720844723347083532547534432> <isSummaryOf> _:ub1bL312C18 .
 <70688075067720844723347083532547534432> <isSummaryOf> <http://swrc.ontoware.org/ontology#type> .

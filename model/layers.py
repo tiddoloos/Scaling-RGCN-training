@@ -10,7 +10,6 @@ from torch_geometric.data import Data
 class Emb_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, num_nodes: int, emb_dim: int, _) -> None:
         super(Emb_Layers, self).__init__()
-
         self.embedding = nn.Embedding(num_nodes, emb_dim)
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations, num_bases=None)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations, num_bases=None)
@@ -58,7 +57,8 @@ class Emb_ATT_Layers(nn.Module):
     def forward(self, training_data: Data) -> Tensor:
         # x = torch.sigmoid(self.embedding)
         attn_output, _ = self.att(self.embedding, self.embedding, self.embedding)
-        x = torch.sigmoid(attn_output[0])
+        # x = torch.sigmoid(attn_output[0])
+        x = attn_output[0]
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
@@ -96,7 +96,8 @@ class Emb_MLP_Layers(nn.Module):
     def forward(self, training_data: Data):
         # try relu
         x = torch.sigmoid(self.lin1(self.embedding.weight))
-        x = torch.sigmoid(self.lin2(x))
+        # x = torch.sigmoid(self.lin2(x))
+        x = self.lin2(x)
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
