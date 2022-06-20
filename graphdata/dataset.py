@@ -22,14 +22,10 @@ class Dataset:
 
     def remove_eval_data(self, X_eval, orgGraph):
         org2type_pruned = deepcopy(orgGraph.org2type_dict)
-        
-        # this method is faster (0.101 total time AIFB, was 0.139 with below method)
-        for orgNode, idx in orgGraph.node_to_enum.items():
-            if idx in X_eval:
-                org2type_pruned[orgNode].clear()
-        # for idx in X_eval:
-        #     orgNode = list(orgGraph.node_to_enum.keys())[list(orgGraph.node_to_enum.values()).index(idx)]
-        #     org2type_pruned[orgNode].clear()
+        X_eval_set = set(X_eval)
+        nodes_to_prune = [key for key, idx in orgGraph.node_to_enum.items() if idx in X_eval_set]
+        for orgNode in nodes_to_prune:
+            org2type_pruned[orgNode].clear()
         return org2type_pruned
 
     def get_idx_labels(self, graph: Graph, node2type) -> Tuple[List[int], List[int]]:
