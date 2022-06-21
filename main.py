@@ -6,7 +6,7 @@ from typing import Callable, Dict
 
 from graphdata.dataset import Dataset
 from graphdata.createAttributeSum import create_sum_map
-from helpers.processResults import plot_results, save_to_json, create_run_report, get_av_results_dict
+from helpers.processResults import process_results
 from helpers import timing
 from helpers.checks import do_checks
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
@@ -27,9 +27,10 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
 
     acc_dicts_list = []
     loss_dicts_list = []
-    test_acc_collect = defaultdict(list)
+    test_accs = defaultdict(list)
+    test_f1_micro = defaultdict(list)
+    test_f1_macro = defaultdict(list)
 
-    iter = configs['i']
     for j in range(configs['i']):
 
         # create summaries
@@ -48,20 +49,23 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
         results_exp_acc = dict()
         results_exp_loss = dict()
 
-
+        
         if configs['exp'] == None:
             trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d=0.00005)
             trainer.train_summaries(methods['baseline']['org_layers'])
             for exp, exp_settings in methods['experiments'].items():
                 timing.log(f'Start {exp} Experiment')
-                results_acc, results_loss, test_acc = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
+                results_acc, results_loss, test_acc, test_micro, test_macro = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
+
                 results_exp_acc.update(results_acc)
                 results_exp_loss.update(results_loss)
-                test_acc_collect[f'Test set {exp}'].append(test_acc)
+                test_accs[f'Test acc {exp}'].append(test_acc)
+                test_f1_micro[f'Test F1 micro {exp}'].append(test_micro)
+                test_f1_macro[f'Test F1 macro {exp}'].append(test_macro) 
+
                 timing.log(f'{exp} experiment done')
         
-        else:
-            if configs['exp'] != 'baseline':
+        elif configs['exp'] != 'baseline':
                 exp = configs['exp']
                 exp_settings = methods['experiments'][exp]
                 trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d=0.00005)
@@ -70,42 +74,34 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
                 trainer.train_summaries(methods['baseline']['org_layers'])
 
                 timing.log(f'Start {exp} Experiment')
-                results_acc, results_loss, test_acc  = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
+                results_acc, results_loss, test_acc, test_micro, test_macro   = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
                 timing.log(f'{exp} experiment done')
 
                 results_exp_acc.update(results_acc)
                 results_exp_loss.update(results_loss)
-                test_acc_collect[f'Test set {exp}'].append(test_acc)
+                test_accs[f'Test acc {exp}'].append(test_acc)
+                test_f1_micro[f'Test F1 micro {exp}'].append(test_micro)
+                test_f1_macro[f'Test F1 macro {exp}'].append(test_macro) 
 
         exp = 'baseline'
         exp_settings = methods[exp]
         trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d=0.00005)
 
         timing.log(f'Start {exp} Experiment')
-        results_baseline_acc, results_baseline_loss, test_acc = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
+        results_baseline_acc, results_baseline_loss, test_acc, test_micro, test_macro  = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
         timing.log(f'{exp} experiment done')
 
         results_exp_acc.update(results_baseline_acc)
         results_exp_loss.update(results_baseline_loss)
-        test_acc_collect[f'Test set {exp}'].append(test_acc)
+        test_accs[f'Test acc {exp}'].append(test_acc)
+        test_f1_micro[f'Test F1 micro {exp}'].append(test_micro) 
+        test_f1_macro[f'Test F1 macro {exp}'].append(test_macro) 
 
         acc_dicts_list.append(results_exp_acc)
         loss_dicts_list.append(results_exp_loss)
 
-
     # porocessing results
-    av_acc_results = get_av_results_dict(iter, acc_dicts_list)
-    av_loss_results = get_av_results_dict(iter, loss_dicts_list)
-
-    create_run_report(f'{configs["sum"]}_report', configs, configs['dataset'], configs['exp'], iter, av_acc_results, test_acc_collect)
-
-    save_to_json(f'{configs["sum"]}_avg_acc', configs['dataset'], configs['exp'], iter, av_acc_results)
-    save_to_json(f'{configs["sum"]}_avg_loss', configs['dataset'], configs['exp'], iter, av_loss_results)
-    
-    plot_results(f'{configs["sum"]}_Accuracy', configs['dataset'], configs['exp'], configs['epochs'], iter, av_acc_results)
-    plot_results(f'{configs["sum"]}_Loss', configs['dataset'], configs['exp'], configs['epochs'], iter, av_loss_results)
-
-
+    process_results(configs, acc_dicts_list, loss_dicts_list, test_accs, test_f1_micro, test_f1_macro)
 
 
 if __name__=='__main__':
