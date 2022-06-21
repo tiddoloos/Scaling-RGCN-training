@@ -82,14 +82,14 @@ def plot_results(path: str, stat: str, configs: Dict[str, Union[str, int]],  res
             y1 = result[1]
             y2 = result[2]
             x = epoch_list 
-            
+
             plt.fill_between(x, y1, y2, interpolate=True, alpha=0.35)
             plt.plot(x, y, label = key1)
 
             plt.fill_between(x, y1_base, y2_base, interpolate=True, alpha=0.35)
             plt.plot(x, y_base, label = key2)
     
-            plt.title(f'{stat} on {configs["dataset"]} dataset during training epochs')
+            plt.title(f'{key1} on {configs["dataset"]} dataset during training epochs')
             plt.xlabel('Epochs')
             plt.ylabel(f'{stat}')
             plt.grid(color='b', linestyle='-', linewidth=0.1)
@@ -99,7 +99,7 @@ def plot_results(path: str, stat: str, configs: Dict[str, Union[str, int]],  res
             plt.xlim(xmin=0)
             plt.yticks(np.arange(0, 1.1, 0.1))
             plt.ylim(ymin=0)
-            plt.savefig(f'{path}/{configs["dataset"]}_{stat}_{key1}_{configs["sum"]}_i={configs["i"]}.pdf', format='pdf')
+            plt.savefig(f'{path}/{configs["dataset"]}_{key1}_{configs["sum"]}_i={configs["i"]}.pdf', format='pdf')
             plt.show()
 
 def process_results(configs: Dict[str, Union[str, int]], acc_dicts_list: List[Dict[str, float]], 

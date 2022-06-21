@@ -44,7 +44,7 @@ class Trainer:
         return p.item()
 
     def calc_f1(self, pred: Tensor, x: Tensor, y: Tensor, avg='micro') -> float:
-        f1 = f1_score(y, pred[x], average=avg)
+        f1 = f1_score(y, pred[x], average=avg, zero_division=0)
         return f1
     
     def evaluate(self, model: nn.Module, traininig_data: Data) -> float:
