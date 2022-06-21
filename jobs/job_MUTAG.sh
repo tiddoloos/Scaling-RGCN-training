@@ -21,4 +21,4 @@ python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset MUTAG -i 5
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
-scp results/* $HOME/results/MUTAG
+scp -r results/* $HOME/results/MUTAG

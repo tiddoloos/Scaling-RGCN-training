@@ -21,4 +21,4 @@ python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i1
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
-scp results/* $HOME/results/AM
+scp -r results/* $HOME/results/AM

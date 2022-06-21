@@ -44,14 +44,14 @@ class Trainer:
         return p.item()
 
     def calc_f1(self, pred: Tensor, x: Tensor, y: Tensor, avg='micro') -> float:
-        f1 = f1_score(y, pred[x], average=avg, zero_division=0)
+        f1 = f1_score(y.numpy(), pred[x].numpy(), average=avg, zero_division=0)
         return f1
     
     def evaluate(self, model: nn.Module, traininig_data: Data) -> float:
         pred = model(traininig_data)
         pred = torch.round(pred)
         pred = pred.type(torch.int64)
-        acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val)
+        acc = self.calc_f1(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val, avg='micro')
         return acc
     
     def train(self, model: nn.Module, graph: Graph, sum_graph=True) -> Tuple[List, List]:
@@ -107,7 +107,7 @@ class Trainer:
         if transfer == True:
             self.transfer_weights(orgModel)
         print('Training on Orginal Graph...')
-        results_f1[f'{exp} Accuracy'], results_loss[f'{exp} Loss'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
+        results_f1[f'{exp} accuracy'], results_loss[f'{exp} loss'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
 
         # evaluate on Test set
         pred = orgModel(self.data.orgGraph.training_data)
