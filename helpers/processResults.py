@@ -89,7 +89,7 @@ def plot_results(path: str, stat: str, configs: Dict[str, Union[str, int]],  res
             plt.fill_between(x, y1_base, y2_base, interpolate=True, alpha=0.35)
             plt.plot(x, y_base, label = key2)
     
-            plt.title(f'{key1} on {configs["dataset"]} dataset during training epochs')
+            plt.title(f'{key1} on {configs["dataset"]} dataset during training epochs ({configs["sum"]}]')
             plt.xlabel('Epochs')
             plt.ylabel(f'{stat}')
             plt.grid(color='b', linestyle='-', linewidth=0.1)
@@ -115,8 +115,8 @@ def process_results(configs: Dict[str, Union[str, int]], acc_dicts_list: List[Di
 
     create_run_report(path, configs, av_acc_results, test_accs, test_f1_micro, test_f1_macro)
 
-    save_to_json(path, 'Accuracy', configs, av_acc_results)
-    save_to_json(path, 'Loss', configs, av_loss_results)
+    save_to_json(path, 'accuracy', configs, av_acc_results)
+    save_to_json(path, 'loss', configs, av_loss_results)
     
     plot_results(path, 'Accuracy', configs, av_acc_results)
     plot_results(path, 'Loss', configs, av_loss_results)

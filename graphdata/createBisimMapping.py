@@ -7,7 +7,7 @@ from os import listdir
 from typing import Dict, List
 
 
-"""Run this file from 'graphdata/' .
+"""Run this file from './graphdata/' .
 This file creates a mapping of the (k)bisimualition output created with the 
 BiSimulation pipeline of Till Blume: https://github.com/t-blume/fluid-spark.
 For each folder in <dataset>/bisim/bisimOutput, triples like 'sumNode isSummaryOf orgNode'
@@ -16,8 +16,7 @@ are stored in a .nt file in <dataset>/bisim/map/ .
 
 
 def csv_to_mapping(path: str, key_idx: int, value_idx: int) -> Dict[str, List[str]]:
-    mapping: Dict[str, str] = defaultdict(list)
-
+    mapping: Dict[str, List[str]] = defaultdict(list)
     with open(path, 'rt') as f:
         lines = csv.reader(f)
         next(lines)

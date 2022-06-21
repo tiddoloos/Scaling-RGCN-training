@@ -29,19 +29,25 @@ class Emb_Layers(nn.Module):
     
     def reset_embedding(self, num_nodes: int, emb_dim: int) -> None:
         self.embedding = nn.Embedding(num_nodes, emb_dim)
-        # nn.init.kaiming_uniform_(self.embedding.weight, mode='fan_in')
-    
+
     def load_embedding(self, embedding: Tensor, freeze: bool=True) -> None:
         self.embedding = nn.Embedding.from_pretrained(embedding, freeze=freeze)
 
-    def override_params(self, weight_1: Tensor, bias_1: Tensor, root_1: Tensor, weight_2: Tensor, bias_2: Tensor, root_2: Tensor) -> None:
+    def override_params(self, weight_1: Tensor, bias_1: Tensor, root_1: Tensor, weight_2: Tensor, bias_2: Tensor, root_2: Tensor, grad: bool = True) -> None:
         self.rgcn1.weight = torch.nn.Parameter(weight_1)
+        self.rgcn1.weight.requires_grad = grad
         self.rgcn1.bias = torch.nn.Parameter(bias_1)
+        self.rgcn1.bias.requires_grad = grad
         self.rgcn1.root = torch.nn.Parameter(root_1)
+        self.rgcn1.root.requires_grad = grad
 
         self.rgcn2.weight = torch.nn.Parameter(weight_2)
+        self.rgcn2.weight.requires_grad = grad
         self.rgcn2.bias = torch.nn.Parameter(bias_2)
+        self.rgcn2.bias.requires_grad = grad
         self.rgcn2.root = torch.nn.Parameter(root_2)
+        self.rgcn2.root.requires_grad = grad
+
 
 
 class Emb_ATT_Layers(nn.Module):
@@ -68,14 +74,20 @@ class Emb_ATT_Layers(nn.Module):
     def load_embedding(self, embedding: Tensor, grad: bool=False) -> None:
         self.embedding = nn.Parameter(embedding, requires_grad=grad)
 
-    def override_params(self, weight_1: Tensor, bias_1: Tensor, root_1: Tensor, weight_2: Tensor, bias_2: Tensor, root_2: Tensor) -> None:
+    def override_params(self, weight_1: Tensor, bias_1: Tensor, root_1: Tensor, weight_2: Tensor, bias_2: Tensor, root_2: Tensor, grad: bool = True) -> None:
         self.rgcn1.weight = torch.nn.Parameter(weight_1)
+        self.rgcn1.weight.requires_grad = grad
         self.rgcn1.bias = torch.nn.Parameter(bias_1)
+        self.rgcn1.bias.requires_grad = grad
         self.rgcn1.root = torch.nn.Parameter(root_1)
+        self.rgcn1.root.requires_grad = grad
 
         self.rgcn2.weight = torch.nn.Parameter(weight_2)
+        self.rgcn2.weight.requires_grad = grad
         self.rgcn2.bias = torch.nn.Parameter(bias_2)
+        self.rgcn2.bias.requires_grad = grad
         self.rgcn2.root = torch.nn.Parameter(root_2)
+        self.rgcn2.root.requires_grad = grad
 
 
 class Emb_MLP_Layers(nn.Module):
@@ -107,11 +119,17 @@ class Emb_MLP_Layers(nn.Module):
     def load_embedding(self, embedding: Tensor, freeze: bool=True) -> None:
         self.embedding = nn.Embedding.from_pretrained(embedding, freeze=freeze)
 
-    def override_params(self, weight_1: Tensor, bias_1: Tensor, root_1: Tensor, weight_2: Tensor, bias_2: Tensor, root_2: Tensor) -> None:
+    def override_params(self, weight_1: Tensor, bias_1: Tensor, root_1: Tensor, weight_2: Tensor, bias_2: Tensor, root_2: Tensor, grad: bool = True) -> None:
         self.rgcn1.weight = torch.nn.Parameter(weight_1)
+        self.rgcn1.weight.requires_grad = grad
         self.rgcn1.bias = torch.nn.Parameter(bias_1)
+        self.rgcn1.bias.requires_grad = grad
         self.rgcn1.root = torch.nn.Parameter(root_1)
+        self.rgcn1.root.requires_grad = grad
 
         self.rgcn2.weight = torch.nn.Parameter(weight_2)
+        self.rgcn2.weight.requires_grad = grad
         self.rgcn2.bias = torch.nn.Parameter(bias_2)
+        self.rgcn2.bias.requires_grad = grad
         self.rgcn2.root = torch.nn.Parameter(root_2)
+        self.rgcn2.root.requires_grad = grad

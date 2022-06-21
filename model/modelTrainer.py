@@ -51,7 +51,7 @@ class Trainer:
         pred = model(traininig_data)
         pred = torch.round(pred)
         pred = pred.type(torch.int64)
-        acc = self.calc_f1(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val, avg='micro')
+        acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val)
         return acc
     
     def train(self, model: nn.Module, graph: Graph, sum_graph=True) -> Tuple[List, List]:
@@ -119,8 +119,8 @@ class Trainer:
         test_acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
         print('ACC ON TEST SET = ',  test_acc)
 
-        test_f1_micro = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
+        test_f1_weighted = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, avg='weighted')
         
         test_f1_macro = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, avg='macro')
     
-        return results_f1, results_loss, test_acc, test_f1_micro, test_f1_macro
+        return results_f1, results_loss, test_acc, test_f1_weighted, test_f1_macro
