@@ -34,7 +34,7 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
     for j in range(configs['i']):
 
         # create summaries
-        if configs['sum'] == 'attr':
+        if configs['sum'] == 'attr' and configs['dataset'] not in ['AIFB1', 'AM1']:
             timing.log('Creating graph summaries...')
             create_sum_map(org_path, sum_path, map_path, dataset)
 

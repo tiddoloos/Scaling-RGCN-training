@@ -59,6 +59,7 @@ class Trainer:
         model = model.to(self.device)
         training_data = graph.training_data.to(self.device)
         optimizer = torch.optim.Adam(model.parameters(), lr=self.lr, weight_decay=self.weight_d)
+        # scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.01)
         loss_f = torch.nn.BCELoss().to(self.device)
 
         accuracies = []
@@ -75,9 +76,9 @@ class Trainer:
             output = loss_f(out[training_data.x_train], targets)
             output.backward()
             optimizer.step()
-
             l = output.item()
             losses.append(l)
+            # scheduler.step()
             if not sum_graph:
                     print(f'Accuracy on validation set = {acc}')
             if epoch%10==0:

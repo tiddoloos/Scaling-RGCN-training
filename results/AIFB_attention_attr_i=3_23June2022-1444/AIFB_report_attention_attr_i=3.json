@@ -1,0 +1,44 @@
+{
+    "dataset": "AIFB",
+    "sum": "attr",
+    "exp": "attention",
+    "epochs": 51,
+    "emb": 63,
+    "i": 3,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "w_trans": true,
+    "attention accuracy": {
+        "epoch": 45,
+        "acc": 85.54572271386431
+    },
+    "baseline accuracy": {
+        "epoch": 42,
+        "acc": 72.68436578171092
+    },
+    "Test acc attention": {
+        "mean": 0.8159292035398229,
+        "std": 0.0160922497899538
+    },
+    "Test acc baseline": {
+        "mean": 0.7179941002949852,
+        "std": 0.011224954330643345
+    },
+    "Test F1 weighted attention": {
+        "mean": 0.8987684787869994,
+        "std": 0.004299652775098241
+    },
+    "Test F1 weighted baseline": {
+        "mean": 0.8371302686815598,
+        "std": 0.007932922695975727
+    },
+    "Test F1 macro attention": {
+        "mean": 0.48715153701966446,
+        "std": 0.02049866501905364
+    },
+    "Test F1 macro baseline": {
+        "mean": 0.41680555164782307,
+        "std": 0.02360213045073883
+    }
+}

@@ -54,15 +54,21 @@ class Emb_ATT_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, _, emb_dim: int, num_sums: int) -> None:
         super(Emb_ATT_Layers, self).__init__()
         self.embedding = None
-        self.att = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=num_sums)
+        self.att = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=num_sums, dropout=0.2)
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations, num_bases=None)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations, num_bases=None)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
+        # nn.init.kaiming_uniform_(self.att.weight, mode='fan_in')
 
     def forward(self, training_data: Data) -> Tensor:
         # x = torch.sigmoid(self.embedding)
-        attn_output, _ = self.att(self.embedding, self.embedding, self.embedding)
+        attn_output, att_weights = self.att(self.embedding, self.embedding, self.embedding)
+        # print(att_weights.size())
+        # print(att_weights)
+        # print(att_weights[0])
+        # print(att_weights[1])
+        # print(att_weights[2])
         # x = torch.sigmoid(attn_output[0])
         x = attn_output[0]
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
@@ -108,8 +114,8 @@ class Emb_MLP_Layers(nn.Module):
     def forward(self, training_data: Data):
         # try relu
         x = torch.sigmoid(self.lin1(self.embedding.weight))
-        # x = torch.sigmoid(self.lin2(x))
-        x = self.lin2(x)
+        x = torch.sigmoid(self.lin2(x))
+        # x = self.lin2(x)
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
