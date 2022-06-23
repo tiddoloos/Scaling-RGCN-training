@@ -28,7 +28,7 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
     acc_dicts_list = []
     loss_dicts_list = []
     test_accs = defaultdict(list)
-    test_f1_micro = defaultdict(list)
+    test_f1_weighted = defaultdict(list)
     test_f1_macro = defaultdict(list)
 
     for j in range(configs['i']):
@@ -60,7 +60,7 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
                 results_exp_acc.update(results_acc)
                 results_exp_loss.update(results_loss)
                 test_accs[f'Test acc {exp}'].append(test_acc)
-                test_f1_micro[f'Test F1 micro {exp}'].append(test_micro)
+                test_f1_weighted[f'Test F1 weighted {exp}'].append(test_micro)
                 test_f1_macro[f'Test F1 macro {exp}'].append(test_macro) 
 
                 timing.log(f'{exp} experiment done')
@@ -80,7 +80,7 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
                 results_exp_acc.update(results_acc)
                 results_exp_loss.update(results_loss)
                 test_accs[f'Test acc {exp}'].append(test_acc)
-                test_f1_micro[f'Test F1 micro {exp}'].append(test_micro)
+                test_f1_weighted[f'Test F1 weighted {exp}'].append(test_micro)
                 test_f1_macro[f'Test F1 macro {exp}'].append(test_macro) 
 
         exp = 'baseline'
@@ -94,14 +94,14 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
         results_exp_acc.update(results_baseline_acc)
         results_exp_loss.update(results_baseline_loss)
         test_accs[f'Test acc {exp}'].append(test_acc)
-        test_f1_micro[f'Test F1 micro {exp}'].append(test_micro) 
+        test_f1_weighted[f'Test F1 weighted {exp}'].append(test_micro) 
         test_f1_macro[f'Test F1 macro {exp}'].append(test_macro) 
 
         acc_dicts_list.append(results_exp_acc)
         loss_dicts_list.append(results_exp_loss)
 
     # porocessing results
-    process_results(configs, acc_dicts_list, loss_dicts_list, test_accs, test_f1_micro, test_f1_macro)
+    process_results(configs, acc_dicts_list, loss_dicts_list, test_accs, test_f1_weighted, test_f1_macro)
 
 
 if __name__=='__main__':
@@ -114,6 +114,8 @@ if __name__=='__main__':
     parser.add_argument('-i', type=int, default=1, help='experiment iterations')
     parser.add_argument('-lr', type=float, default=0.01, help='learning rate')
     parser.add_argument('-hl', type=int, default=16, help='hidden layer size')
+    parser.add_argument('-e_trans', type=bool, default=True, help='emebdding transfer True/False')
+    parser.add_argument('-w_trans', type=bool, default=True, help='RGCN weight transfer True/False')
     configs = vars(parser.parse_args())
 
     methods = {'baseline': {

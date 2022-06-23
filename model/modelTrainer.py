@@ -6,7 +6,7 @@ from torch import nn
 from torch import Tensor
 from torch_geometric.data import Data
 from typing import List, Tuple, Callable
-from sklearn.metrics import classification_report, f1_score
+from sklearn.metrics import classification_report, f1_score, accuracy_score
 
 from graphdata.graph import Graph
 from graphdata.dataset import Dataset
@@ -39,11 +39,10 @@ class Trainer:
         print('weight transfer done')
 
     def calc_acc(self, pred: Tensor, x: Tensor, y: Tensor) -> float:
-        tot = torch.sum(y == 1).item()
-        p = (torch.sum((pred[x] == y) * (pred[x] == 1))) / tot
-        return p.item()
+        acc = accuracy_score(y, pred[x])
+        return acc
 
-    def calc_f1(self, pred: Tensor, x: Tensor, y: Tensor, avg='micro') -> float:
+    def calc_f1(self, pred: Tensor, x: Tensor, y: Tensor, avg='weighted') -> float:
         f1 = f1_score(y.numpy(), pred[x].numpy(), average=avg, zero_division=0)
         return f1
     
@@ -96,18 +95,19 @@ class Trainer:
             sumGraph.training_data.embedding = self.sumModel.embedding.weight.clone()
 
     def train_original(self, org_layers: nn.Module, embedding_trick: Callable, transfer: bool, exp: str) -> Tuple[List[float], List[float], float]:
-        results_f1 = defaultdict(list)
+        results_acc = defaultdict(list)
         results_loss = defaultdict(list)
 
         orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, len(self.data.sumGraphs))
         if embedding_trick != None:
             embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
             orgModel.load_embedding(self.data.orgGraph.training_data.embedding.clone())
+            print('Loaded pre trained embedding')
 
         if transfer == True:
             self.transfer_weights(orgModel)
         print('Training on Orginal Graph...')
-        results_f1[f'{exp} accuracy'], results_loss[f'{exp} loss'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
+        results_acc[f'{exp} accuracy'], results_loss[f'{exp} loss'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
 
         # evaluate on Test set
         pred = orgModel(self.data.orgGraph.training_data)
@@ -123,4 +123,4 @@ class Trainer:
         
         test_f1_macro = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, avg='macro')
     
-        return results_f1, results_loss, test_acc, test_f1_weighted, test_f1_macro
+        return results_acc, results_loss, test_acc, test_f1_weighted, test_f1_macro
