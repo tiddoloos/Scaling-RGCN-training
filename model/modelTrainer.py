@@ -39,6 +39,8 @@ class Trainer:
         print('weight transfer done')
 
     def calc_acc(self, pred: Tensor, x: Tensor, y: Tensor) -> float:
+        # tot = torch.sum(y == 1).item()
+        # p = (torch.sum((pred[x] == y) * (pred[x] == 1))) / tot
         acc = accuracy_score(y, pred[x])
         return acc
 

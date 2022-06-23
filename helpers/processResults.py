@@ -1,4 +1,6 @@
+import colorsys
 import json
+from turtle import color
 import matplotlib.pyplot
 import numpy as np
 import os
@@ -41,7 +43,7 @@ def create_run_report(path: str,
                         test_f1_micro: Dict[str, List[float]],
                         test_f1_macro: Dict[str, List[float]]
                         ) -> None:
-    "with this function we save and print important statsitics of the experiment(s)"
+    "with this function we save and print statsitics of the experiment(s)"
 
     results_collection = defaultdict(dict)
     results_collection.update(configs)
@@ -64,6 +66,7 @@ def create_run_report(path: str,
 
 def plot_results(path: str, stat: str, configs: Dict[str, Union[str, int]],  results_dict: Dict[str, List[float]]):
     epoch_list = [j for j in range(configs['epochs'])]
+    colors: dict = {'attention': '#FF0000', 'summation': '#069AF3', 'mlp': '#15B01A'}
     
     keys = list(results_dict.keys())
     for key2 in keys:
@@ -75,7 +78,8 @@ def plot_results(path: str, stat: str, configs: Dict[str, Union[str, int]],  res
                 x = epoch_list 
       
     for key1 in keys:
-        if key1.split(' ')[0] != 'baseline':
+        exp = key1.split(' ')[0]
+        if exp != 'baseline':
             plt = matplotlib.pyplot
             result = results_dict[key1]
             y = result[0]
@@ -83,11 +87,11 @@ def plot_results(path: str, stat: str, configs: Dict[str, Union[str, int]],  res
             y2 = result[2]
             x = epoch_list 
 
-            plt.fill_between(x, y1, y2, interpolate=True, alpha=0.35)
-            plt.plot(x, y, label = key1)
+            plt.fill_between(x, y1, y2, color=colors[exp], interpolate=True, alpha=0.35)
+            plt.plot(x, y, color=colors[exp], label=key1)
 
-            plt.fill_between(x, y1_base, y2_base, interpolate=True, alpha=0.35)
-            plt.plot(x, y_base, label = key2)
+            plt.fill_between(x, y1_base, y2_base, color='#FAC205', interpolate=True, alpha=0.35)
+            plt.plot(x, y_base, color='#FAC205', label = key2)
     
             plt.title(f'{key1} on {configs["dataset"]} dataset during training epochs ({configs["sum"]})')
             plt.xlabel('Epochs')

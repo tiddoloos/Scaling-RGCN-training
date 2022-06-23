@@ -38,7 +38,6 @@ def concat_embeddings(graph: Graph, sum_graphs: list, emb_dim: int) -> None:
     '''
     tensors = get_tensor_list(graph, sum_graphs, emb_dim)
     concat_emb = torch.concat(tensors, dim=-1)
-    print(concat_emb.size())
     graph.training_data.embedding=concat_emb.detach()
 
 def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
