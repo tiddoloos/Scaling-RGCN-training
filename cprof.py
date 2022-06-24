@@ -8,7 +8,7 @@ from main import initialize_expirements
 from model.layers import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 
-"""this file tests the performance of all functions in the pipeline
+"""this file measures the performance of all functions in the pipeline
 results are saved as ./performance/cProfile_out.txt.
 The file ranks functions on 'tottime' -> how much time the fuction is used in total
 """
