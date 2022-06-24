@@ -90,10 +90,6 @@ class Trainer:
             if epoch%10==0:
                 print(f'Epoch: {epoch}, Loss: {l:.4f}')
         
-        # make space on GPU
-        if self.device == 'cuda:0':
-            training_data.to('cuda')
-            model.to('cuda')
         return accuracies, losses, f1_ws, f1_ms
 
     def train_summaries(self, sum_layers: nn.Module):

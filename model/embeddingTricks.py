@@ -48,19 +48,3 @@ def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
     summed_embedding = sum(tensors)
     # mean_embedding = summed_embedding / len(sum_graphs)
     graph.training_data.embedding=summed_embedding.detach()
-
-# def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
-#     # summing of the embeddings
-#     summed_embedding = torch.rand(graph.num_nodes, emb_dim, requires_grad=False)
-#     for orgNode, idx in graph.node_to_enum.items():
-#         # makes a vectors with zeros and add embedings for specific idx
-#         sum_weight = torch.zeros(1, emb_dim)
-#         for sum_graph in sum_graphs:
-#             #make sure to only continue if org node is linked to a sumNode
-#             if orgNode in sum_graph.orgNode2sumNode_dict:
-#                 sumNode = sum_graph.orgNode2sumNode_dict[orgNode]
-#                 if sumNode in sum_graph.node_to_enum:
-#                     sum_weight += sum_graph.embedding.[sum_graph.node_to_enum[sumNode]]
-#         if torch.count_nonzero(sum_weight):
-#             summed_embedding[idx] = sum_weight.detach()
-#     graph.embedding=nn.Embedding.from_pretrained(summed_embedding, freeze=True)
