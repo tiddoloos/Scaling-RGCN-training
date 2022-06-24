@@ -105,17 +105,24 @@ def plot_results(path: str, stat: str, configs: Dict[str, Union[str, int]],  res
             plt.ylim(ymin=0)
             plt.savefig(f'{path}/{configs["dataset"]}_{key1}_{configs["sum"]}_i={configs["i"]}.pdf', format='pdf')
             plt.show()
+            plt.close()
+            plt.clf()
+
 
 def process_results(configs: Dict[str, Union[str, int]], acc_dicts_list: List[Dict[str, float]], 
-                    loss_dicts_list: List[Dict[str, float]], test_accs: Dict[str, List[float]], 
+                    loss_dicts_list: List[Dict[str, float]],f1_w_dicts_list: List[Dict[str, float]], 
+                    f1_m_dicts_list: List[Dict[str, float]], test_accs: Dict[str, List[float]], 
                     test_f1_micro: Dict[str, List[float]], test_f1_macro: Dict[str, List[float]]) -> None:
     
     dt = datetime.now()
     str_date = dt.strftime('%d%B%Y-%H%M')
     path=f'./results/{configs["dataset"]}_{configs["exp"]}_{configs["sum"]}_i={configs["i"]}_{str_date}'
     os.mkdir(path)
+
     av_acc_results = get_av_results_dict(configs["i"], acc_dicts_list)
     av_loss_results = get_av_results_dict(configs["i"], loss_dicts_list)
+    av_f1_w_results = get_av_results_dict(configs["i"], f1_w_dicts_list)
+    av_f1_m_results = get_av_results_dict(configs["i"], f1_m_dicts_list)
 
     create_run_report(path, configs, av_acc_results, test_accs, test_f1_micro, test_f1_macro)
 
@@ -124,4 +131,6 @@ def process_results(configs: Dict[str, Union[str, int]], acc_dicts_list: List[Di
     
     plot_results(path, 'Accuracy', configs, av_acc_results)
     plot_results(path, 'Loss', configs, av_loss_results)
+    plot_results(path, 'F1 weighted', configs, av_f1_w_results)
+    plot_results(path, 'F1 macro', configs, av_f1_m_results)
     

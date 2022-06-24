@@ -5,7 +5,7 @@ from collections import defaultdict
 from torch import nn
 from torch import Tensor
 from torch_geometric.data import Data
-from typing import List, Tuple, Callable
+from typing import List, Tuple, Callable, Union
 from sklearn.metrics import classification_report, f1_score, accuracy_score
 
 from graphdata.graph import Graph
@@ -39,13 +39,11 @@ class Trainer:
         print('weight transfer done')
 
     def calc_acc(self, pred: Tensor, x: Tensor, y: Tensor) -> float:
-        # tot = torch.sum(y == 1).item()
-        # p = (torch.sum((pred[x] == y) * (pred[x] == 1))) / tot
         acc = accuracy_score(y, pred[x])
         return acc
 
     def calc_f1(self, pred: Tensor, x: Tensor, y: Tensor, avg='weighted') -> float:
-        f1 = f1_score(y.numpy(), pred[x].numpy(), average=avg, zero_division=0)
+        f1 = f1_score(y, pred[x], average=avg, zero_division=0)
         return f1
     
     def evaluate(self, model: nn.Module, traininig_data: Data) -> float:
@@ -53,22 +51,30 @@ class Trainer:
         pred = torch.round(pred)
         pred = pred.type(torch.int64)
         acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val)
-        return acc
+        f1_w = self.calc_f1(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val)
+        f1_m = self.calc_f1(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val, avg='macro')
+        return acc, f1_w, f1_m
     
-    def train(self, model: nn.Module, graph: Graph, sum_graph=True) -> Tuple[List, List]:
+    def train(self, model: nn.Module, graph: Graph, sum_graph=True) -> Tuple[List[float]]:
         model = model.to(self.device)
         training_data = graph.training_data.to(self.device)
         optimizer = torch.optim.Adam(model.parameters(), lr=self.lr, weight_decay=self.weight_d)
-        # scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.01)
         loss_f = torch.nn.BCELoss().to(self.device)
 
-        accuracies = []
-        losses = []
+        accuracies: list = []
+        losses: list = []
+        f1_ws: list = []
+        f1_ms: list = []
+
         for epoch in range(self.epochs):
+
             if not sum_graph:
                 model.eval()
-                acc = self.evaluate(model, training_data)
+                acc, f1_w, f1_m = self.evaluate(model, training_data)
                 accuracies.append(acc)
+                f1_ws.append(f1_w)
+                f1_ms.append(f1_m)
+                
             model.train()
             optimizer.zero_grad()
             out = model(training_data)
@@ -88,18 +94,20 @@ class Trainer:
         if self.device == 'cuda:0':
             training_data.to('cuda')
             model.to('cuda')
-        return accuracies, losses
+        return accuracies, losses, f1_ws, f1_ms
 
     def train_summaries(self, sum_layers: nn.Module):
         self.sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
-        for _, sumGraph in enumerate(self.data.sumGraphs):
+        for sumGraph in self.data.sumGraphs:
             self.sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
-            _, _ = self.train(self.sumModel, sumGraph)
+            _, _, _, _ = self.train(self.sumModel, sumGraph)
             sumGraph.training_data.embedding = self.sumModel.embedding.weight.clone()
 
-    def train_original(self, org_layers: nn.Module, embedding_trick: Callable, transfer: bool, exp: str) -> Tuple[List[float], List[float], float]:
-        results_acc = defaultdict(list)
-        results_loss = defaultdict(list)
+    def train_original(self, org_layers: nn.Module, embedding_trick: Callable, transfer: bool, exp: str) -> Tuple[List[float], float]:
+        acc = defaultdict(list)
+        loss = defaultdict(list)
+        f1_w = defaultdict(list)
+        f1_m = defaultdict(list)
 
         orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, len(self.data.sumGraphs))
         if embedding_trick != None:
@@ -109,8 +117,9 @@ class Trainer:
 
         if transfer == True:
             self.transfer_weights(orgModel)
+    
         print('Training on Orginal Graph...')
-        results_acc[f'{exp} accuracy'], results_loss[f'{exp} loss'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
+        acc[f'{exp} accuracy'], loss[f'{exp} loss'], f1_w[f'{exp} f1 weighted'], f1_m[f'{exp} f1 macro'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
 
         # evaluate on Test set
         pred = orgModel(self.data.orgGraph.training_data)
@@ -119,11 +128,9 @@ class Trainer:
         skl_pred = pred[self.data.orgGraph.training_data.x_test].detach().numpy()
         print(classification_report(self.data.orgGraph.training_data.y_test, skl_pred, zero_division=0))
 
+        test_f1_weighted = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, avg='weighted')
+        test_f1_macro = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, avg='macro')
         test_acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
         print('ACC ON TEST SET = ',  test_acc)
-
-        test_f1_weighted = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, avg='weighted')
-        
-        test_f1_macro = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, avg='macro')
     
-        return results_acc, results_loss, test_acc, test_f1_weighted, test_f1_macro
+        return acc, loss, f1_w, f1_m, test_acc, test_f1_weighted, test_f1_macro
