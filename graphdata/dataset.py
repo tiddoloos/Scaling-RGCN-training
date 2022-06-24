@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 import torch
 
 from helpers import timing
-from graphdata.graphProcessing import parse_graph_nt, nodes2type_mapping, get_node_mappings_dict, encode_org_node_labels, encode_sum_node_labels
+from graphdata.graphProcessing import parse_graph_nt, nodes2type_mapping, get_node_mappings_dict, encode_org_node_labels, encode_sum_node_labels, remove_eval_data, get_idx_labels
 from graphdata.graph import Graph
 
 
@@ -20,27 +20,10 @@ class Dataset:
         self.enum_classes: Dict[str, int] = None
         self.num_classes: int = None
 
-    def remove_eval_data(self, X_eval, orgGraph):
-        org2type_pruned = deepcopy(orgGraph.org2type_dict)
-        X_eval_set = set(X_eval)
-        nodes_to_prune = [key for key, idx in orgGraph.node_to_enum.items() if idx in X_eval_set]
-        for orgNode in nodes_to_prune:
-            org2type_pruned[orgNode].clear()
-        return org2type_pruned
-
-    def get_idx_labels(self, graph: Graph, node2type) -> Tuple[List[int], List[int]]:
-        train_indices = list()
-        train_labels = list()
-        for node, labs in node2type.items():
-            if sum(list(labs)) != 0.0 and graph.node_to_enum.get(node) is not None:
-                train_indices.append(graph.node_to_enum[node])
-                train_labels.append(list(labs))
-        return train_indices, train_labels
-
     def make_trainig_data(self):
         self.orgGraph.org2type  = encode_org_node_labels(self.orgGraph.org2type_dict, self.enum_classes, self.num_classes)
 
-        g_idx, g_labels = self.get_idx_labels(self.orgGraph, self.orgGraph.org2type)
+        g_idx, g_labels = get_idx_labels(self.orgGraph, self.orgGraph.org2type)
         X_train, X_test, y_train, y_test = train_test_split(g_idx, g_labels,  test_size=0.2, random_state=1) 
         X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, random_state=1)
 
@@ -58,15 +41,14 @@ class Dataset:
         print(f"num Classes = {self.num_classes}")
         timing.log('ORGINAL GRPAH LOADED')
 
-        # romeve evaluation data from org2type. we use org2type to create labels for summary graph training
+        # romeve evaluation data from org2type: we use org2type to create weighted labels for summary graph training
         to_remove = X_test + X_val
-        org2type_pruned = self.remove_eval_data(to_remove, self.orgGraph)
+        org2type_pruned = remove_eval_data(to_remove, self.orgGraph)
 
         for sumGraph in self.sumGraphs:
-            # remove_eval_data(to_remove, orgGraph, sumGraph, enum_classes, num_classes)
             sumGraph.sum2type  = encode_sum_node_labels(sumGraph.sumNode2orgNode_dict, org2type_pruned, self.enum_classes, self.num_classes)
 
-            sg_idx, sg_labels = self.get_idx_labels(sumGraph, sumGraph.sum2type)
+            sg_idx, sg_labels = get_idx_labels(sumGraph, sumGraph.sum2type)
             sumGraph.training_data.x_train = torch.tensor(sg_idx, dtype = torch.long)
             sumGraph.training_data.y_train = torch.tensor(sg_labels)
             

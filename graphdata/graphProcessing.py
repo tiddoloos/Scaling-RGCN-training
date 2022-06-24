@@ -1,5 +1,7 @@
 from collections import defaultdict
+from copy import deepcopy
 from typing import List, Dict, Tuple
+from graphdata.graph import Graph
 
 
 def parse_graph_nt(path: str) -> List[str]:
@@ -56,3 +58,20 @@ def encode_sum_node_labels(sumNode2orgNode_dict: defaultdict(list), org2type_dic
         sg_labels[:] = [x / div for x in sg_labels]
         sum2type_enc[sumNode] = sg_labels
     return sum2type_enc
+
+def remove_eval_data(X_eval, orgGraph):
+        org2type_pruned = deepcopy(orgGraph.org2type_dict)
+        X_eval_set = set(X_eval)
+        nodes_to_prune = [key for key, idx in orgGraph.node_to_enum.items() if idx in X_eval_set]
+        for orgNode in nodes_to_prune:
+            org2type_pruned[orgNode].clear()
+        return org2type_pruned
+
+def get_idx_labels(graph: Graph, node2type) -> Tuple[List[int], List[int]]:
+    train_indices: list = []
+    train_labels: list = []
+    for node, labs in node2type.items():
+        if sum(list(labs)) != 0.0 and graph.node_to_enum.get(node) is not None:
+            train_indices.append(graph.node_to_enum[node])
+            train_labels.append(list(labs))
+    return train_indices, train_labels
