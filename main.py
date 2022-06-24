@@ -36,7 +36,7 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
     for j in range(configs['i']):
 
         # create summaries
-        if configs['sum'] == 'attr' and configs['dataset'] not in ['AIFB1', 'AM1']:
+        if configs['create_attr_sum']:
             timing.log('Creating graph summaries...')
             create_sum_map(org_path, sum_path, map_path, dataset)
 
@@ -127,6 +127,8 @@ if __name__=='__main__':
     parser.add_argument('-hl', type=int, default=16, help='hidden layer size')
     parser.add_argument('-e_trans', type=bool, default=True, help='emebdding transfer True/False')
     parser.add_argument('-w_trans', type=bool, default=True, help='RGCN weight transfer True/False')
+    parser.add_argument('-create_attr_sum', type=bool, default=False, help='create attribute summaries before conducting the experiments')
+    
     configs = vars(parser.parse_args())
 
     methods = {'baseline': {

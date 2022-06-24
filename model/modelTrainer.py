@@ -71,6 +71,8 @@ class Trainer:
             if not sum_graph:
                 model.eval()
                 acc, f1_w, f1_m = self.evaluate(model, training_data)
+                print(f'Accuracy on validation set = {acc}')
+                
                 accuracies.append(acc)
                 f1_ws.append(f1_w)
                 f1_ms.append(f1_m)
@@ -85,8 +87,6 @@ class Trainer:
             l = output.item()
             losses.append(l)
             # scheduler.step()
-            if not sum_graph:
-                    print(f'Accuracy on validation set = {acc}')
             if epoch%10==0:
                 print(f'Epoch: {epoch}, Loss: {l:.4f}')
         

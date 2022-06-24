@@ -49,11 +49,11 @@ def encode_org_node_labels(org2type_dict: defaultdict(list), labels_dict: dict, 
 def encode_sum_node_labels(sumNode2orgNode_dict: defaultdict(list), org2type_dict: defaultdict(list), labels_dict: dict, num_classes: int) -> Dict[str, List]:
     sum2type_enc = defaultdict(list)
     for sumNode, orgNodes in sumNode2orgNode_dict.items():
-        sg_labels = [0 for _ in range(num_classes)]
+        sg_labels = [0.0 for _ in range(num_classes)]
         for node in orgNodes:
             types = org2type_dict[node]
             for t in types:
-                sg_labels[labels_dict[t]] += 1
+                sg_labels[labels_dict[t]] += 1.0
         div = max(1, len(orgNodes))
         sg_labels[:] = [x / div for x in sg_labels]
         sum2type_enc[sumNode] = sg_labels

@@ -1,0 +1,77 @@
+{
+    "dataset": "AIFB1",
+    "sum": "attr",
+    "exp": null,
+    "epochs": 51,
+    "emb": 63,
+    "i": 1,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "w_trans": true,
+    "create_attr_sum": false,
+    "summation accuracy": {
+        "epoch": 33,
+        "acc": 85.13274336283186
+    },
+    "mlp accuracy": {
+        "epoch": 41,
+        "acc": 77.16814159292036
+    },
+    "attention accuracy": {
+        "epoch": 41,
+        "acc": 81.94690265486726
+    },
+    "baseline accuracy": {
+        "epoch": 33,
+        "acc": 66.01769911504425
+    },
+    "Test acc summation": {
+        "mean": 0.8407079646017699,
+        "std": 0.0
+    },
+    "Test acc mlp": {
+        "mean": 0.7327433628318584,
+        "std": 0.0
+    },
+    "Test acc attention": {
+        "mean": 0.8035398230088495,
+        "std": 0.0
+    },
+    "Test acc baseline": {
+        "mean": 0.6070796460176991,
+        "std": 0.0
+    },
+    "Test F1 weighted summation": {
+        "mean": 0.908955742294314,
+        "std": 0.0
+    },
+    "Test F1 weighted mlp": {
+        "mean": 0.8263257845655096,
+        "std": 0.0
+    },
+    "Test F1 weighted attention": {
+        "mean": 0.8747466016215844,
+        "std": 0.0
+    },
+    "Test F1 weighted baseline": {
+        "mean": 0.7407197821075566,
+        "std": 0.0
+    },
+    "Test F1 macro summation": {
+        "mean": 0.5421950727768233,
+        "std": 0.0
+    },
+    "Test F1 macro mlp": {
+        "mean": 0.44081418394256455,
+        "std": 0.0
+    },
+    "Test F1 macro attention": {
+        "mean": 0.49597611878678893,
+        "std": 0.0
+    },
+    "Test F1 macro baseline": {
+        "mean": 0.3295255209996906,
+        "std": 0.0
+    }
+}
