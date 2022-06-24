@@ -9,19 +9,41 @@ def parse_graph_nt(path: str) -> List[str]:
         triples = file.read().replace(' .', '').splitlines()
     return triples
 
-def nodes2type_mapping(graph_triples: List[str]) -> Tuple[List, Dict[str, List]]:
+def get_classes(graph_triples: List[str]):
     rel = '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>'
-    node2types_dict = defaultdict(list)
-    classes = []
+    class_count: dict = defaultdict(int)
     for triple in graph_triples:
         triple_list = triple.split(" ", maxsplit=2)
         if triple_list != ['']:
             s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
             if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
+               class_count[str(o)] += 1
+    c_d = dict((k, v) for k, v in class_count.items() if v >= 100)
+    return sorted(list(c_d.keys()))
+
+def nodes2type_mapping(graph_triples: List[str], classes: List[str]) -> Tuple[List, Dict[str, List]]:
+    rel = '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>'
+    node2types_dict = defaultdict(list)
+    for triple in graph_triples:
+        triple_list = triple.split(" ", maxsplit=2)
+        if triple_list != ['']:
+            s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
+            if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology' and str(o) in classes:
                 node2types_dict[s].append(o)
-                classes.append(o)
-    classes = sorted(list(set(classes)))
-    return classes, node2types_dict 
+    return node2types_dict 
+
+# def nodes2type_mapping(graph_triples: List[str]) -> Tuple[List, Dict[str, List]]:
+#     rel = '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>'
+#     node2types_dict = defaultdict(list)
+#     classes = []
+#     for triple in graph_triples:
+#         triple_list = triple.split(" ", maxsplit=2)
+#         if triple_list != ['']:
+#             s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
+#             if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
+#                 node2types_dict[s].append(o)
+#     classes = sorted(list(set(classes)))
+#     return classes, node2types_dict 
 
 def get_node_mappings_dict(graph_triples: List[str]) -> Tuple[Dict[str, str], Dict[str, List]]:
     sumNode2orgNode_dict = defaultdict(list)

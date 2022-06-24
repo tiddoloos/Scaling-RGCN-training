@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 import torch
 
 from helpers import timing
-from graphdata.graphProcessing import parse_graph_nt, nodes2type_mapping, get_node_mappings_dict, encode_org_node_labels, encode_sum_node_labels, remove_eval_data, get_idx_labels
+from graphdata.graphProcessing import parse_graph_nt, nodes2type_mapping, get_node_mappings_dict, encode_org_node_labels, encode_sum_node_labels, remove_eval_data, get_idx_labels, get_classes
 from graphdata.graph import Graph
 
 
@@ -68,9 +68,12 @@ class Dataset:
 
     def init_dataset(self) -> None:
         org_graph_triples = parse_graph_nt(self.org_path)
-        classes, org2type_dict = nodes2type_mapping(org_graph_triples)
+
+        classes = get_classes(org_graph_triples)
         enum_classes = {lab: i for i, lab in enumerate(classes)}
         self.enum_classes, self.num_classes = enum_classes, len(classes)
+        
+        org2type_dict = nodes2type_mapping(org_graph_triples, classes)
 
         file_name = self.org_path.split('/')[-1]
         self.orgGraph = Graph(file_name, deepcopy(org2type_dict))
