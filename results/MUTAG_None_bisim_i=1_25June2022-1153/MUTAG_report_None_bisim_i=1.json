@@ -1,0 +1,77 @@
+{
+    "dataset": "MUTAG",
+    "sum": "bisim",
+    "exp": null,
+    "epochs": 51,
+    "emb": 64,
+    "i": 1,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "w_trans": true,
+    "create_attr_sum": false,
+    "summation accuracy": {
+        "epoch": 12,
+        "acc": 51.37701804368471
+    },
+    "mlp accuracy": {
+        "epoch": 24,
+        "acc": 47.45963912630579
+    },
+    "attention accuracy": {
+        "epoch": 18,
+        "acc": 51.59069325735992
+    },
+    "baseline accuracy": {
+        "epoch": 49,
+        "acc": 43.376068376068375
+    },
+    "Test acc summation": {
+        "mean": 0.3611111111111111,
+        "std": 0.0
+    },
+    "Test acc mlp": {
+        "mean": 0.344017094017094,
+        "std": 0.0
+    },
+    "Test acc attention": {
+        "mean": 0.3418803418803419,
+        "std": 0.0
+    },
+    "Test acc baseline": {
+        "mean": 0.4472934472934473,
+        "std": 0.0
+    },
+    "Test F1 weighted summation": {
+        "mean": 0.323023950771357,
+        "std": 0.0
+    },
+    "Test F1 weighted mlp": {
+        "mean": 0.2970133569971201,
+        "std": 0.0
+    },
+    "Test F1 weighted attention": {
+        "mean": 0.2930055378368473,
+        "std": 0.0
+    },
+    "Test F1 weighted baseline": {
+        "mean": 0.4159670073430128,
+        "std": 0.0
+    },
+    "Test F1 macro summation": {
+        "mean": 0.10452807531107282,
+        "std": 0.0
+    },
+    "Test F1 macro mlp": {
+        "mean": 0.09890977852161766,
+        "std": 0.0
+    },
+    "Test F1 macro attention": {
+        "mean": 0.0981305266034591,
+        "std": 0.0
+    },
+    "Test F1 macro baseline": {
+        "mean": 0.14036584265462204,
+        "std": 0.0
+    }
+}

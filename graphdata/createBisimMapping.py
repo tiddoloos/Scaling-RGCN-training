@@ -47,7 +47,7 @@ def create_bisim_map_nt(path: str, map_path: str) -> None:
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description='experiment arguments')
-    parser.add_argument('-dataset', type=str, choices=['AIFB', 'AM', 'BGS', 'MUTAG', 'TEST'], help='inidcate dataset name')
+    parser.add_argument('-dataset', type=str, choices=['AIFB', 'AM', 'MUTAG', 'TEST'], help='inidcate dataset name')
     dataset = vars(parser.parse_args())['dataset']
 
     path = f'./{dataset}/bisim/bisimOutput'
