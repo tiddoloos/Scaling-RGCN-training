@@ -1,7 +1,5 @@
-import colorsys
 import json
-from turtle import color
-import matplotlib.pyplot
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 
@@ -80,7 +78,7 @@ def plot_results(path: str, stat: str, configs: Dict[str, Union[str, int]],  res
     for key1 in keys:
         exp = key1.split(' ')[0]
         if exp != 'baseline':
-            plt = matplotlib.pyplot
+            # plt = matplotlib.pyplot
             result = results_dict[key1]
             y = result[0]
             y1 = result[1]

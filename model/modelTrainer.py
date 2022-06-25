@@ -71,12 +71,11 @@ class Trainer:
             if not sum_graph:
                 model.eval()
                 acc, f1_w, f1_m = self.evaluate(model, training_data)
-                print(f'Accuracy on validation set = {acc}')
-                
+                print(f'Accuracy on validation set = {acc}')  
                 accuracies.append(acc)
                 f1_ws.append(f1_w)
                 f1_ms.append(f1_m)
-                
+
             model.train()
             optimizer.zero_grad()
             out = model(training_data)
@@ -86,10 +85,8 @@ class Trainer:
             optimizer.step()
             l = output.item()
             losses.append(l)
-            # scheduler.step()
             if epoch%10==0:
                 print(f'Epoch: {epoch}, Loss: {l:.4f}')
-        
         return accuracies, losses, f1_ws, f1_ms
 
     def train_summaries(self, sum_layers: nn.Module):
