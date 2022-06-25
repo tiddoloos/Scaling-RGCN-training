@@ -73,7 +73,7 @@ class Emb_ATT_Layers(nn.Module):
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
-        x = torch.softmax(x)
+        x = torch.sigmoid(x)
         return x
     
     def load_embedding(self, embedding: Tensor, grad: bool=False) -> None:
