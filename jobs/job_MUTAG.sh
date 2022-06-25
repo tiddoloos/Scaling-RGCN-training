@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --partition=gpu_shared
-#SBATCH --gres=gpu:1
+#SBATCH --partition=normal
+#SBATCH --constraint=silver_4110
 #SBATCH --job-name=MUTAG_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
