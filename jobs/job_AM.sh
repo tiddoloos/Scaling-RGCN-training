@@ -17,7 +17,7 @@ mkdir ./results
 scp -r $HOME/graphdata ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i2 -epochs 100
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -epochs 100
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
