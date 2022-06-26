@@ -14,7 +14,11 @@ from model.modelTrainer import Trainer
 from distutils.util import strtobool
 
 
-def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]], experiments: Dict[str, Dict[str, Callable]], org_path: str, sum_path: str, map_path: str) -> None:
+def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]], 
+                            experiments: Dict[str, Dict[str, Callable]], 
+                            org_path: str, 
+                            sum_path: str, 
+                            map_path: str) -> None:
     """This functions executes experiments to scale graph training with RGCN. 
     After training on summary graphs, the weights and node embeddings of 
     the summary model will be transferd to a new model for training on the 
