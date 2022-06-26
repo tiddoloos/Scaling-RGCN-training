@@ -49,12 +49,11 @@ class Emb_Layers(nn.Module):
         self.rgcn2.root.requires_grad = grad
 
 
-
 class Emb_ATT_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, _, emb_dim: int, num_sums: int) -> None:
         super(Emb_ATT_Layers, self).__init__()
         self.embedding = None
-        self.att = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=num_sums, dropout=0.0)
+        self.att = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=num_sums, dropout=0.2)
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations, num_bases=None)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations, num_bases=None)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
