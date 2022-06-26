@@ -33,9 +33,9 @@ class Results:
         for exp, value in self.run_results.items():
             for metric, array_list in value.items():
                 mean_arr = np.mean(np.array(array_list), axis=0)
-                mean_list = list(mean_arr)
-                mean_low = list(mean_arr - np.std(np.array(array_list), axis=0))
-                mean_up = list(mean_arr + np.std(np.array(array_list), axis=0))
+                mean_list = list(np.around(mean_arr, 2))
+                mean_low = list(np.around(mean_arr - np.std(np.array(array_list), axis=0), 2))
+                mean_up = list(np.around(mean_arr + np.std(np.array(array_list), axis=0), 2))
                 self.run_results[exp][metric] = [mean_list, mean_low, mean_up]
 
     def create_run_report(self, path: str, configs: Dict[str, Union[str, int]]) -> None:
@@ -47,7 +47,7 @@ class Results:
             for metric, results in metric_retsults.items():
                 max_metric = max(results[0])
                 epoch = int(results[0].index(max_metric)) - 1 
-                report[experiment][metric] = {'epoch': epoch, 'max': max_metric}
+                report[experiment][metric] = {'epoch': epoch, 'max': round(max_metric, 2)}
         
         for test_dict in [self.test_accs, self.test_f1_weighted, self.test_f1_macro]:
             for experiment, results in test_dict.items():
