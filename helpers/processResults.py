@@ -8,127 +8,106 @@ from datetime import datetime
 from typing import Dict, List, Union
 from torch import nn
 
-def save_to_json(path: str, name: str, configs: Dict[str, Union[str, int]], results_dict: Dict[str, List[float]]) -> None:
-    with open(f'{path}/{configs["dataset"]}_{name}_{configs["exp"]}_{configs["sum"]}_i={configs["i"]}.json', 'w') as write_file:
-            json.dump(results_dict, write_file, indent=4)
 
-def print_trainable_parameters(model: nn.Module, exp: str) -> int:
-    trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    print(f'number of trainable parameters for {exp.upper()} model: {trainable_params}')
-    return trainable_params
+class Results:
+    def __init__(self) -> None:
+        self.run_results = dict()
+        self.test_accs = defaultdict(list)
+        self.test_f1_weighted = defaultdict(list)
+        self.test_f1_macro = defaultdict(list)
 
-def add_data(list1: List[int], list2: List[int]):
-    temp_list = list(zip(list1, list2))
-    return [x+y for x,y in temp_list]
+    def add_key(self, key):
+        if key  not in self.run_results.keys():
+            self.run_results[key]=defaultdict(list)
 
-def get_av_results_dict(i: int, dicts_list: List[Dict[str, int]]) -> Dict[str, List[List]]:
-    av_results_dict = defaultdict(list)
-    for key in dicts_list[0].keys():
-        list_with_lists = [[] for i in range(len(dicts_list[0][key]))]
-        for dict in dicts_list:
-            for i, flt in enumerate(dict[key]):
-                list_with_lists[i].append(flt)
-        array = np.array(list_with_lists)
-        av_results_dict[key].append(list(np.mean(array, axis=1)))
-        av_results_dict[key].append(list(np.mean(array, axis=1) - np.std(array, axis=1)))
-        av_results_dict[key].append(list(np.mean(array, axis=1) + np.std(array, axis=1)))
-    return av_results_dict
+    def update_run_results(self, new_run_results, exp):
+        for key, value in new_run_results.items():
+            self.run_results[exp][key].append(np.array(value))
 
-def create_run_report(path: str, 
-                        configs: Dict[str, Union[str, int]], 
-                        results_dict: Dict[str, List[float]],  
-                        test_accs: Dict[str, List[float]],
-                        test_f1_micro: Dict[str, List[float]],
-                        test_f1_macro: Dict[str, List[float]]
-                        ) -> None:
-    "with this function we save and print statsitics of the experiment(s)"
+    def print_trainable_parameters(self, model: nn.Module, exp: str) -> int:
+        trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+        print(f'number of trainable parameters for {exp.upper()} model: {trainable_params}')
+        return trainable_params
 
-    results_collection = defaultdict(dict)
-    results_collection.update(configs)
-    for experiment, results in results_dict.items():
-        exp_strip = experiment.replace(' Accuracy', '')
-        max_acc = max(results[0])
-        epoch = int(results[0].index(max_acc)) - 1 
-        max_acc = max_acc*100
-        print(f'{exp_strip.upper()}: After epoch {epoch}, Max accuracy {round(max_acc, 2)}%')
-        results_collection[experiment] = {'epoch': epoch, 'acc': max_acc}
-    
-    for test_dict in [test_accs, test_f1_micro, test_f1_macro]:
-        for experiment, results in test_dict.items():
-            avg  = float(sum(results)/len(results))
-            std = float(np.std(np.array(results)))
-            results_collection[experiment] = {'mean': avg, 'std': std}
+    def make_av_run_results(self) -> None:
+        for exp, value in self.run_results.items():
+            for metric, array_list in value.items():
+                mean_arr = np.mean(np.array(array_list), axis=0)
+                mean_list = list(mean_arr)
+                mean_low = list(mean_arr - np.std(np.array(array_list), axis=0))
+                mean_up = list(mean_arr + np.std(np.array(array_list), axis=0))
+                self.run_results[exp][metric] = [mean_list, mean_low, mean_up]
 
-    with open(f'{path}/{configs["dataset"]}_report_{configs["exp"]}_{configs["sum"]}_i={configs["i"]}.json', 'w') as write_file:
-            json.dump(results_collection, write_file, indent=4)
+    def create_run_report(self, path: str, configs: Dict[str, Union[str, int]]) -> None:
+        "with this function we save statistics of the experiment(s)"
+        report = defaultdict(dict)
+        report.update(configs)
 
-def plot_results(path: str, stat: str, configs: Dict[str, Union[str, int]],  results_dict: Dict[str, List[float]]):
-    epoch_list = [j for j in range(configs['epochs'])]
-    colors: dict = {'attention': '#FF0000', 'summation': '#069AF3', 'mlp': '#15B01A'}
-    
-    keys = list(results_dict.keys())
-    for key2 in keys:
-            if key2.split(' ')[0] == 'baseline':
-                result = results_dict[key2]
-                y_base = result[0]
-                y1_base = result[1]
-                y2_base = result[2]
-                x = epoch_list 
-      
-    for key1 in keys:
-        exp = key1.split(' ')[0]
-        if exp != 'baseline':
-            # plt = matplotlib.pyplot
-            result = results_dict[key1]
-            y = result[0]
-            y1 = result[1]
-            y2 = result[2]
+        for experiment, metric_retsults in self.run_results.items():
+            for metric, results in metric_retsults.items():
+                max_metric = max(results[0])
+                epoch = int(results[0].index(max_metric)) - 1 
+                report[experiment][metric] = {'epoch': epoch, 'max': max_metric}
+        
+        for test_dict in [self.test_accs, self.test_f1_weighted, self.test_f1_macro]:
+            for experiment, results in test_dict.items():
+                avg  = round(float(sum(results)/len(results)), 2)
+                std = round(float(np.std(np.array(results))), 2)
+                report[experiment] = {'mean': avg, 'std': std}
+
+        with open(f'{path}/report_{configs["exp"]}_{configs["sum"]}_i={configs["i"]}.json', 'w') as write_file:
+                json.dump(report, write_file, indent=4)
+
+    def plot_results(self, path: str, configs: Dict[str, Union[str, int]]):
+        epoch_list = [j for j in range(configs['epochs'])]
+        colors: dict = {'attention': '#FF0000', 'summation': '#069AF3', 'mlp': '#15B01A'}
+        exps = self.run_results.keys()
+
+        for metric, result in self.run_results['baseline'].items():
+            y_base = result[0]
+            y1_base = result[1]
+            y2_base = result[2]
             x = epoch_list 
 
-            plt.fill_between(x, y1, y2, color=colors[exp], interpolate=True, alpha=0.35)
-            plt.plot(x, y, color=colors[exp], label=key1)
+            for exp in exps:
+                if exp != 'baseline':                            
+                    y = self.run_results[exp][metric][0]
+                    y1 = self.run_results[exp][metric][1]
+                    y2 = self.run_results[exp][metric][2]
+                    x = epoch_list 
+                    plt.fill_between(x, y1, y2, color=colors[exp], interpolate=True, alpha=0.35)
+                    plt.plot(x, y, color=colors[exp], label=f'{exp} {metric}')
 
-            plt.fill_between(x, y1_base, y2_base, color='#FAC205', interpolate=True, alpha=0.35)
-            plt.plot(x, y_base, color='#FAC205', label = key2)
-    
-            plt.title(f'{key1} on {configs["dataset"]} dataset during training epochs ({configs["sum"]})')
-            plt.xlabel('Epochs')
-            plt.ylabel(f'{stat}')
-            plt.grid(color='b', linestyle='-', linewidth=0.1)
-            plt.margins(x=0)
-            plt.legend(loc='best')
-            plt.xticks(np.arange(0, len(epoch_list), 5))
-            plt.xlim(xmin=0)
-            plt.yticks(np.arange(0, 1.1, 0.1))
-            plt.ylim(ymin=0)
-            plt.savefig(f'{path}/{configs["dataset"]}_{key1}_{configs["sum"]}_i={configs["i"]}.pdf', format='pdf')
-            plt.show()
-            plt.close()
-            plt.clf()
+                plt.fill_between(x, y1_base, y2_base, color='#FAC205', interpolate=True, alpha=0.35)
+                plt.plot(x, y_base, color='#FAC205', label = f'baseline {metric}')    
+                plt.title(f'{exp} {metric} on {configs["dataset"]} dataset during training epochs ({configs["sum"]})')
+                plt.xlabel('Epochs')
+                plt.ylabel(f'{metric}')
+                plt.grid(color='b', linestyle='-', linewidth=0.1)
+                plt.margins(x=0)
+                plt.legend(loc='best')
+                plt.xticks(np.arange(0, len(epoch_list), 5))
+                plt.xlim(xmin=0)
+                plt.yticks(np.arange(0, 1.1, 0.1))
+                plt.ylim(ymin=0)
+                plt.savefig(f'{path}/{configs["dataset"]}_{exp}_{metric}_{configs["sum"]}_i={configs["i"]}.pdf', format='pdf')
+                plt.show()
+                plt.close()
+                plt.clf()
+           
+    def save_to_json(self, path: str, configs) -> None:
+        with open(f'{path}/run_results_{configs["exp"]}_{configs["sum"]}_i={configs["i"]}.json', 'w') as write_file:
+                json.dump(self.run_results, write_file, indent=4)
 
+    def process_results(self, configs: Dict[str, Union[str, int]]) -> None:
+        dt = datetime.now()
+        str_date = dt.strftime('%d%B%Y-%H%M')
+        path=f'./results/{configs["dataset"]}_{configs["exp"]}_{configs["sum"]}_i={configs["i"]}_{str_date}'
+        os.mkdir(path)
 
-def process_results(configs: Dict[str, Union[str, int]], acc_dicts_list: List[Dict[str, float]], 
-                    loss_dicts_list: List[Dict[str, float]],f1_w_dicts_list: List[Dict[str, float]], 
-                    f1_m_dicts_list: List[Dict[str, float]], test_accs: Dict[str, List[float]], 
-                    test_f1_micro: Dict[str, List[float]], test_f1_macro: Dict[str, List[float]]) -> None:
-    
-    dt = datetime.now()
-    str_date = dt.strftime('%d%B%Y-%H%M')
-    path=f'./results/{configs["dataset"]}_{configs["exp"]}_{configs["sum"]}_i={configs["i"]}_{str_date}'
-    os.mkdir(path)
+        self.make_av_run_results()
+        self.save_to_json(path, configs)
+        self.create_run_report(path, configs)
+        self.plot_results(path, configs)
 
-    av_acc_results = get_av_results_dict(configs["i"], acc_dicts_list)
-    av_loss_results = get_av_results_dict(configs["i"], loss_dicts_list)
-    av_f1_w_results = get_av_results_dict(configs["i"], f1_w_dicts_list)
-    av_f1_m_results = get_av_results_dict(configs["i"], f1_m_dicts_list)
-
-    create_run_report(path, configs, av_acc_results, test_accs, test_f1_micro, test_f1_macro)
-
-    save_to_json(path, 'accuracy', configs, av_acc_results)
-    save_to_json(path, 'loss', configs, av_loss_results)
-    
-    plot_results(path, 'Accuracy', configs, av_acc_results)
-    plot_results(path, 'Loss', configs, av_loss_results)
-    plot_results(path, 'F1 weighted', configs, av_f1_w_results)
-    plot_results(path, 'F1 macro', configs, av_f1_m_results)
-    
+        

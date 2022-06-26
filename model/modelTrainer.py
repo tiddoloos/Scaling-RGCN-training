@@ -39,7 +39,7 @@ class Trainer:
         print('weight transfer done')
 
     def calc_acc(self, pred: Tensor, x: Tensor, y: Tensor) -> float:
-        return min(1.0, accuracy_score(y, pred[x]))
+        return accuracy_score(y, pred[x])
 
     def calc_f1(self, pred: Tensor, x: Tensor, y: Tensor, avg='weighted') -> float:
         return f1_score(y, pred[x], average=avg, zero_division=0)
@@ -110,7 +110,7 @@ class Trainer:
             self.transfer_weights(orgModel)
     
         print('Training on Orginal Graph...')
-        acc[f'{exp} accuracy'], loss[f'{exp} loss'], f1_w[f'{exp} f1 weighted'], f1_m[f'{exp} f1 macro'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
+        acc[f'accuracy'], loss[f'loss'], f1_w[f'f1 weighted'], f1_m[f'f1 macro'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
 
         # evaluate on Test set
         pred = orgModel(self.data.orgGraph.training_data)
