@@ -104,13 +104,12 @@ class Trainer:
 
         orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, configs['num_sums'])
         
-        print(configs['e_trans'])
         if exp != 'baseline' and configs['e_trans'] == True:
             embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
             orgModel.load_embedding(self.data.orgGraph.training_data.embedding.clone())
             print('Loaded pre trained embedding')
 
-        if exp != 'baseline' and configs['w_trans']  == True:
+        if exp != 'baseline' and configs['w_trans'] == True:
             self.transfer_weights(orgModel)
     
         print('Training on Orginal Graph...')
