@@ -39,12 +39,10 @@ class Trainer:
         print('weight transfer done')
 
     def calc_acc(self, pred: Tensor, x: Tensor, y: Tensor) -> float:
-        acc = accuracy_score(y, pred[x])
-        return acc
+        return min(1.0, accuracy_score(y, pred[x]))
 
     def calc_f1(self, pred: Tensor, x: Tensor, y: Tensor, avg='weighted') -> float:
-        f1 = f1_score(y, pred[x], average=avg, zero_division=0)
-        return f1
+        return f1_score(y, pred[x], average=avg, zero_division=0)
     
     def evaluate(self, model: nn.Module, traininig_data: Data) -> float:
         pred = model(traininig_data)
