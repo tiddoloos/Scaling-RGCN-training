@@ -5,11 +5,12 @@ from collections import defaultdict
 from torch import nn
 from torch import Tensor
 from torch_geometric.data import Data
-from typing import List, Tuple, Callable, Union
+from typing import List, Tuple, Callable, Union, Dict
 from sklearn.metrics import classification_report, f1_score, accuracy_score
 
 from graphdata.graph import Graph
 from graphdata.dataset import Dataset
+from model.layers import Emb_Layers
 
 
 class Trainer:
@@ -87,26 +88,27 @@ class Trainer:
                 print(f'Epoch: {epoch}, Loss: {l:.4f}')
         return accuracies, losses, f1_ws, f1_ms
 
-    def train_summaries(self, sum_layers: nn.Module):
-        self.sumModel = sum_layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
+    def train_summaries(self):
+        self.sumModel = Emb_Layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
         for sumGraph in self.data.sumGraphs:
             self.sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
             _, _, _, _ = self.train(self.sumModel, sumGraph)
             sumGraph.training_data.embedding = self.sumModel.embedding.weight.clone()
 
-    def train_original(self, org_layers: nn.Module, embedding_trick: Callable, transfer: bool, exp: str) -> Tuple[List[float], float]:
+    def train_original(self, org_layers: nn.Module, embedding_trick: Callable,
+                        configs: Dict[str, Union[bool, str, int, float]], exp: str) -> Tuple[List[float], float]:
         acc = defaultdict(list)
         loss = defaultdict(list)
         f1_w = defaultdict(list)
         f1_m = defaultdict(list)
 
-        orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, len(self.data.sumGraphs))
-        if embedding_trick != None:
+        orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, configs['num_sums'])
+        if exp != 'baseline' and configs['e_trans'] == True:
             embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
             orgModel.load_embedding(self.data.orgGraph.training_data.embedding.clone())
             print('Loaded pre trained embedding')
 
-        if transfer == True:
+        if exp != 'baseline' and configs['e_trans']  == True:
             self.transfer_weights(orgModel)
     
         print('Training on Orginal Graph...')

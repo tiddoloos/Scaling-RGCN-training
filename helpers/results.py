@@ -5,7 +5,7 @@ import os
 
 from collections import defaultdict
 from datetime import datetime
-from typing import Dict, List, Union
+from typing import Dict, Union
 from torch import nn
 
 

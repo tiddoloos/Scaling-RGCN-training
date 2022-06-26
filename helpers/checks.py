@@ -9,7 +9,7 @@ def check_sum_map_files(sum_path: str, map_path: str) -> int:
     assert len(sum_files) == len(map_files), f'for every summary file there needs to be a map file. \n {len(sum_files)} sum files found and {len(map_files)} map files found'
     return len(sum_files)
 
-def check_emb_dim(configs: Dict[str, Union[int, str]], num_sum_files: int) -> Dict[str, Union[int, str]]:
+def check_emb_dim(configs: Dict[str, Union[int, str, float, bool]], num_sum_files: int) -> Dict[str, Union[int, str]]:
     emb_dim = configs['emb']
     new_emb = round(emb_dim/num_sum_files) * num_sum_files
     configs['emb'] = new_emb
@@ -17,7 +17,15 @@ def check_emb_dim(configs: Dict[str, Union[int, str]], num_sum_files: int) -> Di
         print(f'updated embedding dimension for attention experiment: new emb_dim is {new_emb}, was {emb_dim}')
     return configs
 
+def check_e_trans(configs: Dict[str, Union[int, str, float, bool]], num_sum_files: int):
+    if configs['e_trans'] == False:
+        configs['num_sums'] == 1
+    else:
+        configs['num_sums'] = num_sum_files
+    return configs
+
 def do_checks(configs: Dict[str, Union[int, str]], sum_path: str, map_path: str) -> Dict[str, Union[int, str]]:
     num_sum_files = check_sum_map_files(sum_path, map_path)
     updated_configs = check_emb_dim(configs, num_sum_files)
+    updated_configs = check_e_trans(updated_configs, num_sum_files)
     return updated_configs

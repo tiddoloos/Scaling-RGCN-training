@@ -1,13 +1,11 @@
 import argparse
-from collections import defaultdict
 
 from copy import deepcopy
-from typing import Callable, Dict, List
-import numpy as np
+from typing import Callable, Dict, Union
 
 from graphdata.dataset import Dataset
 from graphdata.createAttributeSum import create_sum_map
-from helpers.processResults import Results
+from helpers.results import Results
 from helpers import timing
 from helpers.checks import do_checks
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
@@ -15,7 +13,7 @@ from model.layers import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.modelTrainer import Trainer
 
 
-def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]], org_path: str, sum_path: str, map_path: str) -> None:
+def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]], methods: Dict[str, Dict[str, Callable]], org_path: str, sum_path: str, map_path: str) -> None:
     """This functions executes experiments to scale graph training with RGCN. 
     After training on summary graphs, the weights and node embeddings of 
     the summary model will be transferd to a new model for training on the 
@@ -38,15 +36,15 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
         timing.log('...Making Graph data...')
         data = Dataset(org_path, sum_path, map_path)
         data.init_dataset()
-
+        
         if configs['exp'] == None:
             trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d=0.00005)
-            trainer.train_summaries(methods['baseline']['org_layers'])
+            trainer.train_summaries()
             for exp, exp_settings in methods['experiments'].items():
                 results.add_key(exp)
                 timing.log(f'Start {exp} Experiment')
-                results_acc, results_loss, results_f1_w, results_f1_m, test_acc, test_micro, test_macro = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
-
+                results_acc, results_loss, results_f1_w, results_f1_m, test_acc, test_micro, test_macro = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], configs, exp)
+                
                 for result in [results_acc, results_loss, results_f1_w, results_f1_m]:
                     results.update_run_results(result, exp)
 
@@ -63,10 +61,10 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
                 trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d=0.00005)
 
                 timing.log('Training on summary Graphs')
-                trainer.train_summaries(methods['baseline']['org_layers'])
+                trainer.train_summaries()
 
                 timing.log(f'Start {exp} Experiment')
-                results_acc, results_loss, results_f1_w, results_f1_m, test_acc, test_micro, test_macro = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
+                results_acc, results_loss, results_f1_w, results_f1_m, test_acc, test_micro, test_macro = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], configs, exp)
                 timing.log(f'{exp} experiment done')
 
                 for result in [results_acc, results_loss, results_f1_w, results_f1_m]:
@@ -83,7 +81,7 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
         trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d=0.00005)
 
         timing.log(f'Start {exp} Experiment')
-        results_acc, results_loss, results_f1_w, results_f1_m, test_acc, test_micro, test_macro = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], exp_settings['transfer'], exp)
+        results_acc, results_loss, results_f1_w, results_f1_m, test_acc, test_micro, test_macro = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], configs, exp)
         timing.log(f'{exp} experiment done')
 
         for result in [results_acc, results_loss, results_f1_w, results_f1_m]:
@@ -94,6 +92,7 @@ def initialize_expirements(configs: Dict, methods: Dict[str, Dict[str, Callable]
         results.test_f1_macro[f'Test F1 macro {exp}'].append(test_macro) 
 
     results.process_results(configs)
+
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description='experiment arguments')
@@ -112,11 +111,11 @@ if __name__=='__main__':
     configs = vars(parser.parse_args())
 
     methods = {'baseline': {
-                    'org_layers': Emb_Layers, 'embedding_trick': None, 'transfer': False},
-            'experiments': {
-                    'summation': {'org_layers': Emb_Layers, 'embedding_trick': sum_embeddings, 'transfer': True},
-                    'mlp': {'org_layers': Emb_MLP_Layers, 'embedding_trick': concat_embeddings, 'transfer': True},
-                    'attention': {'org_layers': Emb_ATT_Layers, 'embedding_trick': stack_embeddings, 'transfer': True}}}
+                    'org_layers': Emb_Layers, 'embedding_trick': None},
+                'experiments': {
+                    'summation': {'org_layers': Emb_Layers, 'embedding_trick': sum_embeddings},
+                    'mlp': {'org_layers': Emb_MLP_Layers, 'embedding_trick': concat_embeddings},
+                    'attention': {'org_layers': Emb_ATT_Layers, 'embedding_trick': stack_embeddings}}}
 
     dataset = configs['dataset']
     sum = configs['sum']
