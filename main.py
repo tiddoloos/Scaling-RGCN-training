@@ -30,15 +30,16 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]], exp
     if configs['exp'] != None:
         experiment_names = [configs['exp']]
 
-    # create summaries if needed
+    # create attribute summaries if needed
     if configs['create_attr_sum']:
         timing.log('Creating graph summaries...')
         create_sum_map(org_path, sum_path, map_path, dataset)
+        timing.log('Attribtue summaries done')
 
     for j in range(configs['i']):
-        
+
         # initialzie the data and use deepcopy when using data to keep original data unchanged.
-        timing.log('...Making Graph data...')
+        timing.log('Making Graph data...')
         data = Dataset(org_path, sum_path, map_path)
         data.init_dataset()
     
@@ -46,20 +47,19 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]], exp
         trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d=0.00005)
         trainer.train_summaries()
         for exp in experiment_names:
-            # if exp != 'baseline':
-                exp_settings = experiments[exp]
-                results.add_key(exp)
-                timing.log(f'Start {exp} Experiment')
-                results_acc, results_loss, results_f1_w, results_f1_m, test_acc, test_micro, test_macro = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], configs, exp)
-                
-                for result in [results_acc, results_loss, results_f1_w, results_f1_m]:
-                    results.update_run_results(result, exp)
+            exp_settings = experiments[exp]
+            results.add_key(exp)
+            timing.log(f'Start {exp} Experiment')
+            results_acc, results_loss, results_f1_w, results_f1_m, test_acc, test_micro, test_macro = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], configs, exp)
+            
+            for result in [results_acc, results_loss, results_f1_w, results_f1_m]:
+                results.update_run_results(result, exp)
 
-                results.test_accs[f'Test acc {exp}'].append(test_acc)
-                results.test_f1_weighted[f'Test F1 weighted {exp}'].append(test_micro)
-                results.test_f1_macro[f'Test F1 macro {exp}'].append(test_macro) 
+            results.test_accs[f'Test acc {exp}'].append(test_acc)
+            results.test_f1_weighted[f'Test F1 weighted {exp}'].append(test_micro)
+            results.test_f1_macro[f'Test F1 macro {exp}'].append(test_macro) 
 
-                timing.log(f'{exp} experiment done')
+            timing.log(f'{exp} experiment done')
 
     results.process_results(configs)
 
