@@ -11,6 +11,7 @@ from helpers.checks import do_checks
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 from model.layers import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.modelTrainer import Trainer
+from distutils.util import strtobool
 
 
 def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]], methods: Dict[str, Dict[str, Callable]], org_path: str, sum_path: str, map_path: str) -> None:
@@ -104,8 +105,8 @@ if __name__=='__main__':
     parser.add_argument('-i', type=int, default=1, help='experiment iterations')
     parser.add_argument('-lr', type=float, default=0.01, help='learning rate')
     parser.add_argument('-hl', type=int, default=16, help='hidden layer size')
-    parser.add_argument('-e_trans', type=bool, default=True, help='emebdding transfer True/False')
-    parser.add_argument('-w_trans', type=bool, default=True, help='RGCN weight transfer True/False')
+    parser.add_argument('-e_trans', type=lambda x:bool(strtobool(x)), default=True, help='emebdding transfer True/False')
+    parser.add_argument('-w_trans', type=lambda y:bool(strtobool(y)), default=True, help='RGCN weight transfer True/False')
     parser.add_argument('-create_attr_sum', type=bool, default=False, help='create attribute summaries before conducting the experiments')
     
     configs = vars(parser.parse_args())

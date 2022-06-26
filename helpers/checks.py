@@ -19,7 +19,7 @@ def check_emb_dim(configs: Dict[str, Union[int, str, float, bool]], num_sum_file
 
 def check_e_trans(configs: Dict[str, Union[int, str, float, bool]], num_sum_files: int):
     if configs['e_trans'] == False:
-        configs['num_sums'] == 1
+        configs['num_sums'] = 1
     else:
         configs['num_sums'] = num_sum_files
     return configs
