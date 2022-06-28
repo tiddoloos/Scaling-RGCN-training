@@ -15,8 +15,8 @@ def get_classes(graph_triples: List[str]):
     for triple in graph_triples:
         triple_list = triple.split(" ", maxsplit=2)
         if triple_list != ['']:
-            s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
-            if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
+            s, p, o = triple_list[0], triple_list[1], triple_list[2]
+            if str(p) == rel and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
                class_count[str(o)] += 1
     c_d = dict((k, v) for k, v in class_count.items() if v >= 100)
     return sorted(list(c_d.keys()))
@@ -27,23 +27,10 @@ def nodes2type_mapping(graph_triples: List[str], classes: List[str]) -> Tuple[Li
     for triple in graph_triples:
         triple_list = triple.split(" ", maxsplit=2)
         if triple_list != ['']:
-            s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
-            if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology' and str(o) in classes:
+            s, p, o = triple_list[0], triple_list[1], triple_list[2]
+            if str(p) == rel and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology' and str(o) in classes:
                 node2types_dict[s].append(o)
     return node2types_dict 
-
-# def nodes2type_mapping(graph_triples: List[str]) -> Tuple[List, Dict[str, List]]:
-#     rel = '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>'
-#     node2types_dict = defaultdict(list)
-#     classes = []
-#     for triple in graph_triples:
-#         triple_list = triple.split(" ", maxsplit=2)
-#         if triple_list != ['']:
-#             s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
-#             if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
-#                 node2types_dict[s].append(o)
-#     classes = sorted(list(set(classes)))
-#     return classes, node2types_dict 
 
 def get_node_mappings_dict(graph_triples: List[str]) -> Tuple[Dict[str, str], Dict[str, List]]:
     sumNode2orgNode_dict = defaultdict(list)
@@ -51,7 +38,7 @@ def get_node_mappings_dict(graph_triples: List[str]) -> Tuple[Dict[str, str], Di
     for triple in graph_triples:
         triple_list = triple.split(" ", maxsplit=2)
         if triple_list != ['']:
-            s, _, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
+            s, _, o = triple_list[0], triple_list[1], triple_list[2]
             sumNode2orgNode_dict[s].append(o)
             orgNode2sumNode_dict[o] = s
     sumNode2orgNode_dict = dict(sorted(sumNode2orgNode_dict.items()))

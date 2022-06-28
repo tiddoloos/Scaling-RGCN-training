@@ -43,15 +43,15 @@ class Graph:
         self.num_nodes = len(nodes)
 
         # relation to integer idx
-        self.relations = {str(rel).lower(): i for i, rel in enumerate(list(predicates))}
+        self.relations = {str(rel): i for i, rel in enumerate(list(predicates))}
         # node to integer idx
-        self.node_to_enum = {str(node).lower(): i for i, node in enumerate(self.nodes)}
+        self.node_to_enum = {str(node): i for i, node in enumerate(self.nodes)}
     
         edge_list = []
         for triple in graph_triples:
             triple_list = triple.split(" ", maxsplit=2)
             if triple_list != ['']:
-                s_, p_, o_ = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
+                s_, p_, o_ = triple_list[0], triple_list[1], triple_list[2]
                 if self.node_to_enum.get(s_) is not None and  self.relations.get(p_) is not None and self.node_to_enum.get(o_) is not None:
                     src, dst, rel = self.node_to_enum[s_], self.node_to_enum[o_], self.relations[p_]
                     edge_list.append([src, dst, 2 * rel])
