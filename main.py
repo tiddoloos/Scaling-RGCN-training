@@ -32,7 +32,7 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]],
 
     experiment_names = list(experiments.keys())
     if configs['exp'] != None:
-        experiment_names = [configs['exp']]
+        experiment_names = [configs['exp'], 'baseline']
 
     # create attribute summaries if needed
     if configs['create_attr_sum']:
@@ -71,7 +71,7 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]],
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description='experiment arguments')
     parser.add_argument('-dataset', type=str, choices=['AIFB', 'AIFB1', 'BGS', 'MUTAG', 'AM', 'AM1', 'TEST2', 'TEST'], help='inidcate dataset name', default='AIFB')
-    parser.add_argument('-sum', type=str, choices=['attr', 'bisim', 'mix'], default='attr', help='summarization technique')
+    parser.add_argument('-sum', type=str, choices=['attr', 'bisim', 'mix', 'dummy'], default='attr', help='summarization technique')
     parser.add_argument('-exp', type=str, choices=['summation', 'mlp', 'attention', 'baseline'], help='select experiment')
     parser.add_argument('-epochs', type=int, default=51, help='indicate number of training epochs')
     parser.add_argument('-emb', type=int, default=63, help='Node embediding dimension')
@@ -80,14 +80,16 @@ if __name__=='__main__':
     parser.add_argument('-hl', type=int, default=16, help='hidden layer size')
     parser.add_argument('-e_trans', type=lambda x:bool(strtobool(x)), default=True, help='emebdding transfer True/False')
     parser.add_argument('-w_trans', type=lambda y:bool(strtobool(y)), default=True, help='RGCN weight transfer True/False')
+    parser.add_argument('-w_grad', type=lambda g:bool(strtobool(g)), default=True, help='Weight grad after transfer True/False')
+
     parser.add_argument('-create_attr_sum', type=bool, default=False, help='create attribute summaries before conducting the experiments')
     
     configs = vars(parser.parse_args())
 
-    experiments = {'baseline':{'org_layers': Emb_Layers, 'embedding_trick': None},
-                    'summation': {'org_layers': Emb_Layers, 'embedding_trick': sum_embeddings},
+    experiments = {'summation': {'org_layers': Emb_Layers, 'embedding_trick': sum_embeddings},
                     'mlp': {'org_layers': Emb_MLP_Layers, 'embedding_trick': concat_embeddings},
-                    'attention': {'org_layers': Emb_ATT_Layers, 'embedding_trick': stack_embeddings}}
+                    'attention': {'org_layers': Emb_ATT_Layers, 'embedding_trick': stack_embeddings},
+                    'baseline':{'org_layers': Emb_Layers, 'embedding_trick': None},}
 
     dataset = configs['dataset']
     sum = configs['sum']

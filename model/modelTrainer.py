@@ -24,7 +24,7 @@ class Trainer:
         self.weight_d: float = weight_d
         self.sumModel: nn.Module = None
 
-    def transfer_weights(self, orgModel) -> None:
+    def transfer_weights(self, orgModel: nn.Module, grad: bool) -> None:
         # rgcn1 
         weight_sg_1 = self.sumModel.rgcn1.weight.clone()
         bias_sg_1 = self.sumModel.rgcn1.bias.clone()
@@ -36,7 +36,7 @@ class Trainer:
         root_sg_2 = self.sumModel.rgcn2.root.clone()
 
         # transfer
-        orgModel.override_params(weight_sg_1, bias_sg_1, root_sg_1, weight_sg_2, bias_sg_2, root_sg_2)
+        orgModel.override_params(weight_sg_1, bias_sg_1, root_sg_1, weight_sg_2, bias_sg_2, root_sg_2, grad)
         print('weight transfer done')
 
     def calc_acc(self, pred: Tensor, x: Tensor, y: Tensor) -> float:
@@ -110,7 +110,7 @@ class Trainer:
             print('Loaded pre trained embedding')
 
         if exp != 'baseline' and configs['w_trans'] == True:
-            self.transfer_weights(orgModel)
+            self.transfer_weights(orgModel, configs['w_grad'])
     
         print('Training on Orginal Graph...')
         acc[f'accuracy'], loss[f'loss'], f1_w[f'f1 weighted'], f1_m[f'f1 macro'] = self.train(orgModel, self.data.orgGraph, sum_graph=False)
