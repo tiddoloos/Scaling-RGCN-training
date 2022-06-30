@@ -1,0 +1,75 @@
+{
+    "dataset": "AIFB",
+    "sum": "bisim",
+    "exp": "attention",
+    "epochs": 51,
+    "emb": 500,
+    "i": 3,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "w_trans": true,
+    "w_grad": false,
+    "create_attr_sum": false,
+    "num_sums": 4,
+    "attention": {
+        "accuracy": {
+            "epoch": 16,
+            "max": 0.7
+        },
+        "loss": {
+            "epoch": 2,
+            "max": 2.54
+        },
+        "f1 weighted": {
+            "epoch": 37,
+            "max": 0.88
+        },
+        "f1 macro": {
+            "epoch": 37,
+            "max": 0.39
+        }
+    },
+    "baseline": {
+        "accuracy": {
+            "epoch": 22,
+            "max": 0.68
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 0.84
+        },
+        "f1 weighted": {
+            "epoch": 21,
+            "max": 0.81
+        },
+        "f1 macro": {
+            "epoch": 39,
+            "max": 0.32
+        }
+    },
+    "Test acc attention": {
+        "mean": 0.66,
+        "std": 0.19
+    },
+    "Test acc baseline": {
+        "mean": 0.67,
+        "std": 0.02
+    },
+    "Test F1 weighted attention": {
+        "mean": 0.85,
+        "std": 0.02
+    },
+    "Test F1 weighted baseline": {
+        "mean": 0.82,
+        "std": 0.01
+    },
+    "Test F1 macro attention": {
+        "mean": 0.4,
+        "std": 0.01
+    },
+    "Test F1 macro baseline": {
+        "mean": 0.33,
+        "std": 0.01
+    }
+}

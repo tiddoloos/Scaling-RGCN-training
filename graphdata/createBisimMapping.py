@@ -14,13 +14,31 @@ For each folder in <dataset>/bisim/bisimOutput, triples like 'sumNode isSummaryO
 are stored in a .nt file in <dataset>/bisim/map/ .
 """
 
+def compare_nodes(orgHash_to_orgNode):
+    org_nodes = set()
+    with open(f'{dataset}/{dataset}_complete.nt', 'r') as file:
+        triples = file.read().replace(' .', '').splitlines()
+        for triple in triples:
+            triple_list = triple.split(" ", maxsplit=2)
+            if triple_list != ['']:
+                s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
+                for i in [s, o]:
+                    org_nodes.add(i)
+    
+    for _, orgNodes in orgHash_to_orgNode.items():
+            for node in orgNodes:
+                if node not in org_nodes:
+                    print(node)
+
 def reformat(node):
     if 'xmlschema' in node:
         split = node.rsplit('^^', 1)
         if len(split) < 2:
-           split.insert(0,'""')
-           node = '^^<'.join(split) + '>'
-           return node
+            # print(split)
+            split.insert(0,'""')
+            node = '^^<'.join(split) + '>'
+            # print(node)
+            return node
         else:
             string = '"' + split[0] + '"'
             lit = '<' + split[1] + '>'
@@ -65,6 +83,10 @@ def create_bisim_map_nt(path: str, map_path: str) -> None:
                 orgHash_to_orgNode = csv_to_mapping(f'{path}/{dir}/{file}')
             else:
                 sumNode_to_orgHash = csv_to_mapping(f'{path}/{dir}/{file}', org=False)
+        
+        # compare node from map file with original file
+        # compare_nodes(orgHash_to_orgNode)
+
         k = dir.split('_')[-1]
         write_to_nt(orgHash_to_orgNode, sumNode_to_orgHash, map_path, k)
 
