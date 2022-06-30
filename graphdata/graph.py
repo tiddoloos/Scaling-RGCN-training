@@ -49,7 +49,6 @@ class Graph:
     
         edge_list = []
         for triple in graph_triples:
-            # triple_list = triple.split(" ", maxsplit=2)
             triple_list = triple[:-2].split(" ", maxsplit=2)
             if triple_list != ['']:
                 s_, p_, o_ = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
