@@ -15,7 +15,7 @@ are stored in a .nt file in <dataset>/bisim/map/ .
 """
 
 def reformat(node):
-    if node.endswith('#string'):
+    if 'xmlschema' in node:
         split = node.rsplit('^^', 1)
         if len(split) < 2:
            split.insert(0,'""')
@@ -74,6 +74,6 @@ if __name__=='__main__':
     dataset = vars(parser.parse_args())['dataset']
 
     path = f'./{dataset}/bisim/bisimOutput'
-    map_path = f'./{dataset}/bisim/map/AIFB_bisim_map_'
+    map_path = f'./{dataset}/bisim/map/{dataset}_bisim_map_'
 
     create_bisim_map_nt(path, map_path)
