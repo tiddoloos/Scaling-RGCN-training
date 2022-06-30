@@ -6,14 +6,16 @@ from graphdata.graph import Graph
 
 def parse_graph_nt(path: str) -> List[str]:
     with open(path, 'r') as file:
-        triples = file.read().replace(' .', '').splitlines()
+        # triples = file.read().replace(' .', '').splitlines()
+        triples = file.read().splitlines()
     return triples
 
 def get_classes(graph_triples: List[str]):
     rel = '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>'
     class_count: dict = defaultdict(int)
     for triple in graph_triples:
-        triple_list = triple.split(" ", maxsplit=2)
+        # triple_list = triple.split(" ", maxsplit=2)
+        triple_list = triple[:-2].split(" ", maxsplit=2)
         if triple_list != ['']:
             s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
             if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
@@ -25,7 +27,8 @@ def nodes2type_mapping(graph_triples: List[str], classes: List[str]) -> Tuple[Li
     rel = '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>'
     node2types_dict = defaultdict(list)
     for triple in graph_triples:
-        triple_list = triple.split(" ", maxsplit=2)
+        # triple_list = triple.split(" ", maxsplit=2)
+        triple_list = triple[:-2].split(" ", maxsplit=2)
         if triple_list != ['']:
             s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
             if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology' and str(o) in classes:
@@ -36,7 +39,8 @@ def get_node_mappings_dict(graph_triples: List[str]) -> Tuple[Dict[str, str], Di
     sumNode2orgNode_dict = defaultdict(list)
     orgNode2sumNode_dict = defaultdict()
     for triple in graph_triples:
-        triple_list = triple.split(" ", maxsplit=2)
+        # triple_list = triple.split(" ", maxsplit=2)
+        triple_list = triple[:-2].split(" ", maxsplit=2)
         if triple_list != ['']:
             s, _, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
             sumNode2orgNode_dict[s].append(o)

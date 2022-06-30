@@ -5,6 +5,8 @@ from collections import defaultdict
 from email.policy import default
 from os import listdir
 from typing import Dict, List
+import click
+
 
 
 """Run this file from './graphdata/' .
@@ -17,44 +19,54 @@ are stored in a .nt file in <dataset>/bisim/map/ .
 def compare_nodes(orgHash_to_orgNode):
     org_nodes = set()
     with open(f'{dataset}/{dataset}_complete.nt', 'r') as file:
-        triples = file.read().replace(' .', '').splitlines()
+        triples = file.read().splitlines()
         for triple in triples:
-            triple_list = triple.split(" ", maxsplit=2)
+            triple_list = triple[:-2].split(" ", maxsplit=2)
             if triple_list != ['']:
                 s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
                 for i in [s, o]:
                     org_nodes.add(i)
-    
+    count = 0
     for _, orgNodes in orgHash_to_orgNode.items():
             for node in orgNodes:
                 if node not in org_nodes:
-                    print(node)
+                    count+=1
+    if click.confirm(f'{count} mapped (probably literal) nodes do not match with original nodes. If {count} is < 1% of {len(org_nodes)} it probably wont harm performance. Do you want to continue?', default=True):
+        return
 
 def reformat(node):
-    if 'xmlschema' in node:
-        split = node.rsplit('^^', 1)
-        if len(split) < 2:
-            # print(split)
-            split.insert(0,'""')
-            node = '^^<'.join(split) + '>'
-            # print(node)
+    if dataset != 'AM':
+        if 'xmlschema' in node:
+            split = node.rsplit('^^', 1)
+            if len(split) < 2:
+                split.insert(0,'""')
+                node = '^^<'.join(split) + '>'
+                return node
+            else:
+                lit = '<' + split[1] + '>'
+                node = '^^'.join([split[0], lit])
+                return node
+        if node.startswith('http://informatik.uni-kiel.de/fluid#'):
+            node = node.replace('http://informatik.uni-kiel.de/fluid#', '_:')
             return node
         else:
-            string = '"' + split[0] + '"'
-            lit = '<' + split[1] + '>'
-            node = '^^'.join([string, lit])
+            node = '<' + node + '>'
             return node
-    if node.startswith('http://informatik.uni-kiel.de/fluid#'):
-        node = node.replace('http://informatik.uni-kiel.de/fluid#', '_:')
-        return node
     else:
-        node = '<' + node + '>'
-        return node
+        if 'http' in node:
+            if node.startswith('http://informatik.uni-kiel.de/fluid#'):
+                node = node.replace('http://informatik.uni-kiel.de/fluid#', '_:')
+            else:
+                node = '<' + node + '>'
+            return node
+        else:
+            return node
+
 
 def csv_to_mapping(path: str, org: bool = True) -> Dict[str, List[str]]:
     mapping: Dict[str, List[str]] = defaultdict(list)
     with open(path, 'rt') as f:
-        lines = csv.reader(f)
+        lines = csv.reader(f, skipinitialspace=False, quotechar=None)
         next(lines)
         for line in lines:
             line = ','.join(line)
@@ -73,7 +85,7 @@ def write_to_nt(orgHash_to_orgNode: defaultdict(list), sumNode_to_orgHash: defau
                     nodes = orgHash_to_orgNode[orgHash]
                     for node in nodes:
                         m.write(f'<{sumNode}> <isSummaryOf> {node} .\n')
-
+    print('Mapping saved')
 def create_bisim_map_nt(path: str, map_path: str) -> None:
     dirs = sorted([x for x in listdir(path) if not x.startswith('.')])
     for dir in dirs:
@@ -85,7 +97,7 @@ def create_bisim_map_nt(path: str, map_path: str) -> None:
                 sumNode_to_orgHash = csv_to_mapping(f'{path}/{dir}/{file}', org=False)
         
         # compare node from map file with original file
-        # compare_nodes(orgHash_to_orgNode)
+        compare_nodes(orgHash_to_orgNode)
 
         k = dir.split('_')[-1]
         write_to_nt(orgHash_to_orgNode, sumNode_to_orgHash, map_path, k)
