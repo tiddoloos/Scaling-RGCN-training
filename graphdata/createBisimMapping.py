@@ -57,16 +57,6 @@ def write_to_nt(orgHash_to_orgNode: defaultdict(list), sumNode_to_orgHash: defau
                         m.write(f'<{sumNode}> <isSummaryOf> {node} .\n')
 
 def create_bisim_map_nt(path: str, map_path: str) -> None:
-    # nodes_set = set()
-    # with open('AIFB/AIFB_complete.nt', 'r') as file:
-    #     triples = file.read().replace(' .', '').splitlines()
-    #     for triple in triples:
-    #         triple_list = triple.split(" ", maxsplit=2)
-    #         if triple_list != ['']:
-    #             s, p, o = triple_list[0], triple_list[1], triple_list[2]
-    #             nodes_set.add(s.lower())
-    #             nodes_set.add(o.lower())
-
     dirs = sorted([x for x in listdir(path) if not x.startswith('.')])
     for dir in dirs:
         files = sorted([s for s in listdir(f'{path}/{dir}/') if not s.startswith('.')])
@@ -77,23 +67,6 @@ def create_bisim_map_nt(path: str, map_path: str) -> None:
                 sumNode_to_orgHash = csv_to_mapping(f'{path}/{dir}/{file}', org=False)
         k = dir.split('_')[-1]
         write_to_nt(orgHash_to_orgNode, sumNode_to_orgHash, map_path, k)
-    # print(orgHash_to_orgNode.keys())
-    # # pint()
-    # no_overlap = 0
-    # overlap = 0
-    # for node in orgHash_to_orgNode.keys():
-    #     if node not in nodes_set and node.startswith("\"") == False:
-    #         # print(node)
-    #         no_overlap += 1
-    #     else:
-    #         overlap += 1
-    # print(no_overlap)
-    # print(overlap)
-    #         else:
-    #             sumNode_to_orgHash = csv_to_mapping(f'{path}/{dir}/{file}', 0, 1)
-    #     k = dir.split('_')[-1]
-    #     write_to_nt(orgHash_to_orgNode, sumNode_to_orgHash, map_path, k)
-
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description='experiment arguments')
