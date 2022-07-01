@@ -70,12 +70,12 @@ def encode_sum_node_labels(sumNode2orgNode_dict: defaultdict(list), org2type_dic
         sum2type_enc[sumNode] = sg_labels
     return sum2type_enc
 
-def remove_eval_data(X_eval, orgGraph):
+def remove_eval_data(X_eval: List[int], orgGraph):
         org2type_pruned = deepcopy(orgGraph.org2type_dict)
         X_eval_set = set(X_eval)
-        nodes_to_prune = [key for key, idx in orgGraph.node_to_enum.items() if idx in X_eval_set]
-        for orgNode in nodes_to_prune:
-            org2type_pruned[orgNode].clear()
+        for orgNode, idx in orgGraph.node_to_enum.items():
+            if idx in X_eval_set:
+                org2type_pruned[orgNode].clear()
         return org2type_pruned
 
 def get_idx_labels(graph: Graph, node2type) -> Tuple[List[int], List[int]]:
