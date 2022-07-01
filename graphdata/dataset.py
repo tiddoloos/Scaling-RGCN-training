@@ -15,7 +15,7 @@ class Dataset:
         self.org_path: str = org_path
         self.sum_path: str = sum_path
         self.map_path: str = map_path
-        self.sumGraphs: list = []
+        self.sumGraphs: List[Graph] = []
         self.orgGraph: Graph = None
         self.enum_classes: Dict[str, int] = None
         self.num_classes: int = None
