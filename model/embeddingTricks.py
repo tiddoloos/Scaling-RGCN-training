@@ -20,7 +20,7 @@ def get_tensor_list(graph: Graph, sum_graphs: list, emb_dim: int) -> List[Tensor
             if orgNode in sum_graph.orgNode2sumNode_dict.keys():
                 sumNode = sum_graph.orgNode2sumNode_dict[orgNode]
                 if sumNode in sum_graph.node_to_enum:
-                    embedding_tensor[idx] = sum_graph.training_data.embedding[sum_graph.node_to_enum[sumNode]].detach()
+                    embedding_tensor[idx] = sum_graph.embedding[sum_graph.node_to_enum[sumNode]].detach()
         tensors.append(embedding_tensor)
     return tensors
 
@@ -30,15 +30,15 @@ def stack_embeddings(graph: Graph, sum_graphs: list, emb_dim: int) -> None:
     '''
     tensors = get_tensor_list(graph, sum_graphs, emb_dim)
     stacked_emb = torch.stack(tensors)
-    graph.training_data.embedding=stacked_emb.detach()
+    return stacked_emb.detach()
 
 def concat_embeddings(graph: Graph, sum_graphs: list, emb_dim: int) -> None:
     '''make concatted (2d) tensor of embedding. 
-    Resulting embedding tensor is of size: (num_graph_nodes, (num_summaries * emb_dim))
+    Resulting embedding tensor is of size: (num_graph_nodes, num_summaries * emb_dim)
     '''
     tensors = get_tensor_list(graph, sum_graphs, emb_dim)
     concat_emb = torch.concat(tensors, dim=-1)
-    graph.training_data.embedding=concat_emb.detach()
+    return concat_emb.detach()
 
 def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
     '''construct a new (2d) embedding tensor.
@@ -47,4 +47,4 @@ def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
     tensors = get_tensor_list(graph, sum_graphs, emb_dim)
     summed_embedding = sum(tensors)
     # mean_embedding = summed_embedding / len(sum_graphs)
-    graph.training_data.embedding=summed_embedding.detach()
+    return summed_embedding.detach()

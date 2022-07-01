@@ -93,10 +93,11 @@ class Trainer:
         for sumGraph in self.data.sumGraphs:
             self.sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
             _, _, _, _ = self.train(self.sumModel, sumGraph)
-            sumGraph.training_data.embedding = self.sumModel.embedding.weight.clone()
+            sumGraph.embedding = self.sumModel.embedding.weight.clone()
 
     def train_original(self, org_layers: nn.Module, embedding_trick: Callable,
                         configs: Dict[str, Union[bool, str, int, float]], exp: str) -> Tuple[List[float], float]:
+
         acc = defaultdict(list)
         loss = defaultdict(list)
         f1_w = defaultdict(list)
@@ -105,8 +106,8 @@ class Trainer:
         orgModel = org_layers(len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, configs['num_sums'])
         
         if exp != 'baseline' and configs['e_trans'] == True:
-            embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
-            orgModel.load_embedding(self.data.orgGraph.training_data.embedding.clone())
+            embedding = embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
+            orgModel.load_embedding(embedding)
             print('Loaded pre trained embedding')
 
         if exp != 'baseline' and configs['w_trans'] == True:
