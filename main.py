@@ -90,7 +90,7 @@ if __name__=='__main__':
     experiments = {'summation': {'org_layers': Emb_Layers, 'embedding_trick': sum_embeddings},
                     'mlp': {'org_layers': Emb_MLP_Layers, 'embedding_trick': concat_embeddings},
                     'attention': {'org_layers': Emb_ATT_Layers, 'embedding_trick': stack_embeddings},
-                    'baseline':{'org_layers': Emb_Layers, 'embedding_trick': None},}
+                    'baseline':{'org_layers': Emb_Layers, 'embedding_trick': None}}
 
     dataset = configs['dataset']
     sum = configs['sum']
