@@ -8,9 +8,9 @@ def create_sum_map(path: str, sum_path: str, map_path: str, dataset: str) -> Non
     incoming_properties: Dict[str, str] = defaultdict(set)
 
     with open(path, 'r') as file:
-        lines = file.read().replace(' .', '').splitlines()
-        for triple_string in lines:
-            triple_list = triple_string.split(" ", maxsplit=2)
+        triples = file.read().splitlines()
+        for triple in triples:
+            triple_list = triple[:-2].split(" ", maxsplit=2)
             if triple_list != ['']:
                 s, p, o = triple_list[0], triple_list[1], triple_list[2]
                 outgoing_properties[s].add(p)
@@ -36,19 +36,19 @@ def create_sum_map(path: str, sum_path: str, map_path: str, dataset: str) -> Non
             combined_hash = incoming + outgoing
             incoming_and_outgoing_properties_hashed[entity] = combined_hash
 
-        write_sum_map_files(outgoing_properties_hashed, lines, f'{sum_path}{dataset}_sum_out.nt', f'{map_path}{dataset}_map_out.nt')
-        write_sum_map_files(incoming_properties_hashed, lines, f'{sum_path}{dataset}_sum_in.nt', f'{map_path}{dataset}_map_in.nt')
-        write_sum_map_files(incoming_and_outgoing_properties_hashed, lines, f'{sum_path}{dataset}_sum_in_out.nt', f'{map_path}{dataset}_map_in_out.nt')
+        write_sum_map_files(outgoing_properties_hashed, triples, f'{sum_path}{dataset}_sum_out.nt', f'{map_path}{dataset}_map_out.nt')
+        write_sum_map_files(incoming_properties_hashed, triples, f'{sum_path}{dataset}_sum_in.nt', f'{map_path}{dataset}_map_in.nt')
+        write_sum_map_files(incoming_and_outgoing_properties_hashed, triples, f'{sum_path}{dataset}_sum_in_out.nt', f'{map_path}{dataset}_map_in_out.nt')
 
-def write_sum_map_files(property_hashes: Dict[str, int], lines: List[str], sum_path: str, map_path: str) -> None:
+def write_sum_map_files(property_hashes: Dict[str, int], triples: List[str], sum_path: str, map_path: str) -> None:
 
     property_keys = property_hashes.keys()
     mapping: Dict[int, str] = dict()
 
     # create sum file
     with open(sum_path, "w") as f:
-        for triple_string in lines:
-            triple_list = triple_string.split(" ", maxsplit=2)
+        for triple in triples:
+            triple_list = triple[:-2].split(" ", maxsplit=2)
             if triple_list != ['']:
                 s, p, o = triple_list[0], triple_list[1], triple_list[2]
                 if o.startswith("\"") and 'http://example.org/literal' in property_keys:
