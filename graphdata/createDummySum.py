@@ -4,27 +4,27 @@ from typing import Dict, List
 from random import randint
 
 def create_dummy_sum_map(path: str, sum_path: str, map_path: str, dataset: str, n_sumNodes: int) -> None:
-    passed_nodes:list = []
+    passed_nodes: set = set()
     random_orgNode_to_sumNode: Dict[str, str] = defaultdict()
     with open(path, 'r') as file:
-        lines = file.read().replace(' .', '').splitlines()
-        for triple_string in lines:
-            triple_list = triple_string.split(" ", maxsplit=2)
+        lines = file.read().splitlines()
+        for triple in lines:
+            triple_list = triple[:-2].split(" ", maxsplit=2)
             if triple_list != ['']:
                 s, _, o = triple_list[0], triple_list[1], triple_list[2]
                 for node in [s, o]:
                     if node not in passed_nodes:
-                        passed_nodes.append(node)
-                        key = randint(0, n_sumNodes)
-                        random_orgNode_to_sumNode[node] = key
+                        passed_nodes.add(node)
+                        sumNode = randint(0, n_sumNodes)
+                        random_orgNode_to_sumNode[node] = sumNode
   
         write_sum_map_files(random_orgNode_to_sumNode, lines, f'{sum_path}{dataset}_sum_random{n_sumNodes}.nt', f'{map_path}{dataset}_map_random{n_sumNodes}.nt')
 
 def write_sum_map_files(random_orgNode_to_sumNode: Dict[str, str],  lines: List[str], sum_path: str, map_path: str) -> None:
     # create sum file
     with open(sum_path, "w") as f:
-        for triple_string in lines:
-            triple_list = triple_string.split(" ", maxsplit=2)
+        for triple in lines:
+            triple_list = triple[:-2].split(" ", maxsplit=2)
             if triple_list != ['']:
                 s, p, o = triple_list[0], triple_list[1], triple_list[2]
                 obj = random_orgNode_to_sumNode[o]
