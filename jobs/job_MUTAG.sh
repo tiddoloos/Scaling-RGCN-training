@@ -17,8 +17,7 @@ mkdir ./results
 scp -r $HOME/graphdata ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset MUTAG -i 5 -w_grad False -exp attention -w_trans True
-
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset MUTAG -i 5
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
 scp -r results/* $HOME/results/MUTAG
