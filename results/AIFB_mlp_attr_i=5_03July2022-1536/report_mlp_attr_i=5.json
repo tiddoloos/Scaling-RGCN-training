@@ -1,15 +1,15 @@
 {
     "dataset": "AIFB",
     "sum": "attr",
-    "exp": "summation",
+    "exp": "mlp",
     "epochs": 51,
     "emb": 63,
-    "i": 1,
+    "i": 5,
     "lr": 0.01,
     "hl": 16,
     "e_trans": true,
     "w_trans": true,
-    "w_grad": true,
+    "w_grad": false,
     "create_attr_sum": false,
     "num_sums": 3,
     "sum files": [
@@ -19,62 +19,62 @@
     ],
     "baseline": {
         "accuracy": {
-            "epoch": 21,
-            "max": 73.0
+            "epoch": 31,
+            "max": 76.0
         },
         "loss": {
             "epoch": -1,
-            "max": 102.0
+            "max": 91.0
         },
         "f1 weighted": {
-            "epoch": 20,
-            "max": 84.0
+            "epoch": 26,
+            "max": 87.0
         },
         "f1 macro": {
-            "epoch": 32,
-            "max": 64.0
+            "epoch": 30,
+            "max": 72.0
         }
     },
-    "summation": {
+    "mlp": {
         "accuracy": {
-            "epoch": 14,
-            "max": 92.0
+            "epoch": 42,
+            "max": 77.0
         },
         "loss": {
             "epoch": -1,
-            "max": 24.0
+            "max": 31.0
         },
         "f1 weighted": {
-            "epoch": 29,
-            "max": 96.0
+            "epoch": 40,
+            "max": 86.0
         },
         "f1 macro": {
             "epoch": 42,
-            "max": 91.0
+            "max": 62.0
         }
     },
     "Test acc baseline": {
-        "mean": 73.06,
-        "std": 0.0
+        "mean": 75.57,
+        "std": 1.31
     },
-    "Test acc summation": {
-        "mean": 89.67,
-        "std": 0.0
+    "Test acc mlp": {
+        "mean": 78.34,
+        "std": 8.77
     },
     "Test F1 weighted baseline": {
-        "mean": 84.86,
-        "std": 0.0
+        "mean": 86.5,
+        "std": 0.68
     },
-    "Test F1 weighted summation": {
-        "mean": 94.21000000000001,
-        "std": 0.0
+    "Test F1 weighted mlp": {
+        "mean": 86.94,
+        "std": 5.16
     },
     "Test F1 macro baseline": {
-        "mean": 67.69,
-        "std": 0.0
+        "mean": 68.7,
+        "std": 0.93
     },
-    "Test F1 macro summation": {
-        "mean": 88.03999999999999,
-        "std": 0.0
+    "Test F1 macro mlp": {
+        "mean": 63.74,
+        "std": 7.2
     }
 }

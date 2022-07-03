@@ -1,0 +1,80 @@
+{
+    "dataset": "AIFB",
+    "sum": "attr",
+    "exp": "attention",
+    "epochs": 51,
+    "emb": 63,
+    "i": 5,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "w_trans": true,
+    "w_grad": false,
+    "create_attr_sum": false,
+    "num_sums": 3,
+    "sum files": [
+        "AIFB_sum_in.nt",
+        "AIFB_sum_in_out.nt",
+        "AIFB_sum_out.nt"
+    ],
+    "baseline": {
+        "accuracy": {
+            "epoch": 31,
+            "max": 81.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 89.0
+        },
+        "f1 weighted": {
+            "epoch": 27,
+            "max": 89.0
+        },
+        "f1 macro": {
+            "epoch": 45,
+            "max": 70.0
+        }
+    },
+    "attention": {
+        "accuracy": {
+            "epoch": 35,
+            "max": 95.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 39.0
+        },
+        "f1 weighted": {
+            "epoch": 26,
+            "max": 97.0
+        },
+        "f1 macro": {
+            "epoch": 39,
+            "max": 93.0
+        }
+    },
+    "Test acc baseline": {
+        "mean": 79.19,
+        "std": 1.22
+    },
+    "Test acc attention": {
+        "mean": 90.81,
+        "std": 0.54
+    },
+    "Test F1 weighted baseline": {
+        "mean": 88.49,
+        "std": 0.57
+    },
+    "Test F1 weighted attention": {
+        "mean": 95.02,
+        "std": 0.21
+    },
+    "Test F1 macro baseline": {
+        "mean": 72.13,
+        "std": 1.94
+    },
+    "Test F1 macro attention": {
+        "mean": 88.71,
+        "std": 0.83
+    }
+}
