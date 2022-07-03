@@ -32,7 +32,7 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]],
 
     experiment_names = list(experiments.keys())
     if configs['exp'] != None:
-        experiment_names = [configs['exp'], 'baseline']
+        experiment_names = ['baseline', configs['exp']]
 
     # create attribute summaries if needed
     if configs['create_attr_sum']:
@@ -71,8 +71,8 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]],
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description='experiment arguments')
-    parser.add_argument('-dataset', type=str, choices=['AIFB', 'AIFB1', 'BGS', 'MUTAG', 'AM', 'AM1', 'TEST2', 'TEST'], help='inidcate dataset name', default='AIFB')
-    parser.add_argument('-sum', type=str, choices=['attr', 'bisim', 'mix', 'dummy'], default='attr', help='summarization technique')
+    parser.add_argument('-dataset', type=str, choices=['AIFB', 'BGS', 'MUTAG', 'AM', 'TEST'], help='inidcate dataset name', default='AIFB')
+    parser.add_argument('-sum', type=str, choices=['attr', 'bisim', 'mix', 'dummy', 'one'], default='attr', help='summarization technique')
     parser.add_argument('-exp', type=str, choices=['summation', 'mlp', 'attention', 'baseline'], help='select experiment')
     parser.add_argument('-epochs', type=int, default=51, help='indicate number of training epochs')
     parser.add_argument('-emb', type=int, default=63, help='Node embediding dimension')
