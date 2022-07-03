@@ -123,7 +123,7 @@ class Trainer:
         skl_pred = pred[self.data.orgGraph.training_data.x_test].detach().numpy()
         print(classification_report(self.data.orgGraph.training_data.y_test, skl_pred, zero_division=0))
 
-        test_f1_weighted = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, avg='weighted')
+        test_f1_weighted = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
         test_f1_macro = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, avg='macro')
         test_acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
         print('ACC ON TEST SET = ',  test_acc)
