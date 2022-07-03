@@ -17,7 +17,7 @@ mkdir ./results
 scp -r $HOME/graphdata ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB -i 5 -w_grad False -exp mlp -w_trans False
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB -i 5 -w_grad False -exp attention -w_trans False
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
