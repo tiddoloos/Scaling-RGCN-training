@@ -40,6 +40,7 @@ class Results:
 
     def create_run_report(self, path: str, configs: Dict[str, Union[str, int]]) -> None:
         "with this function we save statistics of the experiment(s)"
+
         report = defaultdict(dict)
         report.update(configs)
 
@@ -47,12 +48,13 @@ class Results:
             for metric, results in metric_retsults.items():
                 max_metric = max(results[0])
                 epoch = int(results[0].index(max_metric)) - 1 
-                report[experiment][metric] = {'epoch': epoch, 'max': round(max_metric, 2)}
+                percentage_max = max_metric *100
+                report[experiment][metric] = {'epoch': epoch, 'max': round(percentage_max, 2)}
         
         for test_dict in [self.test_accs, self.test_f1_weighted, self.test_f1_macro]:
             for experiment, results in test_dict.items():
-                avg  = round(float(sum(results)/len(results)), 2)
-                std = round(float(np.std(np.array(results))), 2)
+                avg  = round(float((sum(results)/len(results))*100), 2)
+                std = round(float(np.std((np.array(results)*100))), 2)
                 report[experiment] = {'mean': avg, 'std': std}
 
         with open(f'{path}/report_{configs["exp"]}_{configs["sum"]}_i={configs["i"]}.json', 'w') as write_file:

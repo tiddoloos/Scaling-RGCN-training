@@ -1,0 +1,80 @@
+{
+    "dataset": "AIFB",
+    "sum": "attr",
+    "exp": "summation",
+    "epochs": 51,
+    "emb": 63,
+    "i": 1,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "w_trans": true,
+    "w_grad": true,
+    "create_attr_sum": false,
+    "num_sums": 3,
+    "sum files": [
+        "AIFB_sum_in.nt",
+        "AIFB_sum_in_out.nt",
+        "AIFB_sum_out.nt"
+    ],
+    "baseline": {
+        "accuracy": {
+            "epoch": 21,
+            "max": 73.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 102.0
+        },
+        "f1 weighted": {
+            "epoch": 20,
+            "max": 84.0
+        },
+        "f1 macro": {
+            "epoch": 32,
+            "max": 64.0
+        }
+    },
+    "summation": {
+        "accuracy": {
+            "epoch": 14,
+            "max": 92.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 24.0
+        },
+        "f1 weighted": {
+            "epoch": 29,
+            "max": 96.0
+        },
+        "f1 macro": {
+            "epoch": 42,
+            "max": 91.0
+        }
+    },
+    "Test acc baseline": {
+        "mean": 73.06,
+        "std": 0.0
+    },
+    "Test acc summation": {
+        "mean": 89.67,
+        "std": 0.0
+    },
+    "Test F1 weighted baseline": {
+        "mean": 84.86,
+        "std": 0.0
+    },
+    "Test F1 weighted summation": {
+        "mean": 94.21000000000001,
+        "std": 0.0
+    },
+    "Test F1 macro baseline": {
+        "mean": 67.69,
+        "std": 0.0
+    },
+    "Test F1 macro summation": {
+        "mean": 88.03999999999999,
+        "std": 0.0
+    }
+}
