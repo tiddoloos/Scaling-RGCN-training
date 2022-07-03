@@ -26,7 +26,7 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]],
     """
 
     # before running program, do some check and assert or adjust settings if needed
-    configs = do_checks(configs, sum_path, map_path)
+    configs, sum_files = do_checks(configs, sum_path, map_path)
 
     results = Results()
 
@@ -66,6 +66,7 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]],
 
             timing.log(f'{exp} experiment done')
 
+    configs['sum files'] = sum_files
     results.process_results(configs)
 
 
