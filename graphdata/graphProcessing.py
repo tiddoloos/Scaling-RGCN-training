@@ -18,8 +18,9 @@ def get_classes(graph_triples: List[str]):
             s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
             if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
                class_count[str(o)] += 1
+    print(class_count)
     # adjust threshold to exclude less occuring classes than threshold
-    threshold = 0
+    threshold = 100
     c_d = dict((k, v) for k, v in class_count.items() if v >= threshold)
     return sorted(list(c_d.keys()))
 

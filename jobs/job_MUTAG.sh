@@ -17,7 +17,7 @@ mkdir ./results
 scp -r $HOME/graphdata ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset MUTAG -i 5 -sum bisim
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset MUTAG -i2 -sum attr -epochs 200
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
 scp -r results/* $HOME/results/MUTAG
