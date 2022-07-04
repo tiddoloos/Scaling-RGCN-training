@@ -35,7 +35,7 @@ def compare_nodes(orgHash_to_orgNode):
         return
 
 def reformat(node):
-    if dataset != 'AM':
+    if dataset != 'AM' and dataset != 'BGS':
         if 'xmlschema' in node:
             split = node.rsplit('^^', 1)
             if len(split) < 2:
@@ -52,7 +52,7 @@ def reformat(node):
         else:
             node = '<' + node + '>'
             return node
-    else:
+    if dataset == 'AM':
         if 'http' in node:
             if node.startswith('http://informatik.uni-kiel.de/fluid#'):
                 node = node.replace('http://informatik.uni-kiel.de/fluid#', '_:')
@@ -61,6 +61,9 @@ def reformat(node):
             return node
         else:
             return node
+    if dataset == 'BGS':
+        print(node)
+        pass
 
 
 def csv_to_mapping(path: str, org: bool = True) -> Dict[str, List[str]]:
