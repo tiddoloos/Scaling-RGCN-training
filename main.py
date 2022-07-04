@@ -51,7 +51,7 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]],
     
         # run experiment(s)
         trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d=0.00005)
-        trainer.train_summaries()
+        trainer.train_summaries(configs)
         for exp in experiment_names:
             exp_settings = experiments[exp]
             results.add_key(exp)

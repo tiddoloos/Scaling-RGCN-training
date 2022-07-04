@@ -1,8 +1,9 @@
+import torch
 from typing import Callable, Tuple
-from torch.nn import BCELoss, CrossEntropyLoss
+from torch.nn import BCELoss, CrossEntropyLoss, Softmax
 
-def get_function(dataset, sumModel=False) -> Tuple[Callable]:
+def get_functions(dataset, sumModel=False) -> Tuple[Callable]:
     if sumModel or dataset == 'AIFB':
-        return BCELoss()
+        return BCELoss(), torch.sigmoid
     else:
-        return CrossEntropyLoss()
+        return CrossEntropyLoss(), Softmax(dim=1)

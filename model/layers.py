@@ -1,3 +1,4 @@
+from typing import Callable
 import torch
 import torch.nn.functional as F
 
@@ -19,12 +20,12 @@ class Emb_Layers(nn.Module):
         # this results in worse performance 
         # nn.init.kaiming_uniform_(self.embedding.weight, mode='fan_in')
 
-    def forward(self, training_data: Data) -> Tensor:
+    def forward(self, training_data: Data, activation: Callable) -> Tensor:
         # x = torch.sigmoid(self.embedding.weight)
         x = self.rgcn1(self.embedding.weight, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
-        x = torch.sigmoid(x)
+        x = activation(x)
         return x
     
     def reset_embedding(self, num_nodes: int, emb_dim: int) -> None:
