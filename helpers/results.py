@@ -70,6 +70,12 @@ class Results:
             y1_base = result[1]
             y2_base = result[2]
             x = epoch_list 
+            ylim = 1.1
+            step = 0.1
+            if max(y1_base) > 1:
+                ylim = 5
+                step = 0.5
+
 
             for exp in exps:
                 if exp != 'baseline':                            
@@ -90,7 +96,7 @@ class Results:
                 plt.legend(loc='best')
                 plt.xticks(np.arange(0, len(epoch_list), 5))
                 plt.xlim(xmin=0)
-                plt.yticks(np.arange(0, 1.1, 0.1))
+                plt.yticks(np.arange(0, ylim, step))
                 plt.ylim(ymin=0)
                 plt.savefig(f'{path}/{configs["dataset"]}_{exp}_{metric}_{configs["sum"]}_i={configs["i"]}.pdf', format='pdf')
                 plt.show()

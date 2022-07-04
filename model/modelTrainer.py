@@ -1,6 +1,6 @@
-from numpy import int64
 import torch
 
+from numpy import int64
 from collections import defaultdict
 from torch import nn
 from torch import Tensor
@@ -115,7 +115,7 @@ class Trainer:
         
         if exp != 'baseline' and configs['e_trans'] == True:
             embedding = embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
-            orgModel.load_embedding(embedding)
+            orgModel.load_embedding(embedding, freeze=False)
             print('Loaded pre trained embedding')
 
         if exp != 'baseline' and configs['w_trans'] == True:
