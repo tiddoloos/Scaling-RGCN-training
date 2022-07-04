@@ -5,7 +5,7 @@ from collections import defaultdict
 from torch import nn
 from torch import Tensor
 from torch_geometric.data import Data
-from typing import List, Tuple, Callable, Union, Dict
+from typing import List, Tuple, Callable, Union, Dict, Callable
 from sklearn.metrics import classification_report, f1_score, accuracy_score
 
 from graphdata.graph import Graph
@@ -54,14 +54,10 @@ class Trainer:
         f1_m = self.calc_f1(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val, avg='macro')
         return acc, f1_w, f1_m
     
-    def train(self, model: nn.Module, graph: Graph, configs: dict, sum_graph: bool=True) -> Tuple[List[float]]:
-        print(configs)
+    def train(self, model: nn.Module, graph: Graph, loss_f: Callable, activation: Callable, sum_graph: bool=True) -> Tuple[List[float]]:
         model = model.to(self.device)
         training_data = graph.training_data.to(self.device)
         optimizer = torch.optim.Adam(model.parameters(), lr=self.lr, weight_decay=self.weight_d)
-        # print(loss_f)
-        # print(activation)
-        # loss_f = loss_f.to(self.device)
 
         accuracies: list = []
         losses: list = []
@@ -116,12 +112,14 @@ class Trainer:
 
         if exp != 'baseline' and configs['w_trans'] == True:
             self.transfer_weights(orgModel, configs['w_grad'])
-    
+
+        loss_f, activation = get_functions(configs['dataset'], sumModel=False)
+        
         print('Training on Orginal Graph...')
-        acc[f'accuracy'], loss[f'loss'], f1_w[f'f1 weighted'], f1_m[f'f1 macro'] = self.train(orgModel, self.data.orgGraph, configs, sum_graph=False)
+        acc[f'accuracy'], loss[f'loss'], f1_w[f'f1 weighted'], f1_m[f'f1 macro'] = self.train(orgModel, self.data.orgGraph, loss_f, activation, sum_graph=False)
 
         # evaluate on Test set
-        pred = orgModel(self.data.orgGraph.training_data)
+        pred = orgModel(self.data.orgGraph.training_data, activation)
         pred = torch.round(pred)
         pred = pred.type(torch.int64)
         skl_pred = pred[self.data.orgGraph.training_data.x_test].detach().numpy()
