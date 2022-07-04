@@ -20,7 +20,7 @@ def get_classes(graph_triples: List[str]):
                class_count[str(o)] += 1
     # print(class_count)
     # adjust threshold to exclude less occuring classes than threshold
-    threshold = 100
+    threshold = 0
     c_d = dict((k, v) for k, v in class_count.items() if v >= threshold)
     return sorted(list(c_d.keys()))
 

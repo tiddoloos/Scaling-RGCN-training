@@ -64,6 +64,9 @@ class Trainer:
         f1_ws: list = []
         f1_ms: list = []
 
+        print(activation)
+        print(loss_f)
+
         for epoch in range(self.epochs):
 
             if not sum_graph:
