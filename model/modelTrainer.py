@@ -11,7 +11,6 @@ from sklearn.metrics import classification_report, f1_score, accuracy_score
 from graphdata.graph import Graph
 from graphdata.dataset import Dataset
 from model.layers import Emb_Layers
-from model.functions import get_functions
 
 class Trainer:
     device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
@@ -53,6 +52,12 @@ class Trainer:
         f1_w = self.calc_f1(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val)
         f1_m = self.calc_f1(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val, avg='macro')
         return acc, f1_w, f1_m
+
+    def get_functions(self, dataset, sumModel=False) -> Tuple[Callable]:
+        if sumModel or dataset == 'AIFB':
+            return nn.BCELoss(), torch.sigmoid
+        else:
+            return nn.CrossEntropyLoss(), nn.Softmax(dim=1)
     
     def train(self, model: nn.Module, graph: Graph, loss_f: Callable, activation: Callable, sum_graph: bool=True) -> Tuple[List[float]]:
         model = model.to(self.device)
@@ -91,7 +96,7 @@ class Trainer:
         return accuracies, losses, f1_ws, f1_ms
 
     def train_summaries(self, configs):
-        loss_f, activation = get_functions(configs['dataset'], sumModel=True)
+        loss_f, activation = self.get_functions(configs['dataset'], sumModel=True)
         self.sumModel = Emb_Layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
         for sumGraph in self.data.sumGraphs:
             self.sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
@@ -116,7 +121,7 @@ class Trainer:
         if exp != 'baseline' and configs['w_trans'] == True:
             self.transfer_weights(orgModel, configs['w_grad'])
 
-        loss_f, activation = get_functions(configs['dataset'], sumModel=False)
+        loss_f, activation = self.get_functions(configs['dataset'], sumModel=False)
         
         print('Training on Orginal Graph...')
         acc[f'accuracy'], loss[f'loss'], f1_w[f'f1 weighted'], f1_m[f'f1 macro'] = self.train(orgModel, self.data.orgGraph, loss_f, activation, sum_graph=False)
