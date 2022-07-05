@@ -1,5 +1,4 @@
 import argparse
-from collections import defaultdict
 
 from copy import deepcopy
 from typing import Callable, Dict, Union

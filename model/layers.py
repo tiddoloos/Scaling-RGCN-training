@@ -2,7 +2,7 @@ from typing import Callable
 import torch
 import torch.nn.functional as F
 
-from torch import nn, tensor
+from torch import nn
 from torch import Tensor
 from torch_geometric.nn import RGCNConv
 from torch_geometric.data import Data 
