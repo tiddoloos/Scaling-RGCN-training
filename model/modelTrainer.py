@@ -47,25 +47,40 @@ class Trainer:
     def calc_f1(self, pred: Tensor, x: Tensor, y: Tensor, avg='weighted') -> float:
         return f1_score(y, pred[x], average=avg, zero_division=0)
     
-    def evaluate(self, model: nn.Module, activation, traininig_data: Data) -> float:
+    def evaluate(self, model: nn.Module, activation, traininig_data: Data, x: Tensor, y: Tensor, report=False) -> float:
         pred = model(traininig_data, activation)
         if activation != torch.sigmoid:
-            print(pred)
-            pirtn
-        
+            softmax = nn.Softmax(dim=1)
+            pred = softmax(pred)
+            a = pred.argmax(1)
+            pred = torch.zeros(pred.shape).scatter (1, a.unsqueeze (1), 1.0)
         else:
             pred = torch.round(pred)
             pred = pred.type(torch.int64)
-        acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val)
-        f1_w = self.calc_f1(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val)
-        f1_m = self.calc_f1(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val, avg='macro')
+        acc = self.calc_acc(pred, x, y)
+        f1_w = self.calc_f1(pred, x, y)
+        f1_m = self.calc_f1(pred, x, y, avg='macro')
+        if report:
+            skl_pred = pred[x].detach().numpy()
+            print(classification_report(y, skl_pred, zero_division=0))
         return acc, f1_w, f1_m
+    
+    def ce_loss(self, pred, targets):
+        loss_f = nn.CrossEntropyLoss()
+        targets = targets.argmax(-1)
+        output = loss_f(pred, targets)
+        return output
+
+    def bce_loss(self, pred, targets):
+        loss_f = nn.BCELoss()
+        output = loss_f(pred, targets)
+        return output
 
     def get_functions(self, dataset, sumModel=False) -> Tuple[Callable]:
         if sumModel or dataset == 'AIFB':
-            return nn.BCELoss(), torch.sigmoid
+            return self.bce_loss, torch.sigmoid
         else:
-            return nn.CrossEntropyLoss(), do_nothing
+            return self.ce_loss, do_nothing
     
     def train(self, model: nn.Module, graph: Graph, loss_f: Callable, activation: Callable, sum_graph: bool=True) -> Tuple[List[float]]:
         model = model.to(self.device)
@@ -76,15 +91,12 @@ class Trainer:
         losses: list = []
         f1_ws: list = []
         f1_ms: list = []
-
-        print(activation)
-        print(loss_f)
-
+        
         for epoch in range(self.epochs):
 
             if not sum_graph:
                 model.eval()
-                acc, f1_w, f1_m = self.evaluate(model, activation, training_data)
+                acc, f1_w, f1_m = self.evaluate(model, activation, training_data, training_data.x_val, training_data.y_val)
                 print(f'Accuracy on validation set = {acc}')  
                 accuracies.append(acc)
                 f1_ws.append(f1_w)
@@ -135,15 +147,7 @@ class Trainer:
         acc[f'accuracy'], loss[f'loss'], f1_w[f'f1 weighted'], f1_m[f'f1 macro'] = self.train(orgModel, self.data.orgGraph, loss_f, activation, sum_graph=False)
 
         # evaluate on Test set
-        pred = orgModel(self.data.orgGraph.training_data, activation)
-        pred = torch.round(pred)
-        pred = pred.type(torch.int64)
-        skl_pred = pred[self.data.orgGraph.training_data.x_test].detach().numpy()
-        print(classification_report(self.data.orgGraph.training_data.y_test, skl_pred, zero_division=0))
-
-        test_f1_weighted = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
-        test_f1_macro = self.calc_f1(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, avg='macro')
-        test_acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test)
+        test_acc, test_f1_weighted, test_f1_macro = self.evaluate(orgModel, activation, self.data.orgGraph.training_data, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, report=True)
         print('ACC ON TEST SET = ',  test_acc)
     
         return acc, loss, f1_w, f1_m, test_acc, test_f1_weighted, test_f1_macro
