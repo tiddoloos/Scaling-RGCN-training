@@ -26,7 +26,7 @@ class Dataset:
         g_idx, g_labels = get_idx_labels(self.orgGraph, self.orgGraph.org2type)
         X_train, X_test, y_train, y_test = train_test_split(g_idx, g_labels,  test_size=0.2, random_state=1, shuffle=True) 
         X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, random_state=1, shuffle=True)
-
+        
         self.orgGraph.training_data.x_train = torch.tensor(X_train, dtype = torch.long)
         self.orgGraph.training_data.x_test = torch.tensor(X_test) 
         self.orgGraph.training_data.x_val = torch.tensor(X_val, dtype = torch.long)
