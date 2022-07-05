@@ -54,7 +54,7 @@ class Trainer:
         return acc, f1_w, f1_m
 
     def get_functions(self, dataset, sumModel=False) -> Tuple[Callable]:
-        if sumModel or dataset == 'AIFB':
+        if sumModel:
             return nn.BCELoss(), torch.sigmoid
         else:
             return nn.CrossEntropyLoss(), nn.Softmax(dim=1)

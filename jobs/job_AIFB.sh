@@ -17,7 +17,7 @@ mkdir ./results
 scp -r $HOME/graphdata ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB -i 5 -sum attr -create_attr_sums True
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB -i 5 -sum attr -create_attr_sum True
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
