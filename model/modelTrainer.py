@@ -11,9 +11,7 @@ from sklearn.metrics import classification_report, f1_score, accuracy_score
 from graphdata.graph import Graph
 from graphdata.dataset import Dataset
 from model.layers import Emb_Layers
-
-def do_nothing(x):
-    return x
+from model.evaluation import evaluate, get_losst
 
 class Trainer:
     device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
@@ -40,47 +38,6 @@ class Trainer:
         # transfer
         orgModel.override_params(weight_sg_1, bias_sg_1, root_sg_1, weight_sg_2, bias_sg_2, root_sg_2, grad)
         print('weight transfer done')
-
-    def calc_acc(self, pred: Tensor, x: Tensor, y: Tensor) -> float:
-        return accuracy_score(y, pred[x])
-
-    def calc_f1(self, pred: Tensor, x: Tensor, y: Tensor, avg='weighted') -> float:
-        return f1_score(y, pred[x], average=avg, zero_division=0)
-    
-    def evaluate(self, model: nn.Module, activation, traininig_data: Data, x: Tensor, y: Tensor, report=False) -> float:
-        pred = model(traininig_data, activation)
-        if activation != torch.sigmoid:
-            softmax = nn.Softmax(dim=1)
-            pred = softmax(pred)
-            a = pred.argmax(1)
-            pred = torch.zeros(pred.shape).scatter (1, a.unsqueeze (1), 1.0)
-        else:
-            pred = torch.round(pred)
-            pred = pred.type(torch.int64)
-        acc = self.calc_acc(pred, x, y)
-        f1_w = self.calc_f1(pred, x, y)
-        f1_m = self.calc_f1(pred, x, y, avg='macro')
-        if report:
-            skl_pred = pred[x].detach().numpy()
-            print(classification_report(y, skl_pred, zero_division=0))
-        return acc, f1_w, f1_m
-    
-    def ce_loss(self, pred, targets):
-        loss_f = nn.CrossEntropyLoss()
-        targets = targets.argmax(-1)
-        output = loss_f(pred, targets)
-        return output
-
-    def bce_loss(self, pred, targets):
-        loss_f = nn.BCELoss()
-        output = loss_f(pred, targets)
-        return output
-
-    def get_functions(self, dataset, sumModel=False) -> Tuple[Callable]:
-        if sumModel or dataset == 'AIFB':
-            return self.bce_loss, torch.sigmoid
-        else:
-            return self.ce_loss, do_nothing
     
     def train(self, model: nn.Module, graph: Graph, loss_f: Callable, activation: Callable, sum_graph: bool=True) -> Tuple[List[float]]:
         model = model.to(self.device)
@@ -96,11 +53,16 @@ class Trainer:
 
             if not sum_graph:
                 model.eval()
-                acc, f1_w, f1_m = self.evaluate(model, activation, training_data, training_data.x_val, training_data.y_val)
+                acc, f1_w, f1_m = evaluate(model, activation, training_data, training_data.x_val, training_data.y_val)
                 print(f'Accuracy on validation set = {acc}')  
                 accuracies.append(acc)
                 f1_ws.append(f1_w)
                 f1_ms.append(f1_m)
+                out = model(training_data, activation)
+                targets = training_data.y_val.to(torch.float32)
+                output = loss_f(out[training_data.x_val], targets)
+                loss = output.item()
+                losses.append(loss)
 
             model.train()
             optimizer.zero_grad()
@@ -109,14 +71,14 @@ class Trainer:
             output = loss_f(out[training_data.x_train], targets)
             output.backward()
             optimizer.step()
-            l = output.item()
-            losses.append(l)
             if epoch%10==0:
+                l = output.item()
                 print(f'Epoch: {epoch}, Loss: {l:.4f}')
+    
         return accuracies, losses, f1_ws, f1_ms
 
     def train_summaries(self, configs):
-        loss_f, activation = self.get_functions(configs['dataset'], sumModel=True)
+        loss_f, activation = get_losst(configs['dataset'], sumModel=True)
         self.sumModel = Emb_Layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
         for sumGraph in self.data.sumGraphs:
             self.sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
@@ -135,19 +97,19 @@ class Trainer:
         
         if exp != 'baseline' and configs['e_trans'] == True:
             embedding = embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
-            orgModel.load_embedding(embedding)
+            orgModel.load_embedding(embedding, freeze=configs["e_freeze"])
             print('Loaded pre trained embedding')
 
         if exp != 'baseline' and configs['w_trans'] == True:
             self.transfer_weights(orgModel, configs['w_grad'])
 
-        loss_f, activation = self.get_functions(configs['dataset'], sumModel=False)
+        loss_f, activation = get_losst(configs['dataset'], sumModel=False)
         
         print('Training on Orginal Graph...')
         acc[f'accuracy'], loss[f'loss'], f1_w[f'f1 weighted'], f1_m[f'f1 macro'] = self.train(orgModel, self.data.orgGraph, loss_f, activation, sum_graph=False)
 
         # evaluate on Test set
-        test_acc, test_f1_weighted, test_f1_macro = self.evaluate(orgModel, activation, self.data.orgGraph.training_data, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, report=True)
+        test_acc, test_f1_weighted, test_f1_macro = evaluate(orgModel, activation, self.data.orgGraph.training_data, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, report=True)
         print('ACC ON TEST SET = ',  test_acc)
     
         return acc, loss, f1_w, f1_m, test_acc, test_f1_weighted, test_f1_macro

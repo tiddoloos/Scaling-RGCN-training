@@ -33,7 +33,7 @@ class Dataset:
         self.orgGraph.training_data.y_val = torch.tensor(y_val, dtype = torch.long)
         self.orgGraph.training_data.y_train = torch.tensor(y_train, dtype = torch.long)
         self.orgGraph.training_data.y_test = torch.tensor(y_test)
-
+    
         print("ORIGINAL GRAPH STATISTICS")
         print(f"file name = {self.orgGraph.name}")
         print(f"num Nodes = {self.orgGraph.num_nodes}")

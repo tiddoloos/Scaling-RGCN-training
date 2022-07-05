@@ -68,7 +68,6 @@ class Emb_ATT_Layers(nn.Module):
         # print(att_weights[0])
         # print(att_weights[1])
         # print(att_weights[2])
-        # x = torch.sigmoid(attn_output[0])
         x = attn_output[0]
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
@@ -76,7 +75,10 @@ class Emb_ATT_Layers(nn.Module):
         x = activation(x)
         return x
     
-    def load_embedding(self, embedding: Tensor, grad: bool=False) -> None:
+    def load_embedding(self, embedding: Tensor, freeze: bool=True) -> None:
+        grad = True
+        if freeze == True:
+            grad = False
         self.embedding = nn.Parameter(embedding, requires_grad=grad)
 
     def override_params(self, weight_1: Tensor, bias_1: Tensor, root_1: Tensor, weight_2: Tensor, bias_2: Tensor, root_2: Tensor, grad: bool = True) -> None:
@@ -111,10 +113,8 @@ class Emb_MLP_Layers(nn.Module):
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
     def forward(self, training_data: Data, activation: Callable) -> Tensor:
-        # try relu
-        x = torch.sigmoid(self.lin1(self.embedding.weight))
+        x = torch.tanh(self.lin1(self.embedding.weight))
         x = torch.sigmoid(self.lin2(x))
-        # x = self.lin2(x)
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
