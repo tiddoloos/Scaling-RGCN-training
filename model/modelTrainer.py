@@ -59,7 +59,22 @@ class Trainer:
         else:
             return nn.CrossEntropyLoss(), nn.Softmax(dim=1)
     
-    def train(self, model: nn.Module, graph: Graph, loss_f: Callable, activation: Callable, sum_graph: bool=True) -> Tuple[List[float]]:
+    def shape_output():
+        pass
+    
+    def ce_loss(self, out, x, y):
+        
+        loss_f = nn.CrossEntropyLoss()
+        output = loss_f(out[x], y)
+        return output
+        pass
+
+    def bce_loss(self, out, x, y):
+        loss_f = nn.BCELoss()
+        output = loss_f(out[x], y)
+        return output
+
+    def train(self, model: nn.Module, graph: Graph, loss_f: Callable, activation: bool, sum_graph: bool=True) -> Tuple[List[float]]:
         model = model.to(self.device)
         training_data = graph.training_data.to(self.device)
         optimizer = torch.optim.Adam(model.parameters(), lr=self.lr, weight_decay=self.weight_d)
