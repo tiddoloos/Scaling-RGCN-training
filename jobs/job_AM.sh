@@ -17,7 +17,7 @@ mkdir ./results
 scp -r $HOME/graphdata ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i5 
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i 5 -sum bisim
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
