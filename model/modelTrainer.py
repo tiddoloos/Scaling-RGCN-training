@@ -12,6 +12,9 @@ from graphdata.graph import Graph
 from graphdata.dataset import Dataset
 from model.layers import Emb_Layers
 
+def do_nothing(x):
+    return x
+
 class Trainer:
     device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
     def __init__(self, data: Dataset, hidden_l: int, epochs: int, emb_dim: int, lr: float, weight_d: float):
@@ -46,8 +49,13 @@ class Trainer:
     
     def evaluate(self, model: nn.Module, activation, traininig_data: Data) -> float:
         pred = model(traininig_data, activation)
-        pred = torch.round(pred)
-        pred = pred.type(torch.int64)
+        if activation != torch.sigmoid:
+            print(pred)
+            pirtn
+        
+        else:
+            pred = torch.round(pred)
+            pred = pred.type(torch.int64)
         acc = self.calc_acc(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val)
         f1_w = self.calc_f1(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val)
         f1_m = self.calc_f1(pred, self.data.orgGraph.training_data.x_val, self.data.orgGraph.training_data.y_val, avg='macro')
@@ -57,7 +65,7 @@ class Trainer:
         if sumModel or dataset == 'AIFB':
             return nn.BCELoss(), torch.sigmoid
         else:
-            return nn.CrossEntropyLoss(), nn.Softmax(dim=1)
+            return nn.CrossEntropyLoss(), do_nothing
     
     def train(self, model: nn.Module, graph: Graph, loss_f: Callable, activation: Callable, sum_graph: bool=True) -> Tuple[List[float]]:
         model = model.to(self.device)
