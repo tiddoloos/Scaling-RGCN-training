@@ -1,4 +1,5 @@
 from copy import deepcopy
+from pyexpat.errors import XML_ERROR_NOT_STANDALONE
 from typing import Tuple, List, Dict
 from os import listdir
 from os.path import isfile, join
@@ -6,7 +7,7 @@ from sklearn.model_selection import train_test_split
 import torch
 
 from helpers import timing
-from graphdata.graphProcessing import parse_graph_nt, nodes2type_mapping, get_node_mappings_dict, encode_org_node_labels, encode_sum_node_labels, remove_eval_data, get_idx_labels, get_classes
+from graphdata.graphProcessing import parse_graph_nt, nodes2type_mapping, get_node_mappings_dict, encode_org_node_labels, encode_sum_node_labels, remove_eval_data, get_idx_labels, get_classes, get_node_to_type_dict
 from graphdata.graph import Graph
 
 
@@ -20,13 +21,18 @@ class Dataset:
         self.enum_classes: Dict[str, int] = None
         self.num_classes: int = None
 
-    def make_trainig_data(self):
-        self.orgGraph.org2type  = encode_org_node_labels(self.orgGraph.org2type_dict, self.enum_classes, self.num_classes)
+    def make_trainig_data(self, train_org2type_dict, test_org2type_dict):
+        train_org2type_enc  = encode_org_node_labels(train_org2type_dict, self.enum_classes, self.num_classes)
+        test_org2type_enc = encode_org_node_labels(test_org2type_dict, self.enum_classes, self.num_classes)
 
-        g_idx, g_labels = get_idx_labels(self.orgGraph, self.orgGraph.org2type)
-        X_train, X_test, y_train, y_test = train_test_split(g_idx, g_labels,  test_size=0.2, random_state=1, shuffle=True) 
-        X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, random_state=1, shuffle=True)
+        # print(test_org2type_enc)
 
+        train_idx, train_labels = get_idx_labels(self.orgGraph, train_org2type_enc)
+        X_test, y_test = get_idx_labels(self.orgGraph, test_org2type_enc)
+        # print(X_test)
+        X_train, X_val, y_train, y_val = train_test_split(train_idx, train_labels,  test_size=0.1, shuffle=True) 
+        # X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, random_state=1, shuffle=True)
+  
         self.orgGraph.training_data.x_train = torch.tensor(X_train, dtype = torch.long)
         self.orgGraph.training_data.x_test = torch.tensor(X_test) 
         self.orgGraph.training_data.x_val = torch.tensor(X_val, dtype = torch.long)
@@ -42,12 +48,11 @@ class Dataset:
         timing.log('ORGINAL GRPAH LOADED')
 
         # romeve evaluation data from org2type: we use org2type to create weighted labels for summary graph training
-        to_remove = X_test + X_val
-        org2type_pruned = remove_eval_data(to_remove, self.orgGraph)
+        # to_remove = X_val
+        train_org2type_pruned = remove_eval_data(X_val, train_org2type_dict, self.orgGraph)
 
         for sumGraph in self.sumGraphs:
-            sumGraph.sum2type  = encode_sum_node_labels(sumGraph.sumNode2orgNode_dict, org2type_pruned, self.enum_classes, self.num_classes)
-
+            sumGraph.sum2type  = encode_sum_node_labels(sumGraph.sumNode2orgNode_dict, train_org2type_pruned, self.enum_classes, self.num_classes)
             sg_idx, sg_labels = get_idx_labels(sumGraph, sumGraph.sum2type)
             sumGraph.training_data.x_train = torch.tensor(sg_idx, dtype = torch.long)
             sumGraph.training_data.y_train = torch.tensor(sg_labels)
@@ -59,7 +64,7 @@ class Dataset:
             timing.log('SUMGRPAH LOADED')
             # Assertion: if more relations in summary graph than in original graph
             assert len(sumGraph.relations.keys()) ==  len(self.orgGraph.relations.keys()), 'number of relations in summary graph and original graph differ'
-        
+      
     def get_file_names(self) -> Tuple[List[str], List[str]]:
         sum_files = [f for f in listdir(self.sum_path) if not f.startswith('.') if isfile(join(self.sum_path, f))]
         map_files = [f for f in listdir(self.map_path) if not f.startswith('.') if isfile(join(self.map_path, f))]
@@ -67,16 +72,21 @@ class Dataset:
         return sorted(sum_files), sorted(map_files)
 
     def init_dataset(self) -> None:
+        train_path = f'graphdata/BGS/trainingSet.tsv'
+        test_path = f'graphdata/BGS/testSet.tsv'
+        train_node2type_dict, classes = get_node_to_type_dict(train_path)
+        test_node2type_dict, _ = get_node_to_type_dict(test_path)
+        
         org_graph_triples = parse_graph_nt(self.org_path)
 
-        classes = get_classes(org_graph_triples)
+        # classes = get_classes(org_graph_triples)
         enum_classes = {lab: i for i, lab in enumerate(classes)}
         self.enum_classes, self.num_classes = enum_classes, len(classes)
         
-        org2type_dict = nodes2type_mapping(org_graph_triples, classes)
+        # org2type_dict = nodes2type_mapping(org_graph_triples, classes)
 
         file_name = self.org_path.split('/')[-1]
-        self.orgGraph = Graph(file_name, deepcopy(org2type_dict))
+        self.orgGraph = Graph(file_name, deepcopy(train_node2type_dict))
         self.orgGraph.init_graph(org_graph_triples)
 
         # init summary graph data
@@ -87,10 +97,10 @@ class Dataset:
             sum_graph_triples = parse_graph_nt(sum_path)
             map_graph_triples = parse_graph_nt(map_path)
             file_name = sum_path.split('/')[-1]
-            sGraph = Graph(file_name, deepcopy(org2type_dict))
+            sGraph = Graph(file_name, deepcopy(train_node2type_dict))
             sGraph.init_graph(sum_graph_triples)
             sGraph.orgNode2sumNode_dict, sGraph.sumNode2orgNode_dict = get_node_mappings_dict(map_graph_triples)
             self.sumGraphs.append(sGraph)
 
-        self.make_trainig_data()
+        self.make_trainig_data(train_node2type_dict, test_node2type_dict)
     

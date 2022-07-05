@@ -46,5 +46,5 @@ def sum_embeddings(graph: Graph, sum_graphs: List[Graph], emb_dim) -> None:
     '''
     tensors = get_tensor_list(graph, sum_graphs, emb_dim)
     summed_embedding = sum(tensors)
-    # mean_embedding = summed_embedding / len(sum_graphs)
-    return summed_embedding.detach()
+    mean_embedding = summed_embedding / len(sum_graphs)
+    return mean_embedding.detach()

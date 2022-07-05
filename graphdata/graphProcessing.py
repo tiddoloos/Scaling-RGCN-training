@@ -2,7 +2,21 @@ from collections import defaultdict
 from copy import deepcopy
 from typing import List, Dict, Tuple
 from graphdata.graph import Graph
+import csv
 
+
+def get_node_to_type_dict(path: str):
+    node2type_dict = defaultdict(list)
+    classes = set()
+    with open(path) as file:
+        file = csv.reader(file, delimiter="\t")
+        next(file)
+        for line in file:
+            node = line[1].lower()
+            label = line[2].lower()
+            classes.add(f"<{label}>")
+            node2type_dict[f"<{node}>"].append(f"<{label}>")
+    return node2type_dict, list(sorted(classes))
 
 def parse_graph_nt(path: str) -> List[str]:
     with open(path, 'r') as file:
@@ -82,8 +96,8 @@ def encode_sum_node_labels(sumNode2orgNode_dict: defaultdict(list), org2type_dic
         sum2type_enc[sumNode] = sg_labels
     return sum2type_enc
 
-def remove_eval_data(X_eval: List[int], orgGraph):
-        org2type_pruned = deepcopy(orgGraph.org2type_dict)
+def remove_eval_data(X_eval: List[int], train_org2type_dict, orgGraph):
+        org2type_pruned = deepcopy(train_org2type_dict)
         X_eval_set = set(X_eval)
         for orgNode, idx in orgGraph.node_to_enum.items():
             if idx in X_eval_set:
@@ -91,10 +105,10 @@ def remove_eval_data(X_eval: List[int], orgGraph):
         return org2type_pruned
 
 def get_idx_labels(graph: Graph, node2type) -> Tuple[List[int], List[int]]:
-    train_indices: list = []
-    train_labels: list = []
+    indices: list = []
+    labels: list = []
     for node, labs in node2type.items():
         if sum(list(labs)) != 0.0 and graph.node_to_enum.get(node) is not None:
-            train_indices.append(graph.node_to_enum[node])
-            train_labels.append(list(labs))
-    return train_indices, train_labels
+            indices.append(graph.node_to_enum[node])
+            labels.append(list(labs))
+    return indices, labels
