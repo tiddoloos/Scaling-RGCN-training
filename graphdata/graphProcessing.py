@@ -34,16 +34,16 @@ def nodes2type_mapping(graph_triples: List[str], classes: List[str]) -> Tuple[Li
             s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
             if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology' and str(o) in classes:
                 node2types_dict[s].add(o)
-    # multi_label = 0
-    # one_label = 0
-    # for nodes, type in node2types_dict.items():
-    #     if len(type) >=2:
-    #         # print(type)
-    #         multi_label += 1
-    #     else:
-    #         one_label += 1
-    # # print(multi_label)
-    # # print(one_label)
+    multi_label = 0
+    one_label = 0
+    for nodes, type in node2types_dict.items():
+        if len(type) >=2:
+            # print(type)
+            multi_label += 1
+        else:
+            one_label += 1
+    print(multi_label)
+    print(one_label)
     return node2types_dict 
 
 def get_node_mappings_dict(graph_triples: List[str]) -> Tuple[Dict[str, str], Dict[str, List]]:
