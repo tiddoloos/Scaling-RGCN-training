@@ -42,7 +42,7 @@ def bce_loss(pred, targets):
     return output
 
 def get_losst(dataset, sumModel=False) -> Tuple[Callable]:
-    if sumModel or dataset != 'MUTAG':
+    if sumModel or dataset == 'AIFB':
         return bce_loss, torch.sigmoid
     else:
         return ce_loss, do_nothing
