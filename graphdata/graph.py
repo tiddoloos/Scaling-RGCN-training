@@ -59,5 +59,6 @@ class Graph:
         edge_list = sorted(edge_list, key=lambda x: (x[0], x[1], x[2]))
         edge = torch.tensor(edge_list, dtype=torch.long).t().contiguous()
         edge_index, edge_type = edge[:2], edge[2]
+        
         self.training_data = Data(edge_index=edge_index)
         self.training_data.edge_type = edge_type
