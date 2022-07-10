@@ -55,7 +55,7 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]],
             exp_settings = experiments[exp]
             results.add_key(exp)
             timing.log(f'Start {exp} Experiment')
-            results_acc, results_loss, results_f1_w, results_f1_m, test_acc, test_micro, test_macro = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], configs, exp)
+            results_acc, results_loss, results_f1_w, results_f1_m, test_acc, test_micro, test_macro, orgModel = trainer.train_original(exp_settings['org_layers'], exp_settings['embedding_trick'], configs, exp)
             
             for result in [results_acc, results_loss, results_f1_w, results_f1_m]:
                 results.update_run_results(result, exp)
@@ -65,7 +65,7 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]],
             results.test_f1_macro[f'Test F1 macro {exp}'].append(test_macro) 
 
             timing.log(f'{exp} experiment done')
-
+            results.print_trainable_parameters(orgModel, exp)
     configs['sum files'] = sum_files
     results.process_results(configs)
 

@@ -37,6 +37,7 @@ class Dataset:
         print("ORIGINAL GRAPH STATISTICS")
         print(f"file name = {self.orgGraph.name}")
         print(f"num Nodes = {self.orgGraph.num_nodes}")
+        print(f"num Edges = {self.orgGraph.num_edges}")
         print(f"num Relations = {len(self.orgGraph.relations.keys())}")
         print(f"num Classes = {self.num_classes}")
         timing.log('ORGINAL GRPAH LOADED')
@@ -55,6 +56,7 @@ class Dataset:
             print("SUMMARY GRAPH STATISTICS")
             print(f"file name = {sumGraph.name}")
             print(f"num Nodes = {sumGraph.num_nodes}")
+            print(f"num Edges = {sumGraph.num_edges}")
             print(f"num Relations= {len(sumGraph.relations.keys())}")
             timing.log('SUMGRPAH LOADED')
             # Assertion: if more relations in summary graph than in original graph

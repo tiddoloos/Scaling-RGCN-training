@@ -1,0 +1,141 @@
+{
+    "dataset": "AIFB",
+    "sum": "attr",
+    "exp": null,
+    "epochs": 51,
+    "emb": 63,
+    "i": 1,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "e_freeze": true,
+    "w_trans": true,
+    "w_grad": true,
+    "create_attr_sum": true,
+    "num_sums": 3,
+    "sum files": [
+        "AIFB_sum_in.nt",
+        "AIFB_sum_in_out.nt",
+        "AIFB_sum_out.nt"
+    ],
+    "summation": {
+        "accuracy": {
+            "epoch": 18,
+            "max": 92.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 10.0
+        },
+        "f1 weighted": {
+            "epoch": 19,
+            "max": 95.0
+        },
+        "f1 macro": {
+            "epoch": 21,
+            "max": 63.0
+        }
+    },
+    "mlp": {
+        "accuracy": {
+            "epoch": 36,
+            "max": 92.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 26.0
+        },
+        "f1 weighted": {
+            "epoch": 41,
+            "max": 95.0
+        },
+        "f1 macro": {
+            "epoch": 9,
+            "max": 58.0
+        }
+    },
+    "attention": {
+        "accuracy": {
+            "epoch": 46,
+            "max": 93.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 28.0
+        },
+        "f1 weighted": {
+            "epoch": 46,
+            "max": 95.0
+        },
+        "f1 macro": {
+            "epoch": 49,
+            "max": 61.0
+        }
+    },
+    "baseline": {
+        "accuracy": {
+            "epoch": 33,
+            "max": 84.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 83.0
+        },
+        "f1 weighted": {
+            "epoch": 33,
+            "max": 91.0
+        },
+        "f1 macro": {
+            "epoch": 33,
+            "max": 53.0
+        }
+    },
+    "Test acc summation": {
+        "mean": 92.57,
+        "std": 0.0
+    },
+    "Test acc mlp": {
+        "mean": 93.27,
+        "std": 0.0
+    },
+    "Test acc attention": {
+        "mean": 91.86,
+        "std": 0.0
+    },
+    "Test acc baseline": {
+        "mean": 82.48,
+        "std": 0.0
+    },
+    "Test F1 weighted summation": {
+        "mean": 95.34,
+        "std": 0.0
+    },
+    "Test F1 weighted mlp": {
+        "mean": 95.52,
+        "std": 0.0
+    },
+    "Test F1 weighted attention": {
+        "mean": 95.08,
+        "std": 0.0
+    },
+    "Test F1 weighted baseline": {
+        "mean": 90.1,
+        "std": 0.0
+    },
+    "Test F1 macro summation": {
+        "mean": 63.57,
+        "std": 0.0
+    },
+    "Test F1 macro mlp": {
+        "mean": 63.58,
+        "std": 0.0
+    },
+    "Test F1 macro attention": {
+        "mean": 63.29,
+        "std": 0.0
+    },
+    "Test F1 macro baseline": {
+        "mean": 50.86,
+        "std": 0.0
+    }
+}

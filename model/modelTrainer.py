@@ -54,11 +54,6 @@ class Trainer:
                 accuracies.append(acc)
                 f1_ws.append(f1_w)
                 f1_ms.append(f1_m)
-                # out = model(training_data, activation)
-                # targets = training_data.y_val.to(torch.float32)
-                # output = loss_f(out[training_data.x_val], targets)
-                # loss = output.item()
-                # losses.append(loss)
 
             model.train()
             optimizer.zero_grad()
@@ -110,4 +105,4 @@ class Trainer:
         test_acc, test_f1_weighted, test_f1_macro = evaluate(orgModel, activation, self.data.orgGraph.training_data, self.data.orgGraph.training_data.x_test, self.data.orgGraph.training_data.y_test, report=True)
         print('ACC ON TEST SET = ',  test_acc)
     
-        return acc, loss, f1_w, f1_m, test_acc, test_f1_weighted, test_f1_macro
+        return acc, loss, f1_w, f1_m, test_acc, test_f1_weighted, test_f1_macro, orgModel

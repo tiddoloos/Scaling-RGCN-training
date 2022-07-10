@@ -11,6 +11,7 @@ class Graph:
         self.nodes: List[str] = None
         self.node_to_enum: Dict[str, int] = None
         self.num_nodes: int = None
+        self.num_edges: int = None
         self.relations: Dict[str, int] = None
         self.orgNode2sumNode_dict: Dict[str, List[str]] = None
         self.sumNode2orgNode_dict: Dict[str, List[str]] = None
@@ -24,7 +25,10 @@ class Graph:
         subjects = set()
         predicates = set()
         objects = set()
+        n_edges = set()
+        
         for triple in graph_triples:
+            n_edges.add(triple)
             triple_list = triple[:-2].split(" ", maxsplit=2)
             if triple_list != ['']:
                 s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
@@ -32,6 +36,7 @@ class Graph:
                 predicates.add(p)
                 objects.add(o)
 
+        self.num_edges = len(n_edges)
         # remove type edges from predicates
         edges = ['<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>', '<type>']
         for edge in edges:
