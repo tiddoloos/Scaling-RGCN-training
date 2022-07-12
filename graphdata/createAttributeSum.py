@@ -12,12 +12,13 @@ def create_sum_map(path: str, sum_path: str, map_path: str, dataset: str) -> Non
         for triple in triples:
             triple_list = triple[:-2].split(" ", maxsplit=2)
             if triple_list != ['']:
-                s, p, o = triple_list[0], triple_list[1], triple_list[2]
-                outgoing_properties[s].add(p)
-                if o.startswith("\""):
-                    incoming_properties['http://example.org/literal'].add(p)
-                else:
-                    incoming_properties[o].add(p)
+                s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
+                if p != '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>':
+                    outgoing_properties[s].add(p)
+                    if o.startswith("\""):
+                        incoming_properties['http://example.org/literal'].add(p)
+                    else:
+                        incoming_properties[o].add(p)
 
         outgoing_properties_hashed: Dict[str, int] = dict()
         for s1, p1 in outgoing_properties.items():
@@ -50,7 +51,7 @@ def write_sum_map_files(property_hashes: Dict[str, int], triples: List[str], sum
         for triple in triples:
             triple_list = triple[:-2].split(" ", maxsplit=2)
             if triple_list != ['']:
-                s, p, o = triple_list[0], triple_list[1], triple_list[2]
+                s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
                 if o.startswith("\"") and 'http://example.org/literal' in property_keys:
                     obj = property_hashes['http://example.org/literal']
                 else:
