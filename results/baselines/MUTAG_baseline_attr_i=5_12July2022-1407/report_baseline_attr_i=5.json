@@ -1,0 +1,51 @@
+{
+    "dataset": "MUTAG",
+    "sum": "attr",
+    "exp": "baseline",
+    "epochs": 51,
+    "emb": 63,
+    "i": 5,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "e_freeze": true,
+    "w_trans": true,
+    "w_grad": true,
+    "create_attr_sum": false,
+    "num_sums": 3,
+    "sum files": [
+        "MUTAG_sum_in_out.nt",
+        "MUTAG_sum_out.nt",
+        "MUTAG_sum_in.nt"
+    ],
+    "baseline": {
+        "accuracy": {
+            "epoch": 28,
+            "max": 50.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 483.0
+        },
+        "f1 weighted": {
+            "epoch": 40,
+            "max": 43.0
+        },
+        "f1 macro": {
+            "epoch": 46,
+            "max": 8.0
+        }
+    },
+    "Test acc baseline": {
+        "mean": 48.67,
+        "std": 0.83
+    },
+    "Test F1 weighted baseline": {
+        "mean": 42.71,
+        "std": 0.64
+    },
+    "Test F1 macro baseline": {
+        "mean": 7.92,
+        "std": 0.44
+    }
+}

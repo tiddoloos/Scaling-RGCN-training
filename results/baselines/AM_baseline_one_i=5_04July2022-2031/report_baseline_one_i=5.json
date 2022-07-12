@@ -1,0 +1,48 @@
+{
+    "dataset": "AM",
+    "sum": "one",
+    "exp": "baseline",
+    "epochs": 101,
+    "emb": 63,
+    "i": 5,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "w_trans": true,
+    "w_grad": true,
+    "create_attr_sum": false,
+    "num_sums": 1,
+    "sum files": [
+        "AM_sum_out.nt"
+    ],
+    "baseline": {
+        "accuracy": {
+            "epoch": 63,
+            "max": 91.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 85.0
+        },
+        "f1 weighted": {
+            "epoch": 34,
+            "max": 93.0
+        },
+        "f1 macro": {
+            "epoch": 41,
+            "max": 83.0
+        }
+    },
+    "Test acc baseline": {
+        "mean": 90.48,
+        "std": 0.18
+    },
+    "Test F1 weighted baseline": {
+        "mean": 93.07,
+        "std": 0.03
+    },
+    "Test F1 macro baseline": {
+        "mean": 82.32,
+        "std": 0.05
+    }
+}

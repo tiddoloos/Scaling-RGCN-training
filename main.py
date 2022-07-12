@@ -30,9 +30,9 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]],
 
     results = Results()
 
-    experiment_names = list(experiments.keys())
-    if configs['exp'] != None:
-        experiment_names = ['baseline', configs['exp']]
+    experiment_names = [configs['exp']]
+    if configs['exp'] == None:
+        experiment_names = ['summation', 'mlp', 'attention']
 
     # create attribute summaries if needed
     if configs['create_attr_sum']:
