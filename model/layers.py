@@ -17,11 +17,8 @@ class Emb_Layers(nn.Module):
 
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
-        # this results in worse performance 
-        # nn.init.kaiming_uniform_(self.embedding.weight, mode='fan_in')
 
     def forward(self, training_data: Data, activation: Callable) -> Tensor:
-        # x = torch.sigmoid(self.embedding.weight)
         x = self.rgcn1(self.embedding.weight, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
@@ -61,7 +58,6 @@ class Emb_ATT_Layers(nn.Module):
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
     def forward(self, training_data: Data, activation: Callable) -> Tensor:
-        # x = torch.sigmoid(self.embedding)
         attn_output, att_weights = self.att(self.embedding, self.embedding, self.embedding)
         # print(att_weights.size())
         # print(att_weights)
@@ -114,7 +110,7 @@ class Emb_MLP_Layers(nn.Module):
 
     def forward(self, training_data: Data, activation: Callable) -> Tensor:
         x = torch.tanh(self.lin1(self.embedding.weight))
-        x = torch.sigmoid(self.lin2(x))
+        x = self.lin2(x)
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)

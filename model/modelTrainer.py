@@ -76,8 +76,9 @@ class Trainer:
         for sumGraph in self.data.sumGraphs:
             self.sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
             _, _, _, _ = self.train(self.sumModel, sumGraph, loss_f, activation, sum_graph=True)
+            self.sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
             sumGraph.embedding = self.sumModel.embedding.weight.clone()
-
+    
     def train_original(self, org_layers: nn.Module, embedding_trick: Callable,
                         configs: Dict[str, Union[bool, str, int, float]], exp: str) -> Tuple[List[float], float]:
 
