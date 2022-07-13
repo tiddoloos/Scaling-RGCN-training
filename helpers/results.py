@@ -87,10 +87,10 @@ class Results:
                         y1 = self.run_results[exp][metric][1]
                         y2 = self.run_results[exp][metric][2]
                         x = epoch_list 
-                        plt.fill_between(x, y1, y2, color=colors[exp], interpolate=True, alpha=0.35)
+                        plt.fill_between(x, y1, y2, color=colors[exp], interpolate=True, alpha=0.2)
                         plt.plot(x, y, color=colors[exp], label=f'{exp} {metric}')
 
-                    plt.fill_between(x, y1_base, y2_base, color='#FAC205', interpolate=True, alpha=0.35)
+                    plt.fill_between(x, y1_base, y2_base, color='#FAC205', interpolate=True, alpha=0.45)
                     plt.plot(x, y_base, color='#FAC205', label = f'baseline {metric}')    
                     plt.title(f'{exp} {metric} on {configs["dataset"]} dataset during training epochs ({configs["sum"]})')
                     plt.xlabel('Epochs')

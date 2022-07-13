@@ -54,7 +54,7 @@ class Trainer:
                 accuracies.append(acc)
                 f1_ws.append(f1_w)
                 f1_ms.append(f1_m)
-
+            
             model.train()
             optimizer.zero_grad()
             out = model(training_data, activation)
