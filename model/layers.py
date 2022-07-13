@@ -14,7 +14,6 @@ class Emb_Layers(nn.Module):
         self.embedding = nn.Embedding(num_nodes, emb_dim)
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations, num_bases=None)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations, num_bases=None)
-
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
@@ -48,22 +47,18 @@ class Emb_Layers(nn.Module):
 
 
 class Emb_ATT_Layers(nn.Module):
-    def __init__(self, num_relations: int, hidden_l: int, num_labels: int, _, emb_dim: int, num_sums: int) -> None:
+    def __init__(self, num_relations: int, hidden_l: int, num_labels: int, _, emb_dim: int, num_embs: int) -> None:
         super(Emb_ATT_Layers, self).__init__()
         self.embedding = None
-        self.att = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=num_sums, dropout=0.2)
+        self.att = nn.MultiheadAttention(embed_dim=emb_dim, num_heads=num_embs, dropout=0.2)
         self.rgcn1 = RGCNConv(in_channels=emb_dim, out_channels=hidden_l, num_relations=num_relations, num_bases=None)
         self.rgcn2 = RGCNConv(hidden_l, num_labels, num_relations, num_bases=None)
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
     def forward(self, training_data: Data, activation: Callable) -> Tensor:
-        attn_output, att_weights = self.att(self.embedding, self.embedding, self.embedding)
-        # print(att_weights.size())
+        attn_output, att_weights = self.att(self.embedding, self.embedding, self.embedding, average_attn_weights=True)
         # print(att_weights)
-        # print(att_weights[0])
-        # print(att_weights[1])
-        # print(att_weights[2])
         x = attn_output[0]
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
