@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=normal
 #SBATCH --constraint=silver_4110
-#SBATCH --job-name=AIFB_run
+#SBATCH --job-name=AM_CPU_run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
@@ -15,11 +15,10 @@ source activate scaling_rgcn
 cd "$TMPDIR"/
 mkdir ./results
 scp -r $HOME/graphdata ./
-scp -r $HOME/RGCN_MscThesis_TiddoLoos/baselines ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AIFB -i 5 -sum attr -create_attr_sum True
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i 5 -w_grad False -exp mlp
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
-scp -r results/* $HOME/results/AIFB
+scp -r results/* $HOME/results/AM

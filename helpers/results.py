@@ -81,7 +81,7 @@ class Results:
                 ylim = 1.1
                 step = 0.1
                 if max(y1_base) > 1:
-                    ylim = 5
+                    ylim = round(y1_base+1.0)
                     step = 0.5
 
                 for exp in exps:
