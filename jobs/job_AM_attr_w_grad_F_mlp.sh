@@ -15,6 +15,7 @@ source activate scaling_rgcn
 cd "$TMPDIR"/
 mkdir ./results
 scp -r $HOME/graphdata ./
+scp -r $HOME/RGCN_MscThesis_TiddoLoos/baselines ./
 
 #Run Program
 python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i 5 -w_grad False -exp mlp
