@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=normal
 #SBATCH --constraint=silver_4110
-#SBATCH --job-name=job_AM_bisim_w_grad_F_mlp
+#SBATCH --job-name=AM_bisim_w_grad_F_mlp
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
