@@ -36,7 +36,7 @@
             "max": 60.0
         }
     },
-    "mlp": {
+    "attention": {
         "accuracy": {
             "epoch": 48,
             "max": 93.0
@@ -54,7 +54,7 @@
             "max": 62.0
         }
     },
-    "attention": {
+    "mlp": {
         "accuracy": {
             "epoch": 31,
             "max": 92.0
@@ -76,11 +76,11 @@
         "mean": 92.14,
         "std": 0.54
     },
-    "Test acc mlp": {
+    "Test acc attention": {
         "mean": 92.53,
         "std": 0.41
     },
-    "Test acc attention": {
+    "Test acc mlp": {
         "mean": 91.19,
         "std": 0.59
     },
@@ -88,11 +88,11 @@
         "mean": 95.44,
         "std": 0.49
     },
-    "Test F1 weighted mlp": {
+    "Test F1 weighted attention": {
         "mean": 95.49,
         "std": 0.24
     },
-    "Test F1 weighted attention": {
+    "Test F1 weighted mlp": {
         "mean": 94.95,
         "std": 0.45
     },
@@ -100,11 +100,11 @@
         "mean": 63.49,
         "std": 1.4
     },
-    "Test F1 macro mlp": {
+    "Test F1 macro attention": {
         "mean": 63.94,
         "std": 0.35
     },
-    "Test F1 macro attention": {
+    "Test F1 macro mlp": {
         "mean": 62.25,
         "std": 1.2
     }
