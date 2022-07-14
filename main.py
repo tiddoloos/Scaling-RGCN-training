@@ -39,14 +39,13 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]],
         timing.log('Creating graph summaries...')
         create_sum_map(org_path, sum_path, map_path, dataset)
         timing.log('Attribtue summaries done')
+    
+    # initialzie the data and use deepcopy when using data to keep original data unchanged.
+    timing.log('Making Graph data...')
+    data = Dataset(org_path, sum_path, map_path)
+    data.init_dataset()
 
     for j in range(configs['i']):
-
-        # initialzie the data and use deepcopy when using data to keep original data unchanged.
-        # data initialized in a loop so we vary train/validation data
-        timing.log('Making Graph data...')
-        data = Dataset(org_path, sum_path, map_path)
-        data.init_dataset()
     
         # run experiment(s)
         trainer = Trainer(deepcopy(data), configs['hl'], configs['epochs'], configs['emb'], configs['lr'], weight_d=0.00005)
