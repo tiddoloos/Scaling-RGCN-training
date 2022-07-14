@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=normal
 #SBATCH --constraint=silver_4110
-#SBATCH --job-name=AM_attr_e_trans_F
+#SBATCH --job-name=AM_bisim_e_trans_F
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
