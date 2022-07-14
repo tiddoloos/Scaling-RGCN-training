@@ -95,15 +95,14 @@ class Results:
                     plt.title(f'{exp} {metric} on {configs["dataset"]} dataset during training epochs ({configs["sum"]})')
                     plt.xlabel('Epochs')
                     plt.ylabel(f'{metric}')
-                    plt.grid(color='b', linestyle='-', linewidth=0.1)
+                    plt.grid(color='k', linestyle='-', linewidth=0.1)
                     plt.margins(x=0)
                     plt.legend(loc='best')
                     plt.xticks(np.arange(0, len(epoch_list), 5))
                     plt.xlim(xmin=0)
 
-                    max_v = max(max(y2_base),max(y2))
-                    if max_v > 1:
-                        ylim = round(max_v+1.0)
+                    if max(y2_base) > 1:
+                        ylim = round(y2_base+1.0)
                         step = 0.5
                 
                     plt.yticks(np.arange(0, ylim, step))
