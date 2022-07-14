@@ -1,0 +1,110 @@
+{
+    "dataset": "AM",
+    "sum": "bisim",
+    "exp": null,
+    "epochs": 51,
+    "emb": 64,
+    "i": 5,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "e_freeze": true,
+    "w_trans": true,
+    "w_grad": true,
+    "create_attr_sum": false,
+    "num_sums": 2,
+    "sum files": [
+        "AM_bisim_k2.nt",
+        "AM_bisim_k1.nt"
+    ],
+    "summation": {
+        "accuracy": {
+            "epoch": 20,
+            "max": 93.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 280.0
+        },
+        "f1 weighted": {
+            "epoch": 6,
+            "max": 90.0
+        },
+        "f1 macro": {
+            "epoch": 6,
+            "max": 69.0
+        }
+    },
+    "mlp": {
+        "accuracy": {
+            "epoch": 7,
+            "max": 93.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 285.0
+        },
+        "f1 weighted": {
+            "epoch": 7,
+            "max": 90.0
+        },
+        "f1 macro": {
+            "epoch": 5,
+            "max": 69.0
+        }
+    },
+    "attention": {
+        "accuracy": {
+            "epoch": 10,
+            "max": 93.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 289.0
+        },
+        "f1 weighted": {
+            "epoch": 6,
+            "max": 90.0
+        },
+        "f1 macro": {
+            "epoch": 34,
+            "max": 69.0
+        }
+    },
+    "Test acc summation": {
+        "mean": 92.7,
+        "std": 0.03
+    },
+    "Test acc mlp": {
+        "mean": 92.74,
+        "std": 0.01
+    },
+    "Test acc attention": {
+        "mean": 92.47,
+        "std": 0.22
+    },
+    "Test F1 weighted summation": {
+        "mean": 89.82,
+        "std": 0.03
+    },
+    "Test F1 weighted mlp": {
+        "mean": 89.86,
+        "std": 0.01
+    },
+    "Test F1 weighted attention": {
+        "mean": 89.61,
+        "std": 0.23
+    },
+    "Test F1 macro summation": {
+        "mean": 65.57,
+        "std": 0.04
+    },
+    "Test F1 macro mlp": {
+        "mean": 65.64,
+        "std": 0.03
+    },
+    "Test F1 macro attention": {
+        "mean": 65.44,
+        "std": 0.14
+    }
+}

@@ -95,7 +95,7 @@ class Results:
                     plt.title(f'{exp} {metric} on {configs["dataset"]} dataset during training epochs ({configs["sum"]})')
                     plt.xlabel('Epochs')
                     plt.ylabel(f'{metric}')
-                    plt.grid(color='k', linestyle='-', linewidth=0.1)
+                    plt.grid(color='b', linestyle='-', linewidth=0.1)
                     plt.margins(x=0)
                     plt.legend(loc='best')
                     plt.xticks(np.arange(0, len(epoch_list), 5))
