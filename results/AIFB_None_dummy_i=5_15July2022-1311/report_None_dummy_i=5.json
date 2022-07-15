@@ -1,0 +1,111 @@
+{
+    "dataset": "AIFB",
+    "sum": "dummy",
+    "exp": null,
+    "epochs": 51,
+    "emb": 63,
+    "i": 5,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "e_freeze": true,
+    "w_trans": true,
+    "w_grad": true,
+    "create_attr_sum": false,
+    "num_sums": 3,
+    "sum files": [
+        "AIFB_sum_random5.nt",
+        "AIFB_sum_random20.nt",
+        "AIFB_sum_random2.nt"
+    ],
+    "summation": {
+        "accuracy": {
+            "epoch": 30,
+            "max": 77.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 58.0
+        },
+        "f1 weighted": {
+            "epoch": 30,
+            "max": 86.0
+        },
+        "f1 macro": {
+            "epoch": 32,
+            "max": 47.0
+        }
+    },
+    "mlp": {
+        "accuracy": {
+            "epoch": 36,
+            "max": 79.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 78.0
+        },
+        "f1 weighted": {
+            "epoch": 46,
+            "max": 88.0
+        },
+        "f1 macro": {
+            "epoch": 46,
+            "max": 49.0
+        }
+    },
+    "attention": {
+        "accuracy": {
+            "epoch": 26,
+            "max": 79.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 55.0
+        },
+        "f1 weighted": {
+            "epoch": 34,
+            "max": 88.0
+        },
+        "f1 macro": {
+            "epoch": 29,
+            "max": 49.0
+        }
+    },
+    "Test acc summation": {
+        "mean": 71.33,
+        "std": 1.31
+    },
+    "Test acc mlp": {
+        "mean": 71.68,
+        "std": 2.75
+    },
+    "Test acc attention": {
+        "mean": 72.46,
+        "std": 2.38
+    },
+    "Test F1 weighted summation": {
+        "mean": 83.88,
+        "std": 1.03
+    },
+    "Test F1 weighted mlp": {
+        "mean": 83.53,
+        "std": 1.7
+    },
+    "Test F1 weighted attention": {
+        "mean": 84.18,
+        "std": 1.51
+    },
+    "Test F1 macro summation": {
+        "mean": 47.63,
+        "std": 2.05
+    },
+    "Test F1 macro mlp": {
+        "mean": 49.35,
+        "std": 1.52
+    },
+    "Test F1 macro attention": {
+        "mean": 49.02,
+        "std": 2.68
+    }
+}

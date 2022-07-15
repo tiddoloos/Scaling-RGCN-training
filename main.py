@@ -25,7 +25,7 @@ def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]],
     original graph. Also a baseline experiment is carried out.
     """
 
-    # before running program, do some check and assert or adjust settings if needed
+    # before running program, do some check and assert or adjust configs if needed
     configs, sum_files = do_checks(configs, sum_path, map_path)
 
     results = Results()
