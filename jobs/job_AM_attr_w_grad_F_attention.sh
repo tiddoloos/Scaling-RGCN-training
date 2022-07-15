@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=normal
 #SBATCH --constraint=silver_4110
-#SBATCH --job-name=AM_attr_e_trans_F
+#SBATCH --job-name=AM_attr_w_grad_F_attention
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
@@ -18,7 +18,7 @@ scp -r $HOME/graphdata ./
 scp -r $HOME/RGCN_MscThesis_TiddoLoos/baselines ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i 5 -e_trans False -exp summation
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i 5 -w_grad False -exp attention
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
