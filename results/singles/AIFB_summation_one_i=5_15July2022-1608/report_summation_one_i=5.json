@@ -1,0 +1,49 @@
+{
+    "dataset": "AIFB",
+    "sum": "one",
+    "exp": "summation",
+    "epochs": 51,
+    "emb": 63,
+    "i": 5,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "e_freeze": true,
+    "w_trans": true,
+    "w_grad": true,
+    "create_attr_sum": false,
+    "num_sums": 1,
+    "sum files": [
+        "AIFB_bisim_k1.nt"
+    ],
+    "summation": {
+        "accuracy": {
+            "epoch": 47,
+            "max": 86.0
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 22.0
+        },
+        "f1 weighted": {
+            "epoch": 44,
+            "max": 91.0
+        },
+        "f1 macro": {
+            "epoch": 44,
+            "max": 52.0
+        }
+    },
+    "Test acc summation": {
+        "mean": 88.07,
+        "std": 0.48
+    },
+    "Test F1 weighted summation": {
+        "mean": 92.62,
+        "std": 0.47
+    },
+    "Test F1 macro summation": {
+        "mean": 57.51,
+        "std": 0.88
+    }
+}
