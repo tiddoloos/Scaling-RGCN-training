@@ -18,7 +18,7 @@ scp -r $HOME/graphdata ./
 scp -r $HOME/RGCN_MscThesis_TiddoLoos/baselines ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i 5 -sum dummy
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i 5 -sum dummy -exp attention
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
