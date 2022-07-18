@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=normal
 #SBATCH --constraint=silver_4110
-#SBATCH --job-name=AM_dummy
+#SBATCH --job-name=AM_dummy_mlp
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
@@ -18,7 +18,7 @@ scp -r $HOME/graphdata ./
 scp -r $HOME/RGCN_MscThesis_TiddoLoos/baselines ./
 
 #Run Program
-python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i 5 -sum dummy -exp attention
+python /home/loost/RGCN_MscThesis_TiddoLoos/main.py -dataset AM -i5 -sum dummy -exp mlp
 
 #Copy output directory from scratch to results folder on local machine
 cd "$TMPDIR"/
