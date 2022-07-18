@@ -38,9 +38,9 @@ class Results:
         for exp, value in self.run_results.items():
             for metric, array_list in value.items():
                 mean_arr = np.mean(np.array(array_list), axis=0)
-                mean_list = list(np.around(mean_arr, 2))
-                mean_low = list(np.around(mean_arr - np.std(np.array(array_list), axis=0), 2))
-                mean_up = list(np.around(mean_arr + np.std(np.array(array_list), axis=0), 2))
+                mean_list = list(np.around(mean_arr, 4))
+                mean_low = list(np.around(mean_arr - np.std(np.array(array_list), axis=0), 4))
+                mean_up = list(np.around(mean_arr + np.std(np.array(array_list), axis=0), 4))
                 self.run_results[exp][metric] = [mean_list, mean_low, mean_up]
 
     def create_run_report(self, path: str, configs: Dict[str, Union[str, int]]) -> None:
@@ -102,7 +102,7 @@ class Results:
                     plt.xlim(xmin=0)
 
                     if max(y2_base) > 1:
-                        ylim = round(y2_base+1.0)
+                        ylim = round(max(y2_base)+1.0)
                         step = 0.5
                 
                     plt.yticks(np.arange(0, ylim, step))
