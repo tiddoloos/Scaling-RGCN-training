@@ -1,0 +1,51 @@
+{
+    "dataset": "AIFB",
+    "sum": "attr",
+    "exp": "summation",
+    "epochs": 51,
+    "emb": 63,
+    "i": 5,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": false,
+    "e_freeze": true,
+    "w_trans": true,
+    "w_grad": true,
+    "create_attr_sum": false,
+    "num_sums": 1,
+    "sum files": [
+        "AIFB_sum_in.nt",
+        "AIFB_sum_in_out.nt",
+        "AIFB_sum_out.nt"
+    ],
+    "summation": {
+        "accuracy": {
+            "epoch": 47,
+            "max": 79.89
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 16.16
+        },
+        "f1 weighted": {
+            "epoch": 49,
+            "max": 88.16
+        },
+        "f1 macro": {
+            "epoch": 49,
+            "max": 44.73
+        }
+    },
+    "Test acc summation": {
+        "mean": 78.12,
+        "std": 1.46
+    },
+    "Test F1 weighted summation": {
+        "mean": 87.49,
+        "std": 0.65
+    },
+    "Test F1 macro summation": {
+        "mean": 45.86,
+        "std": 0.94
+    }
+}

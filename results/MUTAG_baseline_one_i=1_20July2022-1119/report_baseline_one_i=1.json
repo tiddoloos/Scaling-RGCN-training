@@ -1,0 +1,49 @@
+{
+    "dataset": "MUTAG",
+    "sum": "one",
+    "exp": "baseline",
+    "epochs": 201,
+    "emb": 63,
+    "i": 1,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "e_freeze": true,
+    "w_trans": true,
+    "w_grad": true,
+    "create_attr_sum": false,
+    "num_sums": 1,
+    "sum files": [
+        "MUTAG_bisim_k2.nt"
+    ],
+    "baseline": {
+        "accuracy": {
+            "epoch": 68,
+            "max": 63.1
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 472.11
+        },
+        "f1 weighted": {
+            "epoch": 199,
+            "max": 61.4
+        },
+        "f1 macro": {
+            "epoch": 199,
+            "max": 20.43
+        }
+    },
+    "Test acc baseline": {
+        "mean": 62.15,
+        "std": 0.0
+    },
+    "Test F1 weighted baseline": {
+        "mean": 60.72,
+        "std": 0.0
+    },
+    "Test F1 macro baseline": {
+        "mean": 20.29,
+        "std": 0.0
+    }
+}

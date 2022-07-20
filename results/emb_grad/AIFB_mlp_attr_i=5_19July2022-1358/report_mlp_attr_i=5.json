@@ -1,0 +1,51 @@
+{
+    "dataset": "AIFB",
+    "sum": "attr",
+    "exp": "mlp",
+    "epochs": 51,
+    "emb": 63,
+    "i": 5,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "e_freeze": true,
+    "w_trans": true,
+    "w_grad": false,
+    "create_attr_sum": false,
+    "num_sums": 3,
+    "sum files": [
+        "AIFB_sum_in.nt",
+        "AIFB_sum_in_out.nt",
+        "AIFB_sum_out.nt"
+    ],
+    "mlp": {
+        "accuracy": {
+            "epoch": 49,
+            "max": 87.29
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 19.51
+        },
+        "f1 weighted": {
+            "epoch": 45,
+            "max": 92.2
+        },
+        "f1 macro": {
+            "epoch": 45,
+            "max": 49.82
+        }
+    },
+    "Test acc mlp": {
+        "mean": 86.09,
+        "std": 0.93
+    },
+    "Test F1 weighted mlp": {
+        "mean": 91.83,
+        "std": 0.72
+    },
+    "Test F1 macro mlp": {
+        "mean": 52.84,
+        "std": 3.89
+    }
+}

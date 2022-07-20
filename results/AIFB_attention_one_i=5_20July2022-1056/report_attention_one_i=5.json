@@ -1,0 +1,49 @@
+{
+    "dataset": "AIFB",
+    "sum": "one",
+    "exp": "attention",
+    "epochs": 51,
+    "emb": 63,
+    "i": 5,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "e_freeze": true,
+    "w_trans": true,
+    "w_grad": true,
+    "create_attr_sum": false,
+    "num_sums": 1,
+    "sum files": [
+        "AIFB_sum_in_out.nt"
+    ],
+    "attention": {
+        "accuracy": {
+            "epoch": 46,
+            "max": 88.78
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 34.59
+        },
+        "f1 weighted": {
+            "epoch": 49,
+            "max": 92.31
+        },
+        "f1 macro": {
+            "epoch": 46,
+            "max": 54.65
+        }
+    },
+    "Test acc attention": {
+        "mean": 89.63,
+        "std": 1.26
+    },
+    "Test F1 weighted attention": {
+        "mean": 93.42,
+        "std": 0.59
+    },
+    "Test F1 macro attention": {
+        "mean": 60.54,
+        "std": 1.64
+    }
+}
