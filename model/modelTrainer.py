@@ -57,11 +57,7 @@ class Trainer:
             
             model.train()
             optimizer.zero_grad()
-            
-            save = False
-            # if epoch == self.epochs-1:
-            #     save = True
-            out = model(training_data, activation, save=save)
+            out = model(training_data, activation)
             targets = training_data.y_train.to(torch.float32)
             output = loss_f(out[training_data.x_train], targets)
             output.backward()

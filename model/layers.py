@@ -7,7 +7,7 @@ from torch import Tensor
 from torch_geometric.nn import RGCNConv
 from torch_geometric.data import Data 
 
-from helpers.saveAttW import save_attention_tensors
+# from helpers.saveAttW import save_attention_tensors
 
 
 class Emb_Layers(nn.Module):
@@ -19,7 +19,7 @@ class Emb_Layers(nn.Module):
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
-    def forward(self, training_data: Data, activation: Callable, save=False) -> Tensor:
+    def forward(self, training_data: Data, activation: Callable) -> Tensor:
         x = self.rgcn1(self.embedding.weight, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
         x = self.rgcn2(x, training_data.edge_index, training_data.edge_type)
@@ -58,7 +58,7 @@ class Emb_ATT_Layers(nn.Module):
         nn.init.kaiming_uniform_(self.rgcn1.weight, mode='fan_in')
         nn.init.kaiming_uniform_(self.rgcn2.weight, mode='fan_in')
 
-    def forward(self, training_data: Data, activation: Callable, save=False) -> Tensor:
+    def forward(self, training_data: Data, activation: Callable) -> Tensor:
         attn_output, att_weights = self.att(self.embedding, self.embedding, self.embedding, average_attn_weights=True)
         # if save:
         #     save_attention_tensors(attn_output, att_weights)
