@@ -83,6 +83,7 @@ if __name__=='__main__':
     parser.add_argument('-e_freeze', type=lambda z:bool(strtobool(z)), default=True, help='freeze emebdding after summary training True/False')
     parser.add_argument('-w_trans', type=lambda y:bool(strtobool(y)), default=True, help='RGCN weight transfer True/False')
     parser.add_argument('-w_grad', type=lambda g:bool(strtobool(g)), default=True, help='Weight grad after transfer True/False')
+    parser.add_argument('-e_viz', type=lambda h:bool(strtobool(h)), default=False, help='viz embedding tensor')
     parser.add_argument('-create_attr_sum', type=lambda w:bool(strtobool(w)), default=False, help='create attribute summaries before conducting the experiments')
     
     configs = vars(parser.parse_args())

@@ -8,6 +8,9 @@ from graphdata.graph import Graph
 from graphdata.dataset import Dataset
 from model.layers import Emb_Layers
 from model.evaluation import evaluate, get_losst
+from model.embeddingTricks import sum_embeddings
+from helpers.vizEmb import main_viz_emb
+
 
 class Trainer:
     device = torch.device(str('cuda:0') if torch.cuda.is_available() else 'cpu')
@@ -91,6 +94,12 @@ class Trainer:
         if exp != 'baseline' and configs['e_trans'] == True:
             embedding = embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
             orgModel.load_embedding(embedding, freeze=configs["e_freeze"])
+
+            if embedding_trick == sum_embeddings:
+                torch.save(embedding, f'./results/embeddings/{configs["dataset"]}_{configs["sum"]}_embedding.pt')
+                if configs["e_viz"]:
+                    main_viz_emb(configs["dataset"], configs["sum"])
+        
             print('Loaded pre trained embedding')
 
         if exp != 'baseline' and configs['w_trans'] == True:
