@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --partition=normal
 #SBATCH --constraint=silver_4110
-#SBATCH --job-name=AM_attr
+#SBATCH --job-name=AM_e_viz
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
@@ -14,6 +14,8 @@ source activate scaling_rgcn
 
 cd "$TMPDIR"/
 mkdir ./results
+mkdir ./results/embeddings
+
 scp -r $HOME/graphdata ./
 scp -r $HOME/RGCN_MscThesis_TiddoLoos/baselines ./
 

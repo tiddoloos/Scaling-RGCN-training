@@ -9,7 +9,7 @@ from sklearn.manifold import TSNE
 def viz_embedding(x, y, z, dataset, sum):
     sum_type = {'attr': 'Attribute', 'bisim': '(k)-f. bisim.'}
     plt.scatter(x, y, c=z, cmap='viridis_r', s=0.8)
-    plt.title(f'Summed embedding of {dataset} {sum_type[sum]} summary graph embeddings')
+    plt.title(f't-SNE transformed entity embedding ({dataset} {sum_type[sum]} summaries)')
     plt.savefig(f'./results/embeddings/{dataset}_{sum}_embedding.pdf', format='pdf')
     plt.show()
     plt.close()
