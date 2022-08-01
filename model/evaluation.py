@@ -30,7 +30,7 @@ def evaluate(model: nn.Module, activation, traininig_data: Data, x: Tensor, y: T
         print(classification_report(y, skl_pred, zero_division=0))
     return acc, f1_w, f1_m
 
-def ce_loss(pred, targets):
+def ce_loss(pred: Tensor, targets: Tensor) -> Tensor:
     loss_f = nn.CrossEntropyLoss()
     targets = targets.argmax(-1)
     output = loss_f(pred, targets)
@@ -41,11 +41,11 @@ def bce_loss(pred, targets):
     output = loss_f(pred, targets)
     return output
 
-def get_losst(dataset, sumModel=False) -> Tuple[Callable]:
+def get_losst(dataset: str, sumModel: bool=False) -> Tuple[Callable]:
     if sumModel or dataset == 'AIFB':
         return bce_loss, torch.sigmoid
     else:
         return ce_loss, do_nothing
 
-def do_nothing(x):
+def do_nothing(x: Tensor) -> Tensor:
     return x
