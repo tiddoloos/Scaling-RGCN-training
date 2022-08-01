@@ -131,3 +131,6 @@ dmypy.json
 # folder
 graphdata/AM
 graphdata/BGS
+
+# file
+results/embeddings/AM_attr_embedding.pt
