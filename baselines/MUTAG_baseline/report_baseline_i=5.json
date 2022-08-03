@@ -41,11 +41,11 @@
         "std": 0.83
     },
     "Test F1 weighted baseline": {
-        "mean": 42.71,
+        "mean": 32.71,
         "std": 0.64
     },
     "Test F1 macro baseline": {
-        "mean": 7.92,
+        "mean": 3.92,
         "std": 0.44
     }
 }

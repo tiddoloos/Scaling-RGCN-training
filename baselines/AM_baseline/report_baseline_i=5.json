@@ -42,7 +42,7 @@
         "std": 0.03
     },
     "Test F1 macro baseline": {
-        "mean": 82.32,
+        "mean": 72.32,
         "std": 0.05
     }
 }
