@@ -7,8 +7,6 @@ from torch import Tensor
 from torch_geometric.nn import RGCNConv
 from torch_geometric.data import Data 
 
-# from helpers.saveAttW import save_attention_tensors
-
 
 class Emb_Layers(nn.Module):
     def __init__(self, num_relations: int, hidden_l: int, num_labels: int, num_nodes: int, emb_dim: int, _) -> None:
@@ -60,8 +58,6 @@ class Emb_ATT_Layers(nn.Module):
 
     def forward(self, training_data: Data, activation: Callable) -> Tensor:
         attn_output, att_weights = self.att(self.embedding, self.embedding, self.embedding, average_attn_weights=True)
-        # if save:
-        #     save_attention_tensors(attn_output, att_weights)
         x = attn_output[0]
         x = self.rgcn1(x, training_data.edge_index, training_data.edge_type)
         x = F.relu(x)
