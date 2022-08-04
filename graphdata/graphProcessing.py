@@ -30,7 +30,8 @@ def get_classes(graph_triples: List[str]):
     #         support_below += v
     # print(support_above, support_below)
     c_d = dict((k, v) for k, v in class_count.items() if v >= threshold)
-    print(len(sorted(list(c_d.keys()))))
+    # print(len(sorted(list(c_d.keys()))))
+    # print(c_d.keys())
     return sorted(list(c_d.keys()))
 
 def nodes2type_mapping(graph_triples: List[str], classes: List[str]) -> Tuple[List, Dict[str, List]]:
