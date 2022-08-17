@@ -22,11 +22,13 @@ class Results:
         if key  not in self.run_results.keys():
             self.run_results[key]=defaultdict(list)
 
-    def update_run_results(self, new_run_results, exp):
-        for key, value in new_run_results.items():
+    def update_run_results(self, new_results, exp):
+        for key, value in new_results.items():
             self.run_results[exp][key].append(np.array(value))
 
     def print_trainable_parameters(self, model: nn.Module, exp: str, trainer: Trainer) -> int:
+        """calculate and print trainable parameters of the models"""
+
         trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
         if exp != 'baseline':
             for sumGraph in trainer.data.sumGraphs:
@@ -44,7 +46,7 @@ class Results:
                 self.run_results[exp][metric] = [mean_list, mean_low, mean_up]
 
     def create_run_report(self, path: str, configs: Dict[str, Union[str, int]]) -> None:
-        "with this function we save statistics of the experiment(s)"
+        "with this function we save a statistics report of the experiments"
 
         report = defaultdict(dict)
         report.update(configs)
@@ -70,9 +72,11 @@ class Results:
         colors: dict = {'attention': '#FF0000', 'summation': '#069AF3', 'mlp': '#15B01A'}
         exps = self.run_results.keys()
         
-        with open(f'./baselines/{configs["dataset"]}_baseline/run_results_baseline_i=5.json') as baseline_results_file:
-            b_results  = json.load(baseline_results_file)
-
+        if configs['exp'] != 'baseline':
+            with open(f'./baselines/{configs["dataset"]}_baseline/run_results_baseline_i=5.json') as baseline_results_file:
+                b_results  = json.load(baseline_results_file)
+        else:
+            b_results = self.run_results
             for metric, result in b_results['baseline'].items():
                 y_base = result[0][:51]
                 y1_base = result[1][:51]

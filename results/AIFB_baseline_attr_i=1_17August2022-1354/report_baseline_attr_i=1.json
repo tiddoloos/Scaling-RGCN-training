@@ -1,0 +1,52 @@
+{
+    "dataset": "AIFB",
+    "sum": "attr",
+    "exp": "baseline",
+    "epochs": 3,
+    "emb": 63,
+    "i": 1,
+    "lr": 0.01,
+    "hl": 16,
+    "e_trans": true,
+    "e_freeze": true,
+    "w_trans": true,
+    "w_grad": true,
+    "e_viz": false,
+    "create_attr_sum": false,
+    "num_sums": 3,
+    "sum files": [
+        "AIFB_sum_in.nt",
+        "AIFB_sum_in_out.nt",
+        "AIFB_sum_out.nt"
+    ],
+    "baseline": {
+        "accuracy": {
+            "epoch": 1,
+            "max": 2.3
+        },
+        "loss": {
+            "epoch": -1,
+            "max": 83.37
+        },
+        "f1 weighted": {
+            "epoch": 1,
+            "max": 45.57
+        },
+        "f1 macro": {
+            "epoch": 1,
+            "max": 9.44
+        }
+    },
+    "Test acc baseline": {
+        "mean": 8.85,
+        "std": 0.0
+    },
+    "Test F1 weighted baseline": {
+        "mean": 48.21,
+        "std": 0.0
+    },
+    "Test F1 macro baseline": {
+        "mean": 12.84,
+        "std": 0.0
+    }
+}
