@@ -18,11 +18,11 @@ class Results:
         self.test_f1_weighted = defaultdict(list)
         self.test_f1_macro = defaultdict(list)
 
-    def add_key(self, key):
+    def add_key(self, key: str) -> None:
         if key  not in self.run_results.keys():
             self.run_results[key]=defaultdict(list)
 
-    def update_run_results(self, new_results, exp):
+    def update_run_results(self, new_results: dict, exp: str) -> None:
         for key, value in new_results.items():
             self.run_results[exp][key].append(np.array(value))
 
@@ -67,7 +67,9 @@ class Results:
         with open(f'{path}/report_{configs["exp"]}_{configs["sum"]}_i={configs["i"]}.json', 'w') as write_file:
                 json.dump(report, write_file, indent=4)
 
-    def plot_results(self, path: str, configs: Dict[str, Union[str, int]]):
+    def plot_results(self, path: str, configs: Dict[str, Union[str, int]]) -> None:
+        """"function to plot and save results and different metrics in seperate figures"""
+
         epoch_list = [j for j in range(configs['epochs'])]
         colors: dict = {'attention': '#FF0000', 'summation': '#069AF3', 'mlp': '#15B01A'}
         exps = self.run_results.keys()
