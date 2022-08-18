@@ -131,6 +131,7 @@ dmypy.json
 # folders
 graphs/AM
 graphs/BGS
+jobs/
 
 # files
 results/embeddings/AM_attr_embedding.pt
