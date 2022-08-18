@@ -1,6 +1,6 @@
 # Scaling Relational Graph Convolutional Network Training with Graph Summaries and Entity Embedding transfer
 
-This repositor contains the implmentation to scale Relational Graph Convolutional Network (R-GCN) trianing with graph summaries, proposed in this thesis.
+This repositor contains the implmentation to scale Relational Graph Convolutional Network (R-GCN) trianing with graph summaries, proposed in the thesis: [Scaling R-GCN training with Graph Summaries and Entity Embedding Transfer](https://github.com/tiddoloos/Scaling-RGCN-training/blob/main/thesis/Scaling_RGCN_Training_with_Graph_Summaries_and_Entity_Embedding_Transfer_Tiddo_Loos_2574974.pdf).
 
 ## Requirements
 To use the repository we recommend creating a virtual environment, e.g. with conda. Use requirements.txt to install the dependencies:
