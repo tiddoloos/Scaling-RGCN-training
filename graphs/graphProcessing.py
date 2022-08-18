@@ -1,7 +1,7 @@
 from collections import defaultdict
 from copy import deepcopy
 from typing import List, Dict, Tuple
-from graphdata.graph import Graph
+from graphs.graph import Graph
 
 
 def parse_graph_nt(path: str) -> List[str]:

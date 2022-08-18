@@ -4,8 +4,8 @@ from collections import defaultdict
 from torch import nn
 from typing import List, Tuple, Callable, Union, Dict, Callable
 
-from graphdata.graph import Graph
-from graphdata.dataset import Dataset
+from graphs.graph import Graph
+from graphs.dataset import Dataset
 from model.layers import Emb_Layers
 from model.evaluation import evaluate, get_losst
 from model.embeddingTricks import sum_embeddings
@@ -95,10 +95,9 @@ class Trainer:
             embedding = embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
             orgModel.load_embedding(embedding, freeze=configs["e_freeze"])
 
-            if embedding_trick == sum_embeddings:
+            if embedding_trick == sum_embeddings and configs["e_viz"]:
                 torch.save(embedding, f'./results/embeddings/{configs["dataset"]}_{configs["sum"]}_embedding.pt')
-                if configs["e_viz"]:
-                    main_viz_emb(configs["dataset"], configs["sum"])
+                main_viz_emb(configs["dataset"], configs["sum"])
         
             print('Loaded pre trained embedding')
 

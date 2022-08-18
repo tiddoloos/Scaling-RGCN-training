@@ -129,8 +129,8 @@ dmypy.json
 .pyre/
 
 # folders
-graphdata/AM
-graphdata/BGS
+graphs/AM
+graphs/BGS
 
 # files
 results/embeddings/AM_attr_embedding.pt

@@ -3,8 +3,8 @@ import argparse
 from copy import deepcopy
 from typing import Callable, Dict, Union
 
-from graphdata.dataset import Dataset
-from graphdata.createAttributeSum import create_sum_map
+from graphs.dataset import Dataset
+from graphs.createAttributeSum import create_sum_map
 from helpers.results import Results
 from helpers import timing
 from helpers.checks import do_checks
