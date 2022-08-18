@@ -135,3 +135,4 @@ graphs/BGS
 # files
 results/embeddings/AM_attr_embedding.pt
 results/embeddings/AM_bisim_embedding.pt
+**/.DS_Store
