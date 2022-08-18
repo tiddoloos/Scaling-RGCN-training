@@ -30,7 +30,7 @@ python main.py -sum attr -i 5 -exp summation -w_trans False -e_trans True
 python main.py -sum attr -i 5 -exp summation -e_trans False -w_trans True 
 ```
 
-## Create Attribute Graph Summaries
+## Create Attribute Summary Graphs
 ```
 python graphs/createAttributeSum.py -dataset AIFB
 ```
