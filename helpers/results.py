@@ -73,12 +73,10 @@ class Results:
         epoch_list = [j for j in range(configs['epochs'])]
         colors: dict = {'attention': '#FF0000', 'summation': '#069AF3', 'mlp': '#15B01A'}
         exps = self.run_results.keys()
-        
-        if configs['exp'] != 'baseline':
-            with open(f'./baselines/{configs["dataset"]}_baseline/run_results_baseline_i=5.json') as baseline_results_file:
-                b_results  = json.load(baseline_results_file)
-        else:
-            b_results = self.run_results
+    
+        with open(f'./baselines/{configs["dataset"]}_baseline/run_results_baseline_i=5.json') as baseline_results_file:
+            b_results  = json.load(baseline_results_file)
+
             for metric, result in b_results['baseline'].items():
                 y_base = result[0][:51]
                 y1_base = result[1][:51]

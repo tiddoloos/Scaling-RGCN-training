@@ -18,20 +18,13 @@ def get_classes(graph_triples: List[str]):
             s, p, o = triple_list[0].lower(), triple_list[1].lower(), triple_list[2].lower()
             if str(p) == rel.lower() and str(s).split('#')[0] != 'http://swrc.ontoware.org/ontology':
                class_count[str(o)] += 1
-    # adjust threshold to exclude less occuring classes than threshold
+
+    # print class occurence dict
     print(class_count)
+    
+    # adjust threshold to exclude less occuring classes than threshold
     threshold = 0
-    # support_above = 0
-    # support_below = 0
-    # for k, v in class_count.items():
-    #     if v >= 50:
-    #         support_above += v
-    #     else:
-    #         support_below += v
-    # print(support_above, support_below)
     c_d = dict((k, v) for k, v in class_count.items() if v >= threshold)
-    # print(len(sorted(list(c_d.keys()))))
-    # print(c_d.keys())
     return sorted(list(c_d.keys()))
 
 def nodes2type_mapping(graph_triples: List[str], classes: List[str]) -> Tuple[List, Dict[str, List]]:

@@ -16,10 +16,10 @@ graph summaries can scale R-GCN training and maintain or improve R-GCN performan
 the creation of graph summaries can be included in R-GCN training to scale R-GCN training and maintain or improve R-GCN performance, while reducing computational time;
 graph summaries in combination with \textit{Multi-Layer Perceptron} and \textit{Multi-Head Attention} can be applied to scale R-GCN training and maintain or improve R-GCN performance, while freezing R-GCN weights after summary graph pre-training.
 
-![model pipelines](https://github.com/tiddoloos/Scaling-RGCN-training/blob/main/paper/pipelines.png?raw=true)
+![model pipelines](https://github.com/tiddoloos/Scaling-RGCN-training/blob/main/paper/pipelines.jpg?raw=true)
 
 ### Requirements
-We recommend creating a virtual environment, e.g. with conda. Use requirements.txt to install the dependencies:
+To use the repository we recommend we recommend creating a virtual environment, e.g. with conda. Use requirements.txt to install the dependencies:
 ```
 conda create -n scaling_rgcn python=3.8 
 conda activate scaling_rgcn

@@ -7,8 +7,6 @@ from os import listdir
 from typing import Dict, List
 import click
 
-
-
 """Run this file from './graphdata/' .
 This file creates a mapping of the (k)bisimualition output created with the 
 BiSimulation pipeline of Till Blume: https://github.com/t-blume/fluid-spark.
