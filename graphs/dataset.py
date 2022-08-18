@@ -6,8 +6,8 @@ from sklearn.model_selection import train_test_split
 import torch
 
 from helpers import timing
-from graphdata.graphProcessing import parse_graph_nt, nodes2type_mapping, get_node_mappings_dict, encode_org_node_labels, encode_sum_node_labels, remove_eval_data, get_idx_labels, get_classes
-from graphdata.graph import Graph
+from graphs.graphProcessing import parse_graph_nt, nodes2type_mapping, get_node_mappings_dict, encode_org_node_labels, encode_sum_node_labels, remove_eval_data, get_idx_labels, get_classes
+from graphs.graph import Graph
 
 
 class Dataset:

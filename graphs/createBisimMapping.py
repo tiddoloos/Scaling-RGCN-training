@@ -2,7 +2,6 @@ import argparse
 import csv
 
 from collections import defaultdict
-from email.policy import default
 from os import listdir
 from typing import Dict, List
 import click
@@ -60,7 +59,6 @@ def reformat(node):
         else:
             return node
     if dataset == 'BGS':
-        print(node)
         pass
 
 
