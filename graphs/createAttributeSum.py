@@ -72,8 +72,8 @@ if __name__=='__main__':
     parser.add_argument('-dataset', type=str, choices=['AIFB', 'AM', 'BGS', 'MUTAG'], help='inidcate dataset name')
     dataset = vars(parser.parse_args())['dataset']
 
-    path = f'./{dataset}/{dataset}_complete.nt'
-    sum_path = f'./{dataset}/attr/sum/'
-    map_path = f'./{dataset}/attr/map/'
+    path = f'./graphs/{dataset}/{dataset}_complete.nt'
+    sum_path = f'./graphs/{dataset}/attr/sum/'
+    map_path = f'./graphs/{dataset}/attr/map/'
 
     create_sum_map(path, sum_path, map_path, dataset)

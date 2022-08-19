@@ -16,7 +16,7 @@ We display examples for runnnig the experiments on the AIFB dataset (`-dataset A
 By default the experiments run for 51 epochs.
 For the experiment we use the attention model (`-exp summation`)
 
-##### Multiple Summary Graph
+##### Multiple Summary Graphs
 ```
 python main.py -dataset AIFB -sum attr -i 5 -exp summation
 ```
@@ -30,10 +30,12 @@ python main.py -sum attr -i 5 -exp summation -w_trans False -e_trans True
 python main.py -sum attr -i 5 -exp summation -e_trans False -w_trans True 
 ```
 
-## Create Attribute Summary Graphs
+## Create Summary Graphs
+With the following command the incoming, outgoing and the incoming/outgoing attribute summary graphs can be created for a graph dataset:
 ```
 python graphs/createAttributeSum.py -dataset AIFB
 ```
+For the creation of (k)-foward bisimulation summary graphs we refer to [FLUID](https://github.com/t-blume/fluid-framework).
 
 ## Abstract
 Relational Graph Convolutional Network (R-GCN) training on real-world graphs is challenging. Storing gradient information during R-GCN training on real-world graphs, exceeds available memory on most single devices.
