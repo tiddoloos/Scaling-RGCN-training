@@ -13,17 +13,17 @@ from model.layers import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.modelTrainer import Trainer
 from distutils.util import strtobool
 
+"""This file executes experiments to scale RGCN training with summary graphs. 
+After training on summary graphs, the weights and node embeddings of 
+the summary model will be transferd to a new model for training on the 
+full original graph.
+"""
 
-def initialize_expirements(configs: Dict[str, Union[bool, str, int, float]], 
+def run_expirements(configs: Dict[str, Union[bool, str, int, float]], 
                             experiments: Dict[str, Dict[str, Callable]], 
                             org_path: str, 
                             sum_path: str, 
                             map_path: str) -> None:
-    """This functions executes experiments to scale graph training with RGCN. 
-    After training on summary graphs, the weights and node embeddings of 
-    the summary model will be transferd to a new model for training on the 
-    original graph. Also a baseline experiment is carried out.
-    """
 
     # before running program, do some check and assert or adjust configs if needed
     configs, sum_files = do_checks(configs, sum_path, map_path)
@@ -99,4 +99,4 @@ if __name__=='__main__':
     sum_path = f'graphdata/{dataset}/{sum}/sum/'
     map_path = f'graphdata/{dataset}/{sum}/map/'
 
-    initialize_expirements(configs, experiments, path, sum_path, map_path)
+    run_expirements(configs, experiments, path, sum_path, map_path)
