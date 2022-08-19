@@ -16,15 +16,15 @@ We display examples for runnnig the experiments on the AIFB dataset (`-dataset A
 By default the experiments run for 51 epochs.
 For the experiment we use the attention model (`-exp summation`)
 
-#### Multiple Summary Graphs
+##### Multiple Summary Graph
 ```
 python main.py -dataset AIFB -sum attr -i 5 -exp summation
 ```
-#### Single Summary Graph
+##### Single Summary Graph
 ```
 python main.py -dataset AIFB -sum one -i 5 -exp summation
 ```
-#### Entity Embedding and R-GCN Weights Transfer
+##### Entity Embedding and R-GCN Weights Transfer
 ```
 python main.py -sum attr -i 5 -exp summation -w_trans False -e_trans True
 python main.py -sum attr -i 5 -exp summation -e_trans False -w_trans True 
