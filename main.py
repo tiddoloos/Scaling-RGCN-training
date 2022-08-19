@@ -95,8 +95,8 @@ if __name__=='__main__':
 
     dataset = configs['dataset']
     sum = configs['sum']
-    path = f'graphdata/{dataset}/{dataset}_complete.nt'
-    sum_path = f'graphdata/{dataset}/{sum}/sum/'
-    map_path = f'graphdata/{dataset}/{sum}/map/'
+    path = f'graphs/{dataset}/{dataset}_complete.nt'
+    sum_path = f'graphs/{dataset}/{sum}/sum/'
+    map_path = f'graphs/{dataset}/{sum}/map/'
 
     run_expirements(configs, experiments, path, sum_path, map_path)

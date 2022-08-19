@@ -3,7 +3,7 @@ import torch
 from torch import Tensor
 from typing import List
 
-from graphdata.graph import Graph
+from graphs.graph import Graph
 
 def get_tensor_list(graph: Graph, sum_graphs: list, emb_dim: int) -> List[Tensor]:
     '''This function loops over each summary graph.

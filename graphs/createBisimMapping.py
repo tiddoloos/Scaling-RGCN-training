@@ -106,7 +106,7 @@ if __name__=='__main__':
     parser.add_argument('-dataset', type=str, choices=['AIFB', 'AM', 'MUTAG', 'TEST'], help='inidcate dataset name')
     dataset = vars(parser.parse_args())['dataset']
 
-    path = f'./{dataset}/bisim/bisimOutput'
-    map_path = f'./{dataset}/bisim/map/{dataset}_bisim_map_'
+    path = f'./graphs/{dataset}/bisim/bisimOutput'
+    map_path = f'./graphs/{dataset}/bisim/map/{dataset}_bisim_map_'
 
     create_bisim_map_nt(path, map_path)
