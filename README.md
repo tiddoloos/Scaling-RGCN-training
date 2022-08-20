@@ -2,41 +2,6 @@
 
 This repositor contains the implmentation to scale Relational Graph Convolutional Network (R-GCN) trianing with graph summaries, proposed in the thesis: [Scaling R-GCN training with Graph Summaries and Entity Embedding Transfer](https://github.com/tiddoloos/Scaling-RGCN-training/blob/main/thesis/Scaling_RGCN_Training_with_Graph_Summaries_and_Entity_Embedding_Transfer_Tiddo_Loos_2574974.pdf).
 
-## Requirements
-To use the repository we recommend creating a virtual environment, e.g. with conda. Use requirements.txt to install the dependencies:
-```
-conda create -n scaling_rgcn python=3.8 
-conda activate scaling_rgcn
-pip install -r requirements.txt
-```
-
-## Experiments
-From the root directory of the repository, use the following command to reproduce our experiments.
-We display examples for runnnig the experiments on the AIFB dataset (`-dataset AIFB`) for 5 iterations (`-i 5`).
-By default the experiments run for 51 epochs.
-For the experiment we use the attention model (`-exp summation`)
-
-##### Multiple Summary Graphs
-```
-python main.py -dataset AIFB -sum attr -i 5 -exp summation
-```
-##### Single Summary Graph
-```
-python main.py -dataset AIFB -sum one -i 5 -exp summation
-```
-##### Entity Embedding and R-GCN Weights Transfer
-```
-python main.py -sum attr -i 5 -exp summation -w_trans False -e_trans True
-python main.py -sum attr -i 5 -exp summation -e_trans False -w_trans True 
-```
-
-## Create Summary Graphs
-With the following command the incoming, outgoing and the incoming/outgoing attribute summary graphs can be created for a graph dataset:
-```
-python graphs/createAttributeSum.py -dataset AIFB
-```
-For the creation of (k)-foward bisimulation summary graphs we refer to [FLUID](https://github.com/t-blume/fluid-framework).
-
 ## Abstract
 Relational Graph Convolutional Network (R-GCN) training on real-world graphs is challenging. Storing gradient information during R-GCN training on real-world graphs, exceeds available memory on most single devices.
 Recent work demonstrated to scale R-GCN training with a summary graph. The appropriate graph summarization technique is of- ten unknown and graph and task dependent.
@@ -49,3 +14,41 @@ the creation of graph summaries can be included in R-GCN training to maintain or
 graph summaries in combination with Multi-Layer Percep- tron and Multi-Head Attention can be applied to scale R-GCN training and maintain or improve R-GCN performance, while freezing the gradients of the R-GCN weights after summary graph pre-training.
 
 ![model pipelines](https://github.com/tiddoloos/Scaling-RGCN-training/blob/main/thesis/pipelines.jpg?raw=true)
+
+## Requirements
+To use the repository we recommend creating a virtual environment, e.g. with conda. Use requirements.txt to install the dependencies:
+```
+conda create -n scaling_rgcn python=3.8 
+conda activate scaling_rgcn
+pip install -r requirements.txt
+```
+The AM dataset is too large push to github.
+To download the AM dataset including graph summaries, click [here](https://drive.google.com/uc?id=1r9bA0B75dvdlwEHBgpfOOhoRIpCZdHTr&export=download).
+Upack AM.zip and add the AM folder like: `./graphs/AM`.
+
+## Experiments
+From the root directory of the repository, use the following command to reproduce our experiments.
+We display examples for runnnig the experiments on the AIFB dataset (`-dataset AIFB`) for 5 iterations (`-i 5`).
+By default the experiments run for 51 epochs.
+For the experiment we use the attention model (`-exp attention`)
+
+##### Multiple Summary Graphs
+```
+python main.py -dataset AIFB -sum attr -i 5 -exp attention
+```
+##### Single Summary Graph
+```
+python main.py -dataset AIFB -sum one -i 5 -exp attention
+```
+##### Entity Embedding and R-GCN Weights Transfer
+```
+python main.py -sum attr -i 5 -exp attention -w_trans False -e_trans True
+python main.py -sum attr -i 5 -exp attention -e_trans False -w_trans True 
+```
+
+## Create Summary Graphs
+With the following command the incoming, outgoing and the incoming/outgoing attribute summary graphs can be created for a graph dataset:
+```
+python graphs/createAttributeSum.py -dataset AIFB
+```
+For the creation of (k)-foward bisimulation summary graphs we refer to [FLUID](https://github.com/t-blume/fluid-framework).
