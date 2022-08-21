@@ -16,7 +16,8 @@ graph summaries in combination with Multi-Layer Percep- tron and Multi-Head Atte
 ![model pipelines](https://github.com/tiddoloos/Scaling-RGCN-training/blob/main/thesis/pipelines.jpg?raw=true)
 
 ## Requirements
-To use the repository we recommend creating a virtual environment, e.g. with conda. Use requirements.txt to install the dependencies:
+To use the repository we recommend creating a virtual environment, e.g. with conda.
+Use requirements.txt to install the dependencies:
 ```
 conda create -n scaling_rgcn python=3.8 
 conda activate scaling_rgcn
@@ -32,7 +33,8 @@ For each graph sumamry there exists a map file in `./graphs/{dataset}/attr/map`.
 `./graphs/{dataset}/one/` contains a single summary graph (either attribute or (k)-forward bisimulation).
 
 ## Experiments
-From the root directory of the repository, use the following command to reproduce our experiments.
+We provive some exmaple commands to reproduce our experiments.
+The commands be should run from the root directory of the repository.
 The aim is to scale R-GCN training for entity type prediciton.
 We display examples for runnnig the experiments on the AIFB dataset (`-dataset AIFB`) for 5 iterations (`-i 5`).
 By default the experiments run for 51 epochs.
@@ -43,7 +45,7 @@ For a detailed description of the models we refer to the thesis (section 5.2).
 The following command runs the experiment where pre-training on the summary graphs, present in the `.graphs/AIFB/attr` folder, occurres.
 After training on graph summaries, the embeddings and R-GCN weights get transferred to a new model.
 Then, full origianl graph training occurres for entity type prediction.
-The program will automatically save results in the `./results` folder.
+The program will automatically save results to `./results`.
 Also, the results are plotted automatically.
 ```
 python main.py -dataset AIFB -sum attr -i 5 -exp attention
@@ -60,7 +62,7 @@ It can be decided to transfer either the entity embeddings or the R-GCN weights 
 python main.py -sum attr -i 5 -exp attention -w_trans False -e_trans True
 python main.py -sum attr -i 5 -exp attention -e_trans False -w_trans True 
 ```
-When entity embeddings are not transferred from the summary graph pre-training, the entity embedding for training on the full original greph gets newly initialzed.
+When entity embeddings are not transferred from summary graph pre-training, the entity embedding for training on the full original greph gets newly initialzed.
 ##### Freezing Embedding and R-GCN Weights
 The gradients of the R-GCN weights can be frozen after transffering them from the summary graph model with `-w_grad`.
 Note that the `mlp` and `attention` model contain layer spicif weights and the `summation` does not.
