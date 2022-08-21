@@ -27,9 +27,9 @@ Download the AM dataset, including graph summaries, [here](https://drive.google.
 Upack AM.zip and add like `./graphs/AM`.
 
 The `AM` (and other graphs) folder contains attribute summaries (`attr`), (k)-fowward bisimulaiton summaries (`bisim`).
-`one` contains a single summary (either attribute or (k)-forward bisimulation)
-For example the attribute graph summaries are storden in `./graphs/{dataset}/attr/sum`.
-for each graph sumamry there exists a map file in `./graphs/{dataset}/attr/map`.
+The attribute graph summaries are storden in `./graphs/{dataset}/attr/sum`.
+For each graph sumamry there exists a map file in `./graphs/{dataset}/attr/map`.
+`./graphs/{dataset}/one/` contains a single summary graph (either attribute or (k)-forward bisimulation).
 
 ## Experiments
 From the root directory of the repository, use the following command to reproduce our experiments.
@@ -42,20 +42,20 @@ For a detailed description of the models we refer to the thesis (section 5.2).
 ##### Multiple Summary Graphs
 The following command runs the experiment where pre-training on the summary graphs, present in the `.graphs/AIFB/attr` folder, occurres.
 After training on graph summaries, the embeddings and R-GCN weights get transferred to a new model.
-Then, full, origianl graph training occurres for entity type prediction.
-The program will automatically save results in the `./results` fodler.
+Then, full origianl graph training occurres for entity type prediction.
+The program will automatically save results in the `./results` folder.
 Also, the results are plotted automatically.
 ```
 python main.py -dataset AIFB -sum attr -i 5 -exp attention
 ```
 ##### Single Summary Graph
-to run the single summary graph expriment, copy the desired graph summary to the `./graphs/AIFB/one/sum`.
+To run the single summary graph expriment, copy the desired graph summary to the `./graphs/AIFB/one/sum`.
 Copy its complementing map graph to `./graphs/AIFB/one/map`.
 ```
 python main.py -dataset AIFB -sum one -i 5 -exp attention
 ```
-##### Entity Embedding and R-GCN Weights Transfer
-It can be decided to transfer either the entity embeddings or the R-GCN weights from summary graph trainin with the folling commands:
+##### Embedding and R-GCN Weights Transfer
+It can be decided to transfer either the entity embeddings or the R-GCN weights from summary graph training with the following commands:
 ```
 python main.py -sum attr -i 5 -exp attention -w_trans False -e_trans True
 python main.py -sum attr -i 5 -exp attention -e_trans False -w_trans True 
@@ -68,6 +68,8 @@ We recommned useing the following command with the `mlp` and `attention` model o
 ```
 python main.py -sum attr -i 5 -exp attention -w_grad False 
 ```
+The entity embedding can be frozen or unfrozen  by setting `-e_freeze` to `True` or `False`.
+By default the transferred embedding is frozen: `e_freeze True`.
 
 
 ## Create Summary Graphs
