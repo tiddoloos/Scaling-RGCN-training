@@ -44,6 +44,7 @@ htmlcov/
 .coverage
 .coverage.*
 .cache
+.DS_Store
 nosetests.xml
 coverage.xml
 *.cover
@@ -136,4 +137,3 @@ jobs/
 # files
 results/embeddings/AM_attr_embedding.pt
 results/embeddings/AM_bisim_embedding.pt
-.DS_Store
