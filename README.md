@@ -42,7 +42,7 @@ Create the attribute summary graphs of a graph dataset with the follwing command
 python graphs/createAttributeSum.py -dataset AIFB
 ```
 
-For the creation of (k)-forward bisimulation summary graphs we refer to [FLUID](https://github.com/t-blume/fluid-framework).
+For the creation of (k)-forward bisimulation summary graphs we refer to [FLUID](https://github.com/t-blume/fluid-spark).
 
 
 ## Experiments
