@@ -31,7 +31,7 @@ The `./graphs` folder contains graphs datasets.
 Each graph folder, e.g.`AM`, contains attribute summaries (`attr`) and (k)-forward bisimulaiton summaries (`bisim`).
 The attribute graph summaries are stored in `./graphs/{dataset}/attr/sum`.
 The (k)-forward bisimulaiton summaries are stored in `./graphs/{dataset}/bisim/sum`
-For each graph atrribute summary (attribute and (k)-forward bisimulation) there exists a map file in `./graphs/{dataset}/attr/map`.
+For each graph summary (attribute and (k)-forward bisimulation) there exists a map file in `./graphs/{dataset}/attr/map`.
 `./graphs/{dataset}/one/` contains a single summary graph (either attribute or (k)-forward bisimulation) which must be added munually.
 
 ## Experiments
@@ -77,8 +77,11 @@ By default, the transferred embedding is frozen: `-e_freeze True`.
 
 
 ## Create Summary Graphs
-With the following command the incoming, outgoing and the incoming/outgoing attribute summary graphs can be created for a graph dataset:
+The incoming, outgoing and the incoming/outgoing attribute summary graphs can be created for a graph dataset with `graphs/createAttributeSum.py`. 
+Summary graphs and corresponding node mapping files will be created and saved to `./graphs/{dataset}/attr/sum` and `./graphs/{dataset}/attr/map`, respectively.
+Create the attribute summary graphs of a graph dataset with the follwing command:
 ```
 python graphs/createAttributeSum.py -dataset AIFB
 ```
+
 For the creation of (k)-forward bisimulation summary graphs we refer to [FLUID](https://github.com/t-blume/fluid-framework).
