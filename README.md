@@ -27,10 +27,11 @@ The AM dataset is too large push to github.
 Download the AM dataset, including graph summaries, [here](https://drive.google.com/uc?id=1r9bA0B75dvdlwEHBgpfOOhoRIpCZdHTr&export=download).
 Unpack AM.zip and add like `./graphs/AM`.
 
-The `./graphs` folder contains graphs datasets. Each graph folder, e.g.`AM`, contains attribute summaries (`attr`) and (k)-forward bisimulaiton summaries (`bisim`).
+The `./graphs` folder contains graphs datasets.
+Each graph folder, e.g.`AM`, contains attribute summaries (`attr`) and (k)-forward bisimulaiton summaries (`bisim`).
 The attribute graph summaries are stored in `./graphs/{dataset}/attr/sum`.
 The (k)-forward bisimulaiton summaries are stored in `./graphs/{dataset}/bisim/sum`
-For each graph atrribute (and (k)-forward bisimulation) summary there exists a map file in `./graphs/{dataset}/attr/map`.
+For each graph atrribute summary (attribute and (k)-forward bisimulation) there exists a map file in `./graphs/{dataset}/attr/map`.
 `./graphs/{dataset}/one/` contains a single summary graph (either attribute or (k)-forward bisimulation) which must be added munually.
 
 ## Experiments
