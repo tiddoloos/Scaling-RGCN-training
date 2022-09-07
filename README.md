@@ -27,10 +27,11 @@ The AM dataset is too large push to github.
 Download the AM dataset, including graph summaries, [here](https://drive.google.com/uc?id=1r9bA0B75dvdlwEHBgpfOOhoRIpCZdHTr&export=download).
 Unpack AM.zip and add like `./graphs/AM`.
 
-The `AM` (and other graphs) folder contains attribute summaries (`attr`), (k)-forward bisimulaiton summaries (`bisim`).
+The `./graphs` folder contains graphs datasets. Each graph folder, e.g.`AM`, contains attribute summaries (`attr`) and (k)-forward bisimulaiton summaries (`bisim`).
 The attribute graph summaries are stored in `./graphs/{dataset}/attr/sum`.
-For each graph summary there exists a map file in `./graphs/{dataset}/attr/map`.
-`./graphs/{dataset}/one/` contains a single summary graph (either attribute or (k)-forward bisimulation).
+The (k)-forward bisimulaiton summaries are stored in `./graphs/{dataset}/bisim/sum`
+For each graph atrribute (and (k)-forward bisimulation) summary there exists a map file in `./graphs/{dataset}/attr/map`.
+`./graphs/{dataset}/one/` contains a single summary graph (either attribute or (k)-forward bisimulation) which must be added munually.
 
 ## Experiments
 We provide example commands to reproduce our experiments.
@@ -43,7 +44,7 @@ For a detailed description of the models we refer to the thesis (section 5.2).
 
 #### Multiple Summary Graphs
 The following command runs the experiment where pre-training on the summary graphs, present in the `.graphs/AIFB/attr` folder, occurs.
-After training on graph summaries, the embeddings and R-GCN weights get transferred to a new model.
+After training on graph summaries, the embeddings and R-GCN weights are transferred to a new R-GCN model.
 Then, full original graph training is carried out for entity type prediction.
 The program will automatically save results to `./results`.
 Also, the results are plotted automatically.
@@ -60,7 +61,7 @@ python main.py -dataset AIFB -sum one -i 5 -exp attention
 It can be decided to transfer either the entity embeddings or the R-GCN weights from summary graph training with the following commands:
 ```
 python main.py -sum attr -i 5 -exp attention -w_trans False -e_trans True
-python main.py -sum attr -i 5 -exp attention -e_trans False -w_trans True 
+python main.py -sum attr -i 5 -exp attention -w_trans True -e_trans False
 ```
 When entity embeddings are not transferred from summary graph pre-training, the entity embedding for training on the full original graph gets newly initialized.
 #### Freezing Embedding and R-GCN Weights
