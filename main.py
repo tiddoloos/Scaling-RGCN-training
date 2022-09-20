@@ -1,7 +1,8 @@
 import argparse
 
 from copy import deepcopy
-from typing import Callable, Dict, Union
+from typing import Dict, Union
+from torch import nn
 
 from graphs.dataset import Dataset
 from graphs.createAttributeSum import create_sum_map
@@ -20,7 +21,7 @@ full original graph.
 """
 
 def run_expirements(configs: Dict[str, Union[bool, str, int, float]], 
-                            experiments: Dict[str, Dict[str, Callable]], 
+                            experiments: Dict[str, Dict[str, nn.Module]], 
                             org_path: str, 
                             sum_path: str, 
                             map_path: str) -> None:
