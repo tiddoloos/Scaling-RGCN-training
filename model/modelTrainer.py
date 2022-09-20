@@ -2,7 +2,7 @@ import torch
 
 from collections import defaultdict
 from torch import nn
-from typing import List, Tuple, Callable, Union, Dict,
+from typing import List, Tuple, Callable, Union, Dict
 
 from graphs.graph import Graph
 from graphs.dataset import Dataset
