@@ -6,7 +6,7 @@ import argparse
 from sklearn.manifold import TSNE
 
 
-def viz_embedding(x, y, z, dataset, sum):
+def viz_embedding(x: np.array, y: np.array, z: np.array, dataset: str, sum: str) -> None:
     sum_type = {'attr': 'Attribute', 'bisim': '(k)-f. bisim.'}
     plt.scatter(x, y, c=z, cmap='viridis_r', s=0.8)
     plt.title(f't-SNE transformed entity embedding ({dataset} {sum_type[sum]} summaries)')
@@ -15,7 +15,7 @@ def viz_embedding(x, y, z, dataset, sum):
     plt.close()
     plt.clf()
 
-def main_viz_emb(dataset, sum):
+def main_viz_emb(dataset: str, sum: str) -> None:
     embedding = torch.load(f'./results/embeddings/{dataset}_{sum}_embedding.pt')
     trans_emb = TSNE(init='pca').fit_transform(embedding)
     trans_emb_x, trans_emb_y = zip(*trans_emb)
