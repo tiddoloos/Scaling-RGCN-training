@@ -2,7 +2,7 @@ import torch
 
 from collections import defaultdict
 from torch import nn
-from typing import List, Tuple, Callable, Union, Dict, Callable
+from typing import List, Tuple, Callable, Union, Dict,
 
 from graphs.graph import Graph
 from graphs.dataset import Dataset
@@ -73,7 +73,7 @@ class Trainer:
     
         return accuracies, losses, f1_ws, f1_ms
 
-    def train_summaries(self, configs):
+    def train_summaries(self, configs: Dict[str, Union[bool, str, int, float]]) -> None:
         loss_f, activation = get_losst(configs['dataset'], sumModel=True)
         self.sumModel = Emb_Layers(len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
         for sumGraph in self.data.sumGraphs:
@@ -82,7 +82,7 @@ class Trainer:
             sumGraph.embedding = self.sumModel.embedding.weight.clone()
     
     def train_original(self, org_layers: nn.Module, embedding_trick: Callable,
-                        configs: Dict[str, Union[bool, str, int, float]], exp: str) -> Tuple[List[float], float]:
+                        configs: Dict[str, Union[bool, str, int, float]], exp: str) -> Tuple[Union[List[float], float,  nn.Module]]:
 
         acc = defaultdict(list)
         loss = defaultdict(list)
