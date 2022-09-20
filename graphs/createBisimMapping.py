@@ -13,7 +13,7 @@ For each folder in <dataset>/bisim/bisimOutput, triples like 'sumNode isSummaryO
 are stored in a .nt file in <dataset>/bisim/map/ .
 """
 
-def compare_nodes(orgHash_to_orgNode):
+def compare_nodes(orgHash_to_orgNode: dict):
     org_nodes = set()
     with open(f'{dataset}/{dataset}_complete.nt', 'r') as file:
         triples = file.read().splitlines()
@@ -31,7 +31,7 @@ def compare_nodes(orgHash_to_orgNode):
     if click.confirm(f'{count} mapped (probably literal) nodes do not match with original nodes. If {count} is < 1% of {len(org_nodes)} it probably wont harm performance. Do you want to continue?', default=True):
         return
 
-def reformat(node):
+def reformat(node: str) -> str:
     if dataset != 'AM' and dataset != 'BGS':
         if 'xmlschema' in node:
             split = node.rsplit('^^', 1)
@@ -85,6 +85,7 @@ def write_to_nt(orgHash_to_orgNode: defaultdict(list), sumNode_to_orgHash: defau
                     for node in nodes:
                         m.write(f'<{sumNode}> <isSummaryOf> {node} .\n')
     print('Mapping saved')
+
 def create_bisim_map_nt(path: str, map_path: str) -> None:
     dirs = sorted([x for x in listdir(path) if not x.startswith('.')])
     for dir in dirs:

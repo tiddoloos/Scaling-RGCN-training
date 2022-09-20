@@ -9,7 +9,7 @@ def parse_graph_nt(path: str) -> List[str]:
         triples = file.read().splitlines()
     return triples
 
-def get_classes(graph_triples: List[str]):
+def get_classes(graph_triples: List[str]) -> List[str]:
     rel = '<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>'
     class_count: dict = defaultdict(int)
     for triple in graph_triples:
@@ -74,15 +74,15 @@ def encode_sum_node_labels(sumNode2orgNode_dict: defaultdict(list), org2type_dic
         sum2type_enc[sumNode] = sg_labels
     return sum2type_enc
 
-def remove_eval_data(X_eval: List[int], orgGraph):
-        org2type_pruned = deepcopy(orgGraph.org2type_dict)
-        X_eval_set = set(X_eval)
-        for orgNode, idx in orgGraph.node_to_enum.items():
-            if idx in X_eval_set:
-                org2type_pruned[orgNode].clear()
-        return org2type_pruned
+def remove_eval_data(X_eval: List[int], orgGraph: Graph) -> Dict[List[int]]:
+    org2type_pruned = deepcopy(orgGraph.org2type_dict)
+    X_eval_set = set(X_eval)
+    for orgNode, idx in orgGraph.node_to_enum.items():
+        if idx in X_eval_set:
+            org2type_pruned[orgNode].clear()
+    return org2type_pruned
 
-def get_idx_labels(graph: Graph, node2type) -> Tuple[List[int], List[int]]:
+def get_idx_labels(graph: Graph, node2type: Dict[str, List[float]]) -> Tuple[List[int], List[int]]:
     train_indices: list = []
     train_labels: list = []
     for node, labs in node2type.items():

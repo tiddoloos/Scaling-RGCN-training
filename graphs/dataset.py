@@ -20,7 +20,7 @@ class Dataset:
         self.enum_classes: Dict[str, int] = None
         self.num_classes: int = None
 
-    def make_trainig_data(self):
+    def make_trainig_data(self) -> None:
         self.orgGraph.org2type  = encode_org_node_labels(self.orgGraph.org2type_dict, self.enum_classes, self.num_classes)
 
         g_idx, g_labels = get_idx_labels(self.orgGraph, self.orgGraph.org2type)

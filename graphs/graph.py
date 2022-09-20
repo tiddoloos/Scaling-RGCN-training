@@ -21,7 +21,7 @@ class Graph:
         self.training_data: Data = None
         self.embedding: Tensor = None
 
-    def init_graph(self, graph_triples: List[str]):
+    def init_graph(self, graph_triples: List[str]) -> None:
         subjects = set()
         predicates = set()
         objects = set()

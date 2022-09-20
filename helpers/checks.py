@@ -3,7 +3,7 @@ from os import listdir
 from os.path import isfile, join
 
 
-def check_sum_map_files(sum_path: str, map_path: str) -> int:
+def check_sum_map_files(sum_path: str, map_path: str) -> List[str]:
     sum_files = [f for f in listdir(sum_path) if not f.startswith('.') if isfile(join(sum_path, f))]
     map_files = [f for f in listdir(map_path) if not f.startswith('.') if isfile(join(map_path, f))]
     assert len(sum_files) == len(map_files), f'for every summary file there needs to be a map file. \n {len(sum_files)} sum files found and {len(map_files)} map files found'
@@ -17,7 +17,7 @@ def check_emb_dim(configs: Dict[str, Union[int, str, float, bool]], num_sum_file
         print(f'updated embedding dimension for attention experiment: new emb_dim is {new_emb}, was {emb_dim}')
     return configs
 
-def check_e_trans(configs: Dict[str, Union[int, str, float, bool]], num_sum_files: int):
+def check_e_trans(configs: Dict[str, Union[int, str, float, bool]], num_sum_files: int) -> dict:
     if configs['e_trans'] == False:
         configs['num_sums'] = 1
     else:
