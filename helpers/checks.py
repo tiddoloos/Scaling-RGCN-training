@@ -17,7 +17,7 @@ def check_emb_dim(configs: Dict[str, Union[int, str, float, bool]], num_sum_file
         print(f'updated embedding dimension for attention experiment: new emb_dim is {new_emb}, was {emb_dim}')
     return configs
 
-def check_e_trans(configs: Dict[str, Union[int, str, float, bool]], num_sum_files: int) -> dict:
+def check_e_trans(configs: Dict[str, Union[int, str, float, bool]], num_sum_files: int) -> Dict[str, Union[int, str, float, bool]]:
     if configs['e_trans'] == False:
         configs['num_sums'] = 1
     else:
