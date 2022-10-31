@@ -1,6 +1,7 @@
 import argparse
 
 from copy import deepcopy
+from distutils.util import strtobool
 from typing import Dict, Union
 from torch import nn
 
@@ -12,7 +13,6 @@ from helpers.checks import do_checks
 from model.embeddingTricks import stack_embeddings, sum_embeddings, concat_embeddings
 from model.layers import Emb_Layers, Emb_MLP_Layers, Emb_ATT_Layers
 from model.modelTrainer import Trainer
-from distutils.util import strtobool
 
 """This file executes experiments to scale RGCN training with summary graphs. 
 After training on summary graphs, the weights and node embeddings of 
