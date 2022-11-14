@@ -75,7 +75,7 @@ class Trainer:
 
     def train_summaries(self, configs: Dict[str, Union[bool, str, int, float]]) -> None:
         loss_f, activation = get_losst(configs['dataset'], sumModel=True)
-        self.sumModel = Emb_Layers(2*len(self.data.sumGraphs[0].relations.keys()), self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
+        self.sumModel = Emb_Layers(2*len(self.data.sumGraphs[0].relations.keys())+1, self.hidden_l, self.data.num_classes, self.data.sumGraphs[0].num_nodes, self.emb_dim, len(self.data.sumGraphs))
         for sumGraph in self.data.sumGraphs:
             self.sumModel.reset_embedding(sumGraph.num_nodes, self.emb_dim)
             _, _, _, _ = self.train(self.sumModel, sumGraph, loss_f, activation, sum_graph=True)
@@ -89,7 +89,7 @@ class Trainer:
         f1_w = defaultdict(list)
         f1_m = defaultdict(list)
 
-        orgModel = org_layers(2*len(self.data.orgGraph.relations.keys()), self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, configs['num_sums'])
+        orgModel = org_layers(2*len(self.data.orgGraph.relations.keys())+1, self.hidden_l, self.data.num_classes, self.data.orgGraph.num_nodes, self.emb_dim, configs['num_sums'])
         
         if exp != 'baseline' and configs['e_trans'] == True:
             embedding = embedding_trick(self.data.orgGraph, self.data.sumGraphs, self.emb_dim)
